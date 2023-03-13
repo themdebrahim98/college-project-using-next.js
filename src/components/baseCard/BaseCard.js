@@ -14,7 +14,7 @@ const BaseCard = (props) => {
   return (
     <Card>
       <Box p={2} display="flex" alignItems="center">
-        <Typography variant="h4">{props.title}</Typography>
+        <Typography variant={props.titleSize !=""?props.titleSize:"h4"}>{props.title}</Typography>
         {props.button == "true" ? props.buttonData : ""
           }
       </Box>
