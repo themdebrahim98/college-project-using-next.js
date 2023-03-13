@@ -30,6 +30,8 @@ const PageWrapper = experimentalStyled("div")(({ theme }) => ({
   },
 }));
 
+
+
 const FullLayout = ({ children }) => {
   const [isSidebarOpen, setSidebarOpen] = React.useState(true);
   const [isMobileSidebarOpen, setMobileSidebarOpen] = React.useState(false);

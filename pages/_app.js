@@ -27,7 +27,7 @@ export default function MyApp(props) {
         <PersistGate loading={null} persistor={persistor}>
           <CacheProvider value={emotionCache}>
             <Head>
-              <title>Flexy NextJs Starter kit page</title>
+              <title>Makaut</title>
               <meta
                 name="viewport"
                 content="initial-scale=1, width=device-width"
@@ -47,7 +47,7 @@ export default function MyApp(props) {
     return (
       <CacheProvider value={emotionCache}>
         <Head>
-          <title>Flexy NextJs Starter kit page</title>
+          <title>Makaut</title>
           <meta name="viewport" content="initial-scale=1, width=device-width" />
         </Head>
         <ThemeProvider theme={theme}>

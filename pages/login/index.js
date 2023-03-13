@@ -47,18 +47,13 @@ function index() {
     if (data.status.status == 0) {
       alert(data.status.message);
     } else {
-      setcookie("access_key",JSON.stringify(res.data.data.access_key) )
-      
-      // localStorage.setItem(  
-      //   "access_key",
-      //   JSON.stringify(res.data.data.access_key)
-      // );
-      if (res.data.data.status.status == 1) {
-        // const data = parseJwt(res.data.data.access_key);
-        // const token = JSON.parse(localStorage.getItem("access_key"));
-        console.log(cookies.get('access_key'),"aIsxkh")
+      setcookie("access_key",res.data.data.access_key);
 
-        const token =cookies.access_key;
+    
+      if (res.data.data.status.status == 1) {
+        const token = res.data.data.access_key
+
+       
         const res2 = await axios.post(
           "https://test.diptodiagnostic.com/api/get_user_details",
           null,
@@ -74,7 +69,7 @@ function index() {
 
       
         dispatch(loginUser(userData));
-        router.push('/')
+        router.replace('/')
    
       }
     }

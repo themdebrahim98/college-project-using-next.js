@@ -1,14 +1,11 @@
-import{NextResponse} from 'next/server'
+import { NextResponse } from "next/server";
 
-export default function middleware(req){
-    console.log(req);
+export default function middleware(req) {
     const token = req.cookies.access_key;
-    if(token == 'undefined'){
+    if(req.url != '/login' && token == undefined && token == null  ){
         return NextResponse.redirect("/login")
-    }else{
-
-         return NextResponse.next('/');
     }
-    
-
+    if(token != undefined && req.url == '/login'){
+            return NextResponse.redirect("/") 
+    }   
 }
