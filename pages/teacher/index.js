@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Modal from "@mui/material/Modal";
 import { TextField } from "@mui/material";
 import AccountCircle from "@mui/icons-material/AccountCircle";
+import { styled } from "@mui/material/styles";
 import {
   Typography,
   Box,
@@ -12,13 +13,21 @@ import {
   TableRow,
   Chip,
   Button,
-  Drawer
+  Drawer,
+  Stack,
+  Paper 
 } from "@mui/material";
 import BaseCard from "../../src/components/baseCard/BaseCard";
 import { BASE_URL } from "../../commonVariable";
 import Cookies from "js-cookie";
 import axios from "axios";
-
+const Item = styled(Paper)(({ theme }) => ({
+  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
+  ...theme.typography.body2,
+  padding: theme.spacing(1),
+  textAlign: "center",
+  color: theme.palette.text.secondary,
+}));
 const style = {
   position: "absolute",
   top: "50%",
@@ -75,12 +84,12 @@ function teachers() {
   const handleModal2 = (teacherData) => {
     setOpen2(true);
     console.log(teacherData);
-    // setselectedTeacherData([teacherData]);
+    setselectedTeacherData([teacherData]);
   };
   
   const handleModal1 = (teacher_id) => {
     setOpen1(true);
-    setteacherId(teacher_id);
+    setteacherId(allTeachers);
   };
 
   useEffect(() => {
@@ -456,7 +465,7 @@ function teachers() {
                 <TableCell>
                   <Button
                     onClick={() => {
-                      handleModal2(teacher.teacher_id);
+                      handleModal2(teacher);
                     }}
                     color="secondary"
                     variant="contained"
@@ -470,7 +479,7 @@ function teachers() {
         </Table>
       </BaseCard>
       <Box>
-        <Button variant="contained"> close</Button>
+        {/* <Button variant="contained"> close</Button> */}
         <Drawer
         
         PaperProps={{
