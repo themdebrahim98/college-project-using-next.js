@@ -21,7 +21,7 @@ export default function MyApp(props) {
   if (
     router.pathname == "/student/studentSignup" ||
     router.pathname == "/login"
-  ) {
+  ){
     return (
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
@@ -43,22 +43,30 @@ export default function MyApp(props) {
         </PersistGate>
       </Provider>
     );
-  } else {
+  }else
+   {
     return (
-      <CacheProvider value={emotionCache}>
-        <Head>
-          <title>Makaut</title>
-          <meta name="viewport" content="initial-scale=1, width=device-width" />
-        </Head>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <FullLayout>
-            <Component {...pageProps} />
-          </FullLayout>
-        </ThemeProvider>
-      </CacheProvider>
+      <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+          <CacheProvider value={emotionCache}>
+            <Head>
+              <title>Makaut</title>
+              <meta
+                name="viewport"
+                content="initial-scale=1, width=device-width"
+              />
+            </Head>
+            <ThemeProvider theme={theme}>
+              <CssBaseline />
+              <FullLayout>
+              <Component {...pageProps} />
+              </FullLayout>
+            </ThemeProvider>
+          </CacheProvider>
+        </PersistGate>
+      </Provider>
     );
-  }
+  } 
 }
 
 MyApp.propTypes = {

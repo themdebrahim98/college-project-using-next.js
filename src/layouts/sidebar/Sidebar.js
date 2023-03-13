@@ -16,11 +16,16 @@ import {
 } from "@mui/material";
 import FeatherIcon from "feather-icons-react";
 import LogoIcon from "../logo/LogoIcon";
-import Menuitems from "./MenuItems";
 import Buynow from "./Buynow";
 import { useRouter } from "next/router";
+import { useMenu } from "./MenuItems";
+import { useSelector } from "react-redux";
+
 
 const Sidebar = ({ isMobileSidebarOpen, onSidebarClose, isSidebarOpen }) => {
+  const user = useSelector((state) => state.user);
+  const Menuitems = useMenu(user.userData.user_data);
+  console.log(Menuitems,"menu")
   const [open, setOpen] = React.useState(true);
 
   const lgUp = useMediaQuery((theme) => theme.breakpoints.up("lg"));

@@ -2,6 +2,8 @@ import React from "react";
 import FeatherIcon from "feather-icons-react";
 import Image from "next/image";
 import userimg from "../../../assets/images/users/user2.jpg";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../../../redux/slices/userSlice";
 import {
   Box,
   Menu,
@@ -13,8 +15,11 @@ import {
   Button,
   Divider,
 } from "@mui/material";
+import router from "next/router";
 const ProfileDD = () => {
+  const user = useSelector((state) => state.user);
   const [anchorEl4, setAnchorEl4] = React.useState(null);
+  const dispatch = useDispatch();
 
   const handleClick4 = (event) => {
     setAnchorEl4(event.currentTarget);
@@ -23,6 +28,13 @@ const ProfileDD = () => {
   const handleClose4 = () => {
     setAnchorEl4(null);
   };
+
+  const handleLogOut = ()=>{
+    document.cookie = 'access_key' +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+    dispatch(logout())
+    router.replace('login')
+
+  }
   return (
     <>
       <Button
@@ -64,7 +76,9 @@ const ProfileDD = () => {
                 ml: 1,
               }}
             >
-              Debanjan
+              {`${user && user.userData.user_data?.first_name} ${
+                user && user.userData.user_data?.last_name
+              }`}
             </Typography>
             <FeatherIcon icon="chevron-down" width="20" height="20" />
           </Box>
@@ -106,7 +120,12 @@ const ProfileDD = () => {
           <Divider />
           <Box p={2}>
             <Link to="/">
-              <Button fullWidth variant="contained" color="primary">
+              <Button
+                onClick={handleLogOut}
+                fullWidth
+                variant="contained"
+                color="primary"
+              >
                 Logout
               </Button>
             </Link>

@@ -1,45 +1,32 @@
-const Menuitems = [
-  {
-    title: "Dashbaord",
-    icon: "home",
-    href: "/",
-  },
-  {
-    title: "Teacher",
-    icon: "home",
-    href: "/teacher",
-  },
-  {
-    title: "Students",
-    icon: "home",
-    href: "/student",
-  },
-  // {
-  //   title: "Pending Students",
-  //   icon: "home",
-  //   href: "/student/pendingStudent",
-  // },
+export const useMenu = (data) => {
+  const menuItem = [];
+  if (data?.type == "admin") {
+    menuItem.push({
+      title: "Dashbaord",
+      icon: "home",
+      href: "/",
+    });
+    menuItem.push({
+      title: "Teacher",
+      icon: "home",
+      href: "/teacher",
+    })
+  } else {
+    menuItem.push({
+      title: "Students",
+      icon:'home',
+      href: "/student",
+    });
+    if (data?.is_hod == 1) {
+      menuItem.push({
+        title: "Pending Students",
+        icon:"home",
+        href: "/student/pendingStudent",
+      });
+    }
+  }
 
-  // {
-  //   title: "Buttons",
-  //   icon: "disc",
-  //   href: "/buttons",
-  // },
-  // {
-  //   title: "Forms",
-  //   icon: "layout",
-  //   href: "/forms",
-  // },
-  // {
-  //   title: "Alerts",
-  //   icon: "info",
-  //   href: "/alerts",
-  // },
-  // {
-  //   title: "Tables",
-  //   icon: "grid",
-  //   href: "/table",
-  // },
-];
+  return menuItem;
+};
 
-export default Menuitems;
+
