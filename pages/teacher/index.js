@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useState,useEffect} from 'react';
 import {
   Typography,
   Box,
@@ -11,8 +11,60 @@ import {
   Button,
 } from "@mui/material";
 import BaseCard from "../../src/components/baseCard/BaseCard";
+import { BASE_URL } from "../../commonVariable";
+import Cookies from "js-cookie";
+import axios from "axios";
+function teachers() {
+  const [teacherDatas, setteacherDatas] = useState([]);
+  const [open1, setOpen1] = React.useState(false);
+  const [open2, setOpen2] = React.useState(false);
+  const [teacherId, setteacherId] = useState("");
+  const [allDepertments, setallDepertments] = useState([]);
+  const [allCourses, setallCourses] = useState([]);
+  const [department_id, setdepartment_id] = useState("");
+  const [course_id, setcourse_id] = useState("");
+  const [selectedTeacherData, setselectedTeacherData] = useState([]);
+  useEffect(() => {
+    console.log(Cookies.get("access_key"));
+    const token = JSON.parse(localStorage.getItem("access_key"));
 
-function pendingStudent() {
+    const fetchTeacher = async () => {
+      const res = await axios.post(`${BASE_URL}get_all_teacher`, null, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      console.log(res.data.data.teachers, "teacher");
+      const allTeachers = res.data.data.teachers.map((elm, idx) => {
+        return elm;
+      });
+      // console.log(allTeachers, "allkjdscnkvn");
+      setteacherDatas(allTeachers);
+    };
+
+    const fetchAllDepertment = async () => {
+      const res2 = await axios.post(`${BASE_URL}get_departments`, null, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log(res2.data.data.departments);
+      setallDepertments([...res2.data.data.departments]);
+    };
+
+    const fetchALlCourse = async () => {
+      const res2 = await axios.post(`${BASE_URL}get_courses`, null, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log(res2.data.data.courses);
+      setallCourses([...res2.data.data.courses]);
+    };
+
+    fetchTeacher();
+    fetchAllDepertment();
+    fetchALlCourse();
+  }, []);
   const products = [
     {
       id: "1",
@@ -161,4 +213,4 @@ function pendingStudent() {
   )
 }
 
-export default pendingStudent
+export default teachers
