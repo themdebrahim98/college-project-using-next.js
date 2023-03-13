@@ -1,9 +1,12 @@
 import React from "react";
 import FeatherIcon from "feather-icons-react";
 import Image from "next/image";
-import userimg from "../../../assets/images/users/user2.jpg";
+
+import userimg from "../../../assets/images/users/avatr.png";
+import NextLink from 'next/link';
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../../redux/slices/userSlice";
+
 import {
   Box,
   Menu,
@@ -92,7 +95,7 @@ const ProfileDD = () => {
         onClose={handleClose4}
         sx={{
           "& .MuiMenu-paper": {
-            width: "385px",
+            width: "250px",
           },
         }}
       >
@@ -103,18 +106,18 @@ const ProfileDD = () => {
               aria-label="secondary mailbox folder"
               onClick={handleClose4}
             >
-              <ListItemButton>
+              {/* <ListItemButton>
                 <ListItemText primary="Edit Profile" />
+              </ListItemButton> */}
+              <ListItemButton>
+                <NextLink href="/account"><ListItemText primary="Account" /></NextLink>
               </ListItemButton>
               <ListItemButton>
-                <ListItemText primary="Account" />
+              <NextLink href="/changePassword"><ListItemText primary="Change Password" /></NextLink>
               </ListItemButton>
-              <ListItemButton>
-                <ListItemText primary="Change Password" />
-              </ListItemButton>
-              <ListItemButton>
+              {/* <ListItemButton>
                 <ListItemText primary="My Settings" />
-              </ListItemButton>
+              </ListItemButton> */}
             </List>
           </Box>
           <Divider />
