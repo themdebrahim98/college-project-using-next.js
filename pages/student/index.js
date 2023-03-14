@@ -16,7 +16,7 @@ import Cookies from "js-cookie";
 import axios from "axios";
 import { BASE_URL } from "../../commonVariable";
 
-function pendingStudent() {
+function approvedStudent() {
   const [teacherDatas, setteacherDatas] = useState([]);
   const [open1, setOpen1] = React.useState(false);
   const [open2, setOpen2] = React.useState(false);
@@ -239,4 +239,4 @@ function pendingStudent() {
   );
 }
 
-export default pendingStudent;
+export default approvedStudent;
