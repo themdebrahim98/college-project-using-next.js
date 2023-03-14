@@ -454,7 +454,7 @@ function teachers() {
                 </TableCell>
                 <TableCell>
                   <Typography color="textSecondary" variant="h6">
-                    {teacher.is_hod}
+                    {teacher.is_hod==1?"Yes":"No"}
                   </Typography>
                 </TableCell>
                 <TableCell>
