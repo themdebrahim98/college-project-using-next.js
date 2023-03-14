@@ -10,6 +10,7 @@ import axios from "axios";
 
 function index() {
   const [cookies, setcookie] = useCookies(["access_key"]);
+  const [loading, setLoading] = useState(false);
   const [inputs, setinputs] = useState({
     username: null,
     password: null,
@@ -21,22 +22,8 @@ function index() {
   const handleChange = (e) => {
     setinputs({ ...inputs, [e.target.name]: e.target.value });
   };
-  // const parseJwt = (token) => {
-  //   var base64Url = token.split(".")[1];
-  //   var base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
-  //   var jsonPayload = decodeURIComponent(
-  //     window
-  //       .atob(base64)
-  //       .split("")
-  //       .map(function (c) {
-  //         return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
-  //       })
-  //       .join("")
-  //   );
-
-  //   return JSON.parse(jsonPayload);
-  // };
   const handleSubmit = async (e) => {
+    setLoading(true);
     e.preventDefault();
     console.log(inputs);
     const res = await axios.post("https://test.diptodiagnostic.com/api/login", {
@@ -45,6 +32,7 @@ function index() {
     });
     const data = res.data.data;
     if (data.status.status == 0) {
+      setLoading(false);
       alert(data.status.message);
     } else {
       setcookie("access_key",res.data.data.access_key);
@@ -67,7 +55,7 @@ function index() {
         };
         console.log(userData);
 
-      
+        setLoading(false);
         dispatch(loginUser(userData));
         router.replace('/')
    
@@ -103,8 +91,8 @@ function index() {
               />
             </Stack>
             <Grid item xs={12} sx={{ mt: 4 }} lg={6}>
-              <Button variant="contained" color="primary" onClick={handleSubmit}>
-                Login
+              <Button variant="contained" type="submit" color="primary" onClick={handleSubmit}>
+                {loading?"Loging...":"Login"}
               </Button>
             </Grid>
           </BaseCard>

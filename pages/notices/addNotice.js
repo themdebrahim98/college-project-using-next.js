@@ -23,8 +23,8 @@ function addNotice() {
   }));
   const [editorData, SeteditorData] = useState();
   return (
-    <Grid container p={2}>
-      <Grid xs={12} lg={12} sx={{ mb: 2 }} textAlign="start">
+    <Grid  container p={2}>
+      <Grid item xs={12} lg={12} sx={{ mb: 2 }} textAlign="start">
         <NexLink href="/notices"><Button variant="contained">
           {" "}
           <FeatherIcon icon="arrow-left" width="20" height="20" />
@@ -36,7 +36,7 @@ function addNotice() {
            Create Notice
         </Button>
       </Grid>
-      <Grid xs={12} lg={12}>
+      <Grid item xs={12} lg={12}>
         <Box sx={{ width: "100%" }}>
           <Stack spacing={2}>
             <Item>

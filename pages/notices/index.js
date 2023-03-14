@@ -14,7 +14,10 @@ import { BASE_URL } from "../../commonVariable";
 import NextLink from "next/Link";
 import Cookies from "js-cookie";
 import axios from "axios";
+import { useSelector } from 'react-redux';
 function notices() {
+  const data = useSelector((store)=>store.user);
+  console.log(data.userData.user_data.type);
   const [noticeData, setnoticeData] = useState([]);
   const btnData = (
     <NextLink href="/notices/addNotice">

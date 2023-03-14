@@ -16,12 +16,13 @@ import NexLink from 'next/link';
 import FeatherIcon from "feather-icons-react";
 import Cookies from "js-cookie";
 import axios from "axios";
+import { element } from "prop-types";
 function viewNotice() {
   const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
     ...theme.typography.body2,
     padding: theme.spacing(2),
-    textAlign: "center",
+    // textAlign: "center",
     color: theme.palette.text.secondary,
   }));
   const router = useRouter();
@@ -44,29 +45,34 @@ function viewNotice() {
   
   return (
     <Grid container p={2}>
-      {console.log(noticeData)}
-      <Grid item xs={12} lg={12} sx={{ mb: 2 }} textAlign="start">
+      <Grid item xs={12} lg={6} sx={{ mb: 2 }} textAlign="start">
         <NexLink href="/notices"><Button variant="contained">
           {" "}
           <FeatherIcon icon="arrow-left" width="20" height="20" />
           Back
         </Button></NexLink>
       </Grid>
+      {noticeData!=undefined?noticeData.map((elment, idx) => (
+        <>
+      <Grid item xs={12} lg={6} sx={{ mb: 2 }} textAlign="start">
+        <Typography variant="h3" textAlign="end" color="">
+                  <b>Subject</b>: {elment.title}
+                </Typography>
+        </Grid>
       <Grid item xs={12} lg={12} sx={{ mb: 2 }} textAlign="start">
         <Box sx={{ width: "100%" }}>
           <Stack spacing={2}>
             <Item>
-              <Typography variant="h2" sx={{ mb: 2 }} color="#26c6da">
-                Notice Content {noticeId}
-              </Typography>
               <p
-                id="result"
-                dangerouslySetInnerHTML={{ __html: editorData }}
+                dangerouslySetInnerHTML={{ __html: elment.description }}
               ></p>
             </Item>
           </Stack>
         </Box>
+      
       </Grid>
+      </>
+      )):""}
     </Grid>
   );
 }

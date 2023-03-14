@@ -9,6 +9,7 @@ export default class MyDocument extends Document {
     return (
       <Html lang="en">
         <Head>
+          <link href="https://upload.wikimedia.org/wikipedia/en/thumb/3/37/Maulana_Abul_Kalam_Azad_University_of_Technology_Logo.svg/1200px-Maulana_Abul_Kalam_Azad_University_of_Technology_Logo.svg.png" rel="shortcut icon"/>
           {/* PWA primary color */}
           <meta name="theme-color" content={theme.palette.primary.main} />
           <link
