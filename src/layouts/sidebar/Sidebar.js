@@ -25,7 +25,7 @@ import { useSelector } from "react-redux";
 const Sidebar = ({ isMobileSidebarOpen, onSidebarClose, isSidebarOpen }) => {
   const user = useSelector((state) => state.user);
   const Menuitems = useMenu(user.userData.user_data);
-  console.log(Menuitems,"menu")
+  // console.log(Menuitems,"menu")
   const [open, setOpen] = React.useState(true);
 
   const lgUp = useMediaQuery((theme) => theme.breakpoints.up("lg"));

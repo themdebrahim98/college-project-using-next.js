@@ -770,6 +770,19 @@
     "inherits" "^2.0.1"
     "safe-buffer" "^5.0.1"
 
+"ckeditor4-integrations-common@^1.0.0":
+  "integrity" "sha512-OAoQT/gYrHkg0qgzf6MS/rndYhq3SScLVQ3rtXQeuCE8ju7nFHg3qZ7WGA2XpFxcZzsMP6hhugXqdel5vbcC3g=="
+  "resolved" "https://registry.npmjs.org/ckeditor4-integrations-common/-/ckeditor4-integrations-common-1.0.0.tgz"
+  "version" "1.0.0"
+
+"ckeditor4-react@^4.1.2":
+  "integrity" "sha512-kaKXiJ2KIR8abAWYNy9MXo7iqo2dvMNKGM3wBbqJW69qi2f9EvhpOJSQselvaVmoiXXzJhwrlA8j+2yh9qbNQw=="
+  "resolved" "https://registry.npmjs.org/ckeditor4-react/-/ckeditor4-react-4.1.2.tgz"
+  "version" "4.1.2"
+  dependencies:
+    "ckeditor4-integrations-common" "^1.0.0"
+    "prop-types" "^15.8.1"
+
 "classnames@2.2.6":
   "integrity" "sha512-JR/iSQOSt+LQIWwrwEzJ9uk0xfN3mTVYMwt1Ir5mUcSN6pU+V4zQFFaJsclJbPuAUQH+yfWef6tm7l1quW3C8Q=="
   "resolved" "https://registry.npmjs.org/classnames/-/classnames-2.2.6.tgz"

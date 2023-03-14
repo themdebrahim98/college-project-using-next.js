@@ -8,20 +8,25 @@ export const useMenu = (data) => {
     });
     menuItem.push({
       title: "Teacher",
-      icon: "home",
+      icon: "user",
       href: "/teacher",
     })
   } else {
     menuItem.push({
       title: "Students",
-      icon:'home',
+      icon:'users',
       href: "/student",
     });
     if (data?.is_hod == 1) {
       menuItem.push({
         title: "Pending Students",
-        icon:"home",
+        icon:"clock",
         href: "/student/pendingStudent",
+      });
+      menuItem.push({
+        title: "Notices",
+        icon:"clipboard",
+        href: "/notices",
       });
     }
   }
