@@ -27,9 +27,24 @@ function viewNotice() {
   const router = useRouter();
   const noticeId = router.query.notice_id;
   const [noticeData, setnoticeData] = useState([]);
-  const [editorData, SeteditorData] = useState('<p>Asfjgdskjgfsjd&nbsp;&nbsp;&nbsp;&nbsp; <strong>dfhshdfhsdhfs</strong>&nbsp;&nbsp; `khafshdskkfhsdkh&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; kshdfldshfls</p><p>Dsfhsdhf&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <em>kdfhldhfkdf</em></p><p>dfgfdlkgkfd</p>');
+  const [editorData, SeteditorData] = useState('');
+  useEffect(() => {
+    const token = Cookies.get("access_key")
+    const getNotice = async()=>{
+      const res =  await axios.post(`${BASE_URL}get_notice_by_id`,{notice_id:noticeId},{
+        headers:{Authorization:`Bearer ${token}`}
+      })
+      setnoticeData(res.data.data.notice)
+    
+    }
+    getNotice()
+  
+  
+  }, [noticeId])
+  
   return (
     <Grid container p={2}>
+      {console.log(noticeData)}
       <Grid item xs={12} lg={12} sx={{ mb: 2 }} textAlign="start">
         <NexLink href="/notices"><Button variant="contained">
           {" "}

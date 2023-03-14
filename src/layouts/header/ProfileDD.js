@@ -3,7 +3,7 @@ import FeatherIcon from "feather-icons-react";
 import Image from "next/image";
 
 import userimg from "../../../assets/images/users/avatr.png";
-import NextLink from 'next/link';
+import NextLink from "next/link";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../../redux/slices/userSlice";
 
@@ -32,12 +32,12 @@ const ProfileDD = () => {
     setAnchorEl4(null);
   };
 
-  const handleLogOut = ()=>{
-    document.cookie = 'access_key' +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-    dispatch(logout())
-    router.replace('login')
-
-  }
+  const handleLogOut = () => {
+    document.cookie =
+      "access_key" + "=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;";
+    dispatch(logout());
+    router.replace("login");
+  };
   return (
     <>
       <Button
@@ -79,9 +79,15 @@ const ProfileDD = () => {
                 ml: 1,
               }}
             >
-              {`${user && user.userData.user_data?.first_name} ${
-                user && user.userData.user_data?.last_name
-              }`}
+              {user &&
+              user.userData.user_data?.first_name &&
+              user.userData.user_data?.last_name
+                ? `${user.userData.user_data?.first_name} ${user.userData.user_data?.last_name} `
+                : null}
+
+              {user && user.userData.user_data?.name
+                ? `${user.userData.user_data?.name} `
+                : null}
             </Typography>
             <FeatherIcon icon="chevron-down" width="20" height="20" />
           </Box>
@@ -110,10 +116,14 @@ const ProfileDD = () => {
                 <ListItemText primary="Edit Profile" />
               </ListItemButton> */}
               <ListItemButton>
-                <NextLink href="/account"><ListItemText primary="Account" /></NextLink>
+                <NextLink href="/account">
+                  <ListItemText primary="Account" />
+                </NextLink>
               </ListItemButton>
               <ListItemButton>
-              <NextLink href="/changePassword"><ListItemText primary="Change Password" /></NextLink>
+                <NextLink href="/changePassword">
+                  <ListItemText primary="Change Password" />
+                </NextLink>
               </ListItemButton>
               {/* <ListItemButton>
                 <ListItemText primary="My Settings" />
