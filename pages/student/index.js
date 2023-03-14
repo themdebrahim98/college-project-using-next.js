@@ -1,4 +1,4 @@
-import React, { useEffect,useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Typography,
   Box,
@@ -9,6 +9,8 @@ import {
   TableRow,
   Chip,
   Button,
+  TableContainer,
+  Paper,
 } from "@mui/material";
 import NextLink from "next/link";
 import BaseCard from "../../src/components/baseCard/BaseCard";
@@ -16,227 +18,282 @@ import Cookies from "js-cookie";
 import axios from "axios";
 import { BASE_URL } from "../../commonVariable";
 
-function pendingStudent() {
-  const [teacherDatas, setteacherDatas] = useState([]);
-  const [open1, setOpen1] = React.useState(false);
-  const [open2, setOpen2] = React.useState(false);
-  const [teacherId, setteacherId] = useState("");
-  const [allDepertments, setallDepertments] = useState([]);
-  const [allCourses, setallCourses] = useState([]);
-  const [department_id, setdepartment_id] = useState("");
-  const [course_id, setcourse_id] = useState("");
-  const [selectedTeacherData, setselectedTeacherData] = useState([]);
-  const products = [
-    {
-      id: "1",
-      name: "Sunil Joshi",
-      post: "Web Designer",
-      pname: "Elite Admin",
-      priority: "Low",
-      pbg: "primary.main",
-      budget: "3.9",
-    },
-    {
-      id: "2",
-      name: "Andrew McDownland",
-      post: "Project Manager",
-      pname: "Real Homes WP Theme",
-      priority: "Medium",
-      pbg: "secondary.main",
-      budget: "24.5",
-    },
-    {
-      id: "3",
-      name: "Christopher Jamil",
-      post: "Project Manager",
-      pname: "MedicalPro WP Theme",
-      priority: "High",
-      pbg: "error.main",
-      budget: "12.8",
-    },
-    {
-      id: "4",
-      name: "Nirav Joshi",
-      post: "Frontend Engineer",
-      pname: "Hosting Press HTML",
-      priority: "Critical",
-      pbg: "success.main",
-      budget: "2.4",
-    },
-  ];
+function approvedStudent() {
+  const [allApprovedStudents, setallApprovedStudents] = useState([]);
   useEffect(() => {
-    console.log(Cookies.get("access_key"));
-    const token = JSON.parse(localStorage.getItem("access_key"));
+    const token = Cookies.get("access_key");
 
-    const fetchTeacher = async () => {
-      const res = await axios.post(`${BASE_URL}get_all_teacher`, null, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      console.log(res.data.data.teachers, "teacher");
-      const allTeachers = res.data.data.teachers.map((elm, idx) => {
-        return elm;
-      });
-      // console.log(allTeachers, "allkjdscnkvn");
-      setteacherDatas(allTeachers);
+    const fetchAllApprovedStudents = async () => {
+      try {
+        const res = await axios.post(`${BASE_URL}get_all_students`, null, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        console.log(res.data);
+        setallApprovedStudents(res.data.data.students);
+      } catch (error) {
+        alert(err);
+      }
     };
 
-    const fetchAllDepertment = async () => {
-      const res2 = await axios.post(`${BASE_URL}get_departments`, null, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      console.log(res2.data.data.departments);
-      setallDepertments([...res2.data.data.departments]);
-    };
-
-    const fetchALlCourse = async () => {
-      const res2 = await axios.post(`${BASE_URL}get_courses`, null, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      console.log(res2.data.data.courses);
-      setallCourses([...res2.data.data.courses]);
-    };
-
-    fetchTeacher();
-    fetchAllDepertment();
-    fetchALlCourse();
+    fetchAllApprovedStudents();
   }, []);
-
+  const handlePreview = (student_id)=>{
+    console.log(student_id)
+  }
+  const handleApprove = async (
+    student_id,
+    first_name,
+    last_name,
+    email_address
+  ) => {
+    const token = Cookies.get("access_key");
+    try {
+      const res = await axios.post(
+        `${BASE_URL}approve_student`,
+        {
+          student_id,
+          first_name,
+          last_name,
+          email_address,
+        },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      
+      console.log(res.data)
+    } catch (error) {
+      alert(error);
+    }
+  };
   return (
-    <Box>
-      <BaseCard title="Teacher List" button="true" sx={{ overflow: "scroll" }}>
-        <Table
-          aria-label="simple table"
-          sx={{
-            mt: 3,
-            whiteSpace: "nowrap",
-          }}
-        >
-          <TableHead>
-            <TableRow>
+    <TableContainer
+      component={Paper}
+      style={{ minHeight: '100vh', overflowX: "auto" }}
+    >
+      <Table
+        aria-label="simple table"
+        sx={{
+          mt: 3,
+          whiteSpace: "nowrap",
+        }}
+      >
+        <TableHead>
+          <TableRow>
+            <TableCell>
+              <Typography variant="h6">Id</Typography>
+            </TableCell>
+            <TableCell>
+              <Typography variant="h6">Student Id</Typography>
+            </TableCell>
+            <TableCell>
+              <Typography
+                sx={{ fontSize: "15px", color: "black" }}
+                variant="h6"
+              >
+                First Name
+              </Typography>
+            </TableCell>
+            <TableCell>
+              <Typography
+                sx={{ fontSize: "15px", color: "black" }}
+                variant="h6"
+              >
+                Last_name
+              </Typography>
+            </TableCell>
+            <TableCell>
+              <Typography
+                sx={{ fontSize: "15px", color: "black" }}
+                variant="h6"
+              >
+                DOB
+              </Typography>
+            </TableCell>
+            <TableCell>
+              <Typography
+                sx={{ fontSize: "15px", color: "black" }}
+                variant="h6"
+              >
+                Gender
+              </Typography>
+            </TableCell>
+            <TableCell>
+              <Typography
+                sx={{ fontSize: "15px", color: "black" }}
+                variant="h6"
+              >
+                Email Address
+              </Typography>
+            </TableCell>
+            <TableCell>
+              <Typography
+                sx={{ fontSize: "15px", color: "black" }}
+                variant="h6"
+              >
+                Phone Number
+              </Typography>
+            </TableCell>
+
+            <TableCell>
+              <Typography
+                sx={{ fontSize: "15px", color: "black" }}
+                variant="h6"
+              >
+                Role Number
+              </Typography>
+            </TableCell>
+            <TableCell>
+              <Typography
+                sx={{ fontSize: "15px", color: "black" }}
+                variant="h6"
+              >
+                Course Id
+              </Typography>
+            </TableCell>
+            <TableCell>
+              <Typography
+                sx={{ fontSize: "15px", color: "black" }}
+                variant="h6"
+              >
+                Semester
+              </Typography>
+            </TableCell>
+            <TableCell>
+              <Typography
+                sx={{ fontSize: "15px", color: "black" }}
+                variant="h6"
+              >
+                Year
+              </Typography>
+            </TableCell>
+            <TableCell>
+              <Typography
+                sx={{ fontSize: "15px", color: "black" }}
+                variant="h6"
+              >
+                Status
+              </Typography>
+            </TableCell>
+            <TableCell>
+              <Typography
+                sx={{ fontSize: "15px", color: "black" }}
+                variant="h6"
+              >
+                'Approved(Yes/NO)'
+              </Typography>
+            </TableCell>
+            <TableCell>
+              <Chip color="secondary" label="Make Approved" />
+            </TableCell>
+          </TableRow>
+        </TableHead>{" "}
+        <TableBody>
+          {allApprovedStudents.map((student, idx) => (
+            <TableRow key={idx}>
               <TableCell>
                 <Typography color="textSecondary" variant="h6">
-                  Id
+                  {student.id}
                 </Typography>
               </TableCell>
               <TableCell>
                 <Typography color="textSecondary" variant="h6">
-                  Teacher Id
+                  {student.student_id}
                 </Typography>
               </TableCell>
               <TableCell>
                 <Typography color="textSecondary" variant="h6">
-                  First Name
+                  {student.first_name}
                 </Typography>
               </TableCell>
               <TableCell>
                 <Typography color="textSecondary" variant="h6">
-                  last_name
+                  {student.last_name}
                 </Typography>
               </TableCell>
               <TableCell>
                 <Typography color="textSecondary" variant="h6">
-                  gender
+                  {student.dob}
                 </Typography>
               </TableCell>
               <TableCell>
                 <Typography color="textSecondary" variant="h6">
-                  Email Address
+                  {student.gender}
+                </Typography>
+              </TableCell>
+
+              <TableCell>
+                <Typography color="textSecondary" variant="h6">
+                  {student.email_address}
                 </Typography>
               </TableCell>
               <TableCell>
                 <Typography color="textSecondary" variant="h6">
-                  Phone Number
+                  {student.phone_number}
+                </Typography>
+              </TableCell>
+
+              <TableCell>
+                <Typography color="textSecondary" variant="h6">
+                  {student.roll_number}
                 </Typography>
               </TableCell>
               <TableCell>
                 <Typography color="textSecondary" variant="h6">
-                  {` Hod(yes/no)`}
+                  {student.course_id}
                 </Typography>
               </TableCell>
               <TableCell>
                 <Typography color="textSecondary" variant="h6">
-                  Make Hod
+                  {student.semester}
                 </Typography>
               </TableCell>
               <TableCell>
                 <Typography color="textSecondary" variant="h6">
-                  Preview{" "}
+                  {student.year}
                 </Typography>
+              </TableCell>
+              <TableCell>
+                <Typography color="textSecondary" variant="h6">
+                  {student.status}
+                </Typography>
+              </TableCell>
+              <TableCell>
+                <Typography color="textSecondary" variant="h6">
+                  {student.is_approved}
+                </Typography>
+              </TableCell>
+              <TableCell>
+                <Button
+                  onClick={() => {
+                    handleApprove(
+                      student.student_id,
+                      student.first_name,
+                      student.last_name,
+                      student.email_address
+                    );
+                  }}
+                  sx={{ bgcolor: "orange" }}
+                  variant="contained"
+                >
+                  Make Approved
+                </Button>
+              </TableCell>
+              <TableCell>
+                <Button
+                  onClick={() => {
+                    handlePreview(student.student_id);
+                  }}
+                  sx={{ bgcolor: "purple" }}
+                  variant="contained"
+                >
+                  Preview
+                </Button>
               </TableCell>
             </TableRow>
-          </TableHead>
-          <TableBody>
-            {products.map((product) => (
-              <TableRow key={product.name}>
-                <TableCell>
-                  <Typography
-                    sx={{
-                      fontSize: "15px",
-                      fontWeight: "500",
-                    }}
-                  >
-                    {1}
-                  </Typography>
-                </TableCell>
-                <TableCell>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Box>
-                      <Typography
-                        variant="h6"
-                        sx={{
-                          fontWeight: "600",
-                        }}
-                      >
-                        {1111}
-                      </Typography>
-                      <Typography
-                        color="textSecondary"
-                        sx={{
-                          fontSize: "13px",
-                        }}
-                      >
-                        {product.post}
-                      </Typography>
-                    </Box>
-                  </Box>
-                </TableCell>
-                <TableCell>
-                  <Typography color="textSecondary" variant="h6">
-                    {product.pname}
-                  </Typography>
-                </TableCell>
-                <TableCell>
-                  <Chip
-                    sx={{
-                      pl: "4px",
-                      pr: "4px",
-                      backgroundColor: product.pbg,
-                      color: "#fff",
-                    }}
-                    size="small"
-                    label={product.priority}
-                  ></Chip>
-                </TableCell>
-                <TableCell align="right">
-                  <Typography variant="h6">${product.budget}k</Typography>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </BaseCard>
-    </Box>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
   );
 }
 
-export default pendingStudent;
+export default approvedStudent;

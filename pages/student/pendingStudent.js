@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from "react";
 import {
   Typography,
   Box,
@@ -9,54 +9,74 @@ import {
   TableRow,
   Chip,
   Button,
+  TableContainer,
+  Paper,
 } from "@mui/material";
+import NextLink from "next/link";
 import BaseCard from "../../src/components/baseCard/BaseCard";
+import Cookies from "js-cookie";
+import axios from "axios";
+import { BASE_URL } from "../../commonVariable";
 
 function pendingStudent() {
-  const products = [
-    {
-      id: "1",
-      name: "Sunil Joshi",
-      post: "Web Designer",
-      pname: "Elite Admin",
-      priority: "Low",
-      pbg: "primary.main",
-      budget: "3.9",
-    },
-    {
-      id: "2",
-      name: "Andrew McDownland",
-      post: "Project Manager",
-      pname: "Real Homes WP Theme",
-      priority: "Medium",
-      pbg: "secondary.main",
-      budget: "24.5",
-    },
-    {
-      id: "3",
-      name: "Christopher Jamil",
-      post: "Project Manager",
-      pname: "MedicalPro WP Theme",
-      priority: "High",
-      pbg: "error.main",
-      budget: "12.8",
-    },
-    {
-      id: "4",
-      name: "Nirav Joshi",
-      post: "Frontend Engineer",
-      pname: "Hosting Press HTML",
-      priority: "Critical",
-      pbg: "success.main",
-      budget: "2.4",
-    },
-  ];
-  
-  // const btnData=(
-  //   <Button variant="contained" sx={{ml:'auto'}}>Add Teacher</Button>
-  // );
+
+  const [allPendingStudents, setallPendingStudents] = useState([]);
+
+  const handleApprove = async (
+    student_id,
+    first_name,
+    last_name,
+    email_address
+  ) => {
+    const token = Cookies.get("access_key");
+    try {
+      const res = await axios.post(
+        `${BASE_URL}approve_student`,
+        {
+          student_id,
+          first_name,
+          last_name,
+          email_address,
+        },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      const filterPendingStudent = allPendingStudents.filter((elm)=>{
+        return elm.student_id != student_id
+      })
+      setallPendingStudents(filterPendingStudent)
+      console.log(res.data)
+      alert("approved succcessfully")
+    } catch (error) {
+      alert(error);
+    }
+  };
+
+  useEffect(() => {
+    const token = Cookies.get("access_key");
+
+    const fetchallPendingStudents = async () => {
+      try {
+        const res = await axios.post(`${BASE_URL}get_nonapproved_students`, null, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        console.log(res.data);
+        setallPendingStudents(res.data.data.nonapprovedstudents);
+      } catch (error) {
+        alert(error);
+      }
+    };
+
+    fetchallPendingStudents();
+  }, []);
+  const handlePreview = (student_id)=>{
+    console.log(student_id)
+  }
+
   return (
-    <BaseCard title="Pending student list">
+    <TableContainer
+      component={Paper}
+      style={{ minHeight: '100vh', overflowX: "auto" }}
+    >
       <Table
         aria-label="simple table"
         sx={{
@@ -67,98 +87,221 @@ function pendingStudent() {
         <TableHead>
           <TableRow>
             <TableCell>
-              <Typography color="textSecondary" variant="h6">
-                Id
+              <Typography variant="h6">Id</Typography>
+            </TableCell>
+            <TableCell>
+              <Typography variant="h6">Student Id</Typography>
+            </TableCell>
+            <TableCell>
+              <Typography
+                sx={{ fontSize: "15px", color: "black" }}
+                variant="h6"
+              >
+                First Name
               </Typography>
             </TableCell>
             <TableCell>
-              <Typography color="textSecondary" variant="h6">
-                Assigned
+              <Typography
+                sx={{ fontSize: "15px", color: "black" }}
+                variant="h6"
+              >
+                Last_name
               </Typography>
             </TableCell>
             <TableCell>
-              <Typography color="textSecondary" variant="h6">
-                Name
+              <Typography
+                sx={{ fontSize: "15px", color: "black" }}
+                variant="h6"
+              >
+                DOB
               </Typography>
             </TableCell>
             <TableCell>
-              <Typography color="textSecondary" variant="h6">
-                Priority
+              <Typography
+                sx={{ fontSize: "15px", color: "black" }}
+                variant="h6"
+              >
+                Gender
               </Typography>
             </TableCell>
-            <TableCell align="right">
-              <Typography color="textSecondary" variant="h6">
-                Budget
+            <TableCell>
+              <Typography
+                sx={{ fontSize: "15px", color: "black" }}
+                variant="h6"
+              >
+                Email Address
               </Typography>
+            </TableCell>
+            <TableCell>
+              <Typography
+                sx={{ fontSize: "15px", color: "black" }}
+                variant="h6"
+              >
+                Phone Number
+              </Typography>
+            </TableCell>
+
+            <TableCell>
+              <Typography
+                sx={{ fontSize: "15px", color: "black" }}
+                variant="h6"
+              >
+                Role Number
+              </Typography>
+            </TableCell>
+            <TableCell>
+              <Typography
+                sx={{ fontSize: "15px", color: "black" }}
+                variant="h6"
+              >
+                Course Id
+              </Typography>
+            </TableCell>
+            <TableCell>
+              <Typography
+                sx={{ fontSize: "15px", color: "black" }}
+                variant="h6"
+              >
+                Semester
+              </Typography>
+            </TableCell>
+            <TableCell>
+              <Typography
+                sx={{ fontSize: "15px", color: "black" }}
+                variant="h6"
+              >
+                Year
+              </Typography>
+            </TableCell>
+            <TableCell>
+              <Typography
+                sx={{ fontSize: "15px", color: "black" }}
+                variant="h6"
+              >
+                Status
+              </Typography>
+            </TableCell>
+            <TableCell>
+              <Typography
+                sx={{ fontSize: "15px", color: "black" }}
+                variant="h6"
+              >
+                'Approved(Yes/NO)'
+              </Typography>
+            </TableCell>
+            <TableCell>
+              <Chip color="secondary" label="Make Approved" />
             </TableCell>
           </TableRow>
-        </TableHead>
+        </TableHead>{" "}
         <TableBody>
-          {products.map((product) => (
-            <TableRow key={product.name}>
+          {allPendingStudents.map((student, idx) => (
+            <TableRow key={idx}>
               <TableCell>
-                <Typography
-                  sx={{
-                    fontSize: "15px",
-                    fontWeight: "500",
-                  }}
-                >
-                  {product.id}
+                <Typography color="textSecondary" variant="h6">
+                  {student.id}
                 </Typography>
-              </TableCell>
-              <TableCell>
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                  }}
-                >
-                  <Box>
-                    <Typography
-                      variant="h6"
-                      sx={{
-                        fontWeight: "600",
-                      }}
-                    >
-                      {product.name}
-                    </Typography>
-                    <Typography
-                      color="textSecondary"
-                      sx={{
-                        fontSize: "13px",
-                      }}
-                    >
-                      {product.post}
-                    </Typography>
-                  </Box>
-                </Box>
               </TableCell>
               <TableCell>
                 <Typography color="textSecondary" variant="h6">
-                  {product.pname}
+                  {student.student_id}
                 </Typography>
               </TableCell>
               <TableCell>
-                <Chip
-                  sx={{
-                    pl: "4px",
-                    pr: "4px",
-                    backgroundColor: product.pbg,
-                    color: "#fff",
-                  }}
-                  size="small"
-                  label={product.priority}
-                ></Chip>
+                <Typography color="textSecondary" variant="h6">
+                  {student.first_name}
+                </Typography>
               </TableCell>
-              <TableCell align="right">
-                <Typography variant="h6">${product.budget}k</Typography>
+              <TableCell>
+                <Typography color="textSecondary" variant="h6">
+                  {student.last_name}
+                </Typography>
+              </TableCell>
+              <TableCell>
+                <Typography color="textSecondary" variant="h6">
+                  {student.dob}
+                </Typography>
+              </TableCell>
+              <TableCell>
+                <Typography color="textSecondary" variant="h6">
+                  {student.gender}
+                </Typography>
+              </TableCell>
+
+              <TableCell>
+                <Typography color="textSecondary" variant="h6">
+                  {student.email_address}
+                </Typography>
+              </TableCell>
+              <TableCell>
+                <Typography color="textSecondary" variant="h6">
+                  {student.phone_number}
+                </Typography>
+              </TableCell>
+
+              <TableCell>
+                <Typography color="textSecondary" variant="h6">
+                  {student.roll_number}
+                </Typography>
+              </TableCell>
+              <TableCell>
+                <Typography color="textSecondary" variant="h6">
+                  {student.course_id}
+                </Typography>
+              </TableCell>
+              <TableCell>
+                <Typography color="textSecondary" variant="h6">
+                  {student.semester}
+                </Typography>
+              </TableCell>
+              <TableCell>
+                <Typography color="textSecondary" variant="h6">
+                  {student.year}
+                </Typography>
+              </TableCell>
+              <TableCell>
+                <Typography color="textSecondary" variant="h6">
+                  {student.status}
+                </Typography>
+              </TableCell>
+              <TableCell>
+                <Typography color="textSecondary" variant="h6">
+                  {student.is_approved!=0?"Yes":"No"}
+                </Typography>
+              </TableCell>
+              <TableCell>
+                <Button
+                  onClick={() => {
+                    handleApprove(
+                      student.student_id,
+                      student.first_name,
+                      student.last_name,
+                      student.email_address
+                    );
+                  }}
+                  sx={{ bgcolor: "orange" }}
+                  variant="contained"
+                >
+                  Make Approved
+                </Button>
+              </TableCell>
+              <TableCell>
+                <Button
+                  onClick={() => {
+                    handlePreview(student.student_id);
+                  }}
+                  sx={{ bgcolor: "purple" }}
+                  variant="contained"
+                >
+                  Preview
+                </Button>
               </TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
-    </BaseCard>
-  )
+    </TableContainer>
+  );
 }
 
-export default pendingStudent
+export default pendingStudent;
