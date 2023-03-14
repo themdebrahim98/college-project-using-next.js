@@ -15,8 +15,13 @@ import {
   Button,
   Drawer,
   Stack,
-  Paper 
+  Paper,
+  TableContainer,
+  FormControl,
+  Select,
+  MenuItem,
 } from "@mui/material";
+
 import BaseCard from "../../src/components/baseCard/BaseCard";
 import { BASE_URL } from "../../commonVariable";
 import Cookies from "js-cookie";
@@ -51,7 +56,7 @@ function teachers() {
     email_address: null,
     is_hod: null,
   });
-  
+
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -72,7 +77,6 @@ function teachers() {
   const handleModal1Close1 = () => setOpen1(false);
   const handleModal1Close2 = () => setOpen2(false);
 
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setinputs((prev) => ({
@@ -86,10 +90,10 @@ function teachers() {
     console.log(teacherData);
     setselectedTeacherData([teacherData]);
   };
-  
+
   const handleModal1 = (teacher_id) => {
     setOpen1(true);
-    setteacherId(allTeachers);
+    setteacherId(teacher_id);
   };
 
   useEffect(() => {
@@ -132,8 +136,21 @@ function teachers() {
     fetchTeacher();
     fetchAllDepertment();
     fetchALlCourse();
-  }, []);
+  }, [open1]);
 
+  const updateHod = async () => {
+    const token = Cookies.get("access_key");
+    const res = await axios.post(
+      "https://test.diptodiagnostic.com/api/update_department_hod",
+      { teacher_id: teacherId, department_id, course_id },
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+    alert("changed successfully.");
+    setOpen1(false);
+    console.log(res.data);
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
     const token = Cookies.get("access_key");
@@ -154,6 +171,82 @@ function teachers() {
   );
   return (
     <>
+      {/* make teacher as a hod modal */}
+      <Modal
+        open={open1}
+        onClose={handleModal1Close1}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style} gap={5} display="flex" flexDirection="column">
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            Make Teacher as a HOD
+          </Typography>
+
+          <Box
+            sx={{ minWidth: 120 }}
+            display="flex"
+            flexDirection="column"
+            gap={5}
+          >
+            <TextField
+              value={teacherId}
+              id="outlined-basic"
+              variant="outlined"
+              label="teacher Id"
+              disabled
+            />
+            <FormControl fullWidth>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={course_id}
+                onChange={(e) => {
+                  setcourse_id(e.target.value);
+                }}
+              >
+                {allCourses.length > 0 &&
+                  allCourses.map((elm, idx) => {
+                    return (
+                      <MenuItem key={idx} value={elm.id}>
+                        {elm.name}
+                      </MenuItem>
+                    );
+                  })}
+              </Select>
+
+              <Select
+                sx={{ marginTop: "25px" }}
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={department_id}
+                label="Depertment"
+                onChange={(e) => {
+                  setdepartment_id(e.target.value);
+                }}
+              >
+                {allDepertments.length > 0 &&
+                  allDepertments.map((elm, idx) => {
+                    return (
+                      <MenuItem key={idx} value={elm.id}>
+                        {elm.name}
+                      </MenuItem>
+                    );
+                  })}
+              </Select>
+              <Button
+                onClick={updateHod}
+                type="submit"
+                variant="contained"
+                sx={{ marginTop: "25px" }}
+              >
+                Submit
+              </Button>
+            </FormControl>
+          </Box>
+        </Box>
+      </Modal>
+      {/* teacher add modal */}
       <Modal
         open={open}
         onClose={handleClose}
@@ -321,6 +414,8 @@ function teachers() {
           </Box>
         </Box>
       </Modal>
+
+      {/* teacher table */}
       <BaseCard
         title="Teacher List"
         button="true"
@@ -458,7 +553,13 @@ function teachers() {
                   </Typography>
                 </TableCell>
                 <TableCell>
-                  <Button color="secondary" variant="contained">
+                  <Button
+                    onClick={() => {
+                      handleModal1(teacher.teacher_id);
+                    }}
+                    color="secondary"
+                    variant="contained"
+                  >
                     Make Hod
                   </Button>
                 </TableCell>
@@ -478,13 +579,14 @@ function teachers() {
           </TableBody>
         </Table>
       </BaseCard>
+
+      {/* pannel for teacher preview */}
       <Box>
         {/* <Button variant="contained"> close</Button> */}
         <Drawer
-        
-        PaperProps={{
-          sx: { width: "40%",padding:'15px' },
-        }}
+          PaperProps={{
+            sx: { width: "40%", padding: "15px" },
+          }}
           anchor="right"
           open={open2}
           onClose={closePannel}
@@ -493,7 +595,7 @@ function teachers() {
           <Button
             onClick={closePannel}
             variant="contained"
-            sx={{ mt: 2,mb: 2,width:"10px" }}
+            sx={{ mt: 2, mb: 2, width: "10px" }}
           >
             Back
           </Button>
