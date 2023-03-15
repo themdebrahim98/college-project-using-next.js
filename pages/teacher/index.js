@@ -416,12 +416,11 @@ function teachers() {
       </Modal>
 
       {/* teacher table */}
-      <BaseCard
-        title="Teacher List"
-        button="true"
-        buttonData={btnData}
-        sx={{ overFlow: "scroll" }}
-      >
+      <TableContainer
+      component={Paper}
+      style={{ minHeight: '100vh', overflowX: "auto" }}
+    >
+      
         <Table
           aria-label="simple table"
           sx={{
@@ -578,7 +577,7 @@ function teachers() {
             ))}
           </TableBody>
         </Table>
-      </BaseCard>
+        </TableContainer>
 
       {/* pannel for teacher preview */}
       <Box>

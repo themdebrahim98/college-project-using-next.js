@@ -11,7 +11,9 @@ import {
   Button,
   TableContainer,
   Paper,
+  Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions
 } from "@mui/material";
+
 import NextLink from "next/link";
 import BaseCard from "../../src/components/baseCard/BaseCard";
 import Cookies from "js-cookie";
@@ -21,6 +23,7 @@ import { BASE_URL } from "../../commonVariable";
 function pendingStudent() {
 
   const [allPendingStudents, setallPendingStudents] = useState([]);
+  const [open, setopen] = useState(false)
 
   const handleApprove = async (
     student_id,
@@ -72,11 +75,33 @@ function pendingStudent() {
     console.log(student_id)
   }
 
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleConfirm = () => {
+    // Handle the confirmation here
+    console.log("Confirmed!");
+    setOpen(false);
+  };
+
   return (
     <TableContainer
       component={Paper}
       style={{ minHeight: '100vh', overflowX: "auto" }}
     >
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>Confirmation</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Are you sure you want to perform this action?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Cancel</Button>
+          <Button onClick={handleConfirm} autoFocus>Confirm</Button>
+        </DialogActions>
+      </Dialog>
       <Table
         aria-label="simple table"
         sx={{
@@ -271,31 +296,22 @@ function pendingStudent() {
               </TableCell>
               <TableCell>
                 <Button
-                  onClick={() => {
-                    handleApprove(
-                      student.student_id,
-                      student.first_name,
-                      student.last_name,
-                      student.email_address
-                    );
-                  }}
-                  sx={{ bgcolor: "orange" }}
+                onClick={()=>setopen(true)}
+                  // onClick={() => {
+                  //   handleApprove(
+                  //     student.student_id,
+                  //     student.first_name,
+                  //     student.last_name,
+                  //     student.email_address
+                  //   );
+                  // }}
+                  sx={student.is_approved ? {bgcolor:'green'} : {bgcolor:'crimson'}}
                   variant="contained"
                 >
                   Make Approved
                 </Button>
               </TableCell>
-              <TableCell>
-                <Button
-                  onClick={() => {
-                    handlePreview(student.student_id);
-                  }}
-                  sx={{ bgcolor: "purple" }}
-                  variant="contained"
-                >
-                  Preview
-                </Button>
-              </TableCell>
+             
             </TableRow>
           ))}
         </TableBody>

@@ -15,6 +15,9 @@ import NextLink from "next/Link";
 import Cookies from "js-cookie";
 import axios from "axios";
 import { useSelector } from 'react-redux';
+
+
+
 function notices() {
   const data = useSelector((store)=>store.user);
   console.log(data.userData.user_data.type);

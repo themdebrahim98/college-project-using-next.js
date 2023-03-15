@@ -18,7 +18,7 @@ import Cookies from "js-cookie";
 import axios from "axios";
 import { BASE_URL } from "../../commonVariable";
 
-function approvedStudent() {
+function pendingStudent() {
   const [allApprovedStudents, setallApprovedStudents] = useState([]);
   useEffect(() => {
     const token = Cookies.get("access_key");
@@ -37,9 +37,9 @@ function approvedStudent() {
 
     fetchAllApprovedStudents();
   }, []);
-  const handlePreview = (student_id)=>{
-    console.log(student_id)
-  }
+  const handlePreview = (student_id) => {
+    console.log(student_id);
+  };
   const handleApprove = async (
     student_id,
     first_name,
@@ -58,8 +58,8 @@ function approvedStudent() {
         },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      
-      console.log(res.data)
+
+      console.log(res.data);
     } catch (error) {
       alert(error);
     }
@@ -67,7 +67,7 @@ function approvedStudent() {
   return (
     <TableContainer
       component={Paper}
-      style={{ minHeight: '100vh', overflowX: "auto" }}
+      style={{ minHeight: "100vh", overflowX: "auto" }}
     >
       <Table
         aria-label="simple table"
@@ -165,25 +165,6 @@ function approvedStudent() {
                 Year
               </Typography>
             </TableCell>
-            <TableCell>
-              <Typography
-                sx={{ fontSize: "15px", color: "black" }}
-                variant="h6"
-              >
-                Status
-              </Typography>
-            </TableCell>
-            <TableCell>
-              <Typography
-                sx={{ fontSize: "15px", color: "black" }}
-                variant="h6"
-              >
-                'Approved(Yes/NO)'
-              </Typography>
-            </TableCell>
-            <TableCell>
-              <Chip color="secondary" label="Make Approved" />
-            </TableCell>
           </TableRow>
         </TableHead>{" "}
         <TableBody>
@@ -251,43 +232,6 @@ function approvedStudent() {
                   {student.year}
                 </Typography>
               </TableCell>
-              <TableCell>
-                <Typography color="textSecondary" variant="h6">
-                  {student.status}
-                </Typography>
-              </TableCell>
-              <TableCell>
-                <Typography color="textSecondary" variant="h6">
-                  {student.is_approved}
-                </Typography>
-              </TableCell>
-              <TableCell>
-                <Button
-                  onClick={() => {
-                    handleApprove(
-                      student.student_id,
-                      student.first_name,
-                      student.last_name,
-                      student.email_address
-                    );
-                  }}
-                  sx={{ bgcolor: "orange" }}
-                  variant="contained"
-                >
-                  Make Approved
-                </Button>
-              </TableCell>
-              <TableCell>
-                <Button
-                  onClick={() => {
-                    handlePreview(student.student_id);
-                  }}
-                  sx={{ bgcolor: "purple" }}
-                  variant="contained"
-                >
-                  Preview
-                </Button>
-              </TableCell>
             </TableRow>
           ))}
         </TableBody>
@@ -296,4 +240,4 @@ function approvedStudent() {
   );
 }
 
-export default approvedStudent;
+export default pendingStudent;

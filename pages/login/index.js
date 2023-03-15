@@ -53,7 +53,7 @@ function index() {
         const userData = {
           user_data: { ...res2.data.data.user_data, type: res2.data.data.type },
         };
-        console.log(userData);
+        console.log(userData,"user");
 
         setLoading(false);
         dispatch(loginUser(userData));
