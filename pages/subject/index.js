@@ -18,14 +18,13 @@ import { useSelector } from 'react-redux';
 
 
 
-function notices() {
+function subjectIndex() {
   const data = useSelector((store)=>store.user);
-  // console.log(data.userData.user_data.is_hod);
   const [noticeData, setnoticeData] = useState([]);
   const btnData = (
-    <NextLink href="/notices/addNotice">
+    <NextLink href="/subject/addSubject">
       <Button variant="contained" sx={{ ml: "auto" }}>
-        Add Notice
+        Add Subject
       </Button>
     </NextLink>
   );
@@ -41,40 +40,15 @@ function notices() {
       const allNotices = res.data.data.notices.map((elm, idx) => {
         return elm;
       });
-      // console.log(allTeachers, "allkjdscnkvn");
       setnoticeData(allNotices);
     };
     fetchNotice();
   },[]);
-  // console.log(Cookies.get("access_key"));
- 
-  // const products = [
-  //   {
-  //     id: "1",
-  //     title: "Sunil Joshi",
-  //     views: "Web Designer",
-  //   },
-  //   {
-  //     id: "2",
-  //     title: "Sunil Joshi",
-  //     views: "Web Designer",
-  //   },
-  //   {
-  //     id: "3",
-  //     title: "Sunil Joshi",
-  //     views: "Web Designer",
-  //   },
-  //   {
-  //     id: "4",
-  //     title: "Sunil Joshi",
-  //     views: "Web Designer",
-  //   },
-  // ];
   return (
     <BaseCard
-      title="Notice List"
+      title="Subject List"
       
-      button={data.userData.user_data.type=='teacher' && data.userData.user_data.is_hod == 1?"true":"false"}
+      button={data.userData.user_data.type=='admin'?"true":"false"}
       buttonData={btnData}
       sx={{ overFlow: "scroll" }}
     >
@@ -178,4 +152,4 @@ function notices() {
   );
 }
 
-export default notices;
+export default subjectIndex;

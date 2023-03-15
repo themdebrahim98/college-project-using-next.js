@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import Timeline from "@mui/lab/Timeline";
 import TimelineItem from "@mui/lab/TimelineItem";
 import TimelineSeparator from "@mui/lab/TimelineSeparator";
@@ -8,49 +8,49 @@ import TimelineOppositeContent from "@mui/lab/TimelineOppositeContent";
 import TimelineDot from "@mui/lab/TimelineDot";
 import BaseCard from "./baseCard/BaseCard";
 import {
-    Typography,
-    Box,
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableRow,
-    Chip,
-    Button,
-  } from "@mui/material";
-  import NextLink from "next/link";
+  Typography,
+  Box,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  Chip,
+  Button,
+} from "@mui/material";
+import NextLink from "next/link";
+import { BASE_URL } from "../../commonVariable";
+import Cookies from "js-cookie";
+import axios from "axios";
+import { useSelector } from "react-redux";
+import { useRouter } from "next/dist/client/router";
 
 function Notices() {
-    const activities = [
-        {
-          time: "09.50",
-          color: "success.main",
-          text: "Meeting with John",
-        },
-        {
-          time: "09.46",
-          color: "secondary.main",
-          text: "Payment received from John Doe of $385.90",
-        },
-        {
-          time: "09.47",
-          color: "primary.main",
-          text: "Project Meeting",
-        },
-        {
-          time: "09.48",
-          color: "warning.main",
-          text: "New Sale recorded #ML-3467",
-        },
-        {
-          time: "09.49",
-          color: "error.main",
-          text: "Payment was made of $64.95 to Michael Anderson",
-        },
-      ];
-      const btnData=(
-        <NextLink href="/notices"><Button variant="contained" sx={{ml:'auto'}}>View all</Button></NextLink>
-      );
+
+  const [noticeData, setnoticeData] = useState([]);
+  useEffect(() => {
+    const token = Cookies.get("access_key");
+
+    const fetchNotice = async () => {
+      const res = await axios.post(`${BASE_URL}get_all_notice`, null, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      console.log(res.data.data.notices);
+      const allNotices = res.data.data.notices.map((elm, idx) => {
+        return elm;
+      });
+      setnoticeData(allNotices);
+    };
+    fetchNotice();
+  }, []);
+  const btnData = (
+    <NextLink href="/notices">
+      <Button variant="contained" sx={{ ml: "auto" }}>
+        View all
+      </Button>
+    </NextLink>
+  );
   return (
     <BaseCard title="Recent Notices" button="true" buttonData={btnData}>
       <Timeline
@@ -58,33 +58,33 @@ function Notices() {
           p: 0,
         }}
       >
-        {activities.map((activity) => (
-          <TimelineItem key={activity.time}>
+        {noticeData.slice(0, 5).map((activity) => (
+          <TimelineItem key={activity.id}>
             <TimelineOppositeContent
               sx={{
-                fontSize: "12px",
-                fontWeight: "700",
-                flex: "0",
+                fontSize: "14px",
+                fontWeight: "400",
+                flex: "none",
+                width:"180px"
               }}
             >
-              {activity.time}
+              {new Date(activity.created_at).toLocaleString()}
             </TimelineOppositeContent>
             <TimelineSeparator>
               <TimelineDot
                 variant="outlined"
-                sx={{
-                  borderColor: activity.color,
-                }}
+                // sx={{
+                //   borderColor: activity.title,
+                // }}
               />
               <TimelineConnector />
             </TimelineSeparator>
             <TimelineContent
-              color="text.secondary"
               sx={{
                 fontSize: "14px",
               }}
             >
-              <NextLink href="/notices">{activity.text}</NextLink>
+              <NextLink href={"/notices/"+activity.id}><a style={{ textDecoration: 'none' }}>{activity.title}</a></NextLink>
             </TimelineContent>
           </TimelineItem>
         ))}
