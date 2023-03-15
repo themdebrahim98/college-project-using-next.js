@@ -10,7 +10,12 @@ export const useMenu = (data) => {
       title: "Teacher",
       icon: "user",
       href: "/teacher",
-    })
+    });
+    menuItem.push({
+      title: "Subjects",
+      icon:"clipboard",
+      href: "/subject",
+    });
   } else {
     menuItem.push({
       title: "Students",
