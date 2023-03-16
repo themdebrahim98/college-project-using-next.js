@@ -33,6 +33,11 @@ export const useMenu = (data) => {
         icon:"clipboard",
         href: "/notices",
       });
+      menuItem.push({
+        title: "Subjects",
+        icon:"clipboard",
+        href: "teacher/subject",
+      });
     }
   }
 

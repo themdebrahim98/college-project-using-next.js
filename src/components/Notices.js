@@ -17,6 +17,7 @@ import {
   TableRow,
   Chip,
   Button,
+  Divider,
 } from "@mui/material";
 import NextLink from "next/link";
 import { BASE_URL } from "../../commonVariable";
@@ -26,7 +27,6 @@ import { useSelector } from "react-redux";
 import { useRouter } from "next/dist/client/router";
 
 function Notices() {
-
   const [noticeData, setnoticeData] = useState([]);
   useEffect(() => {
     const token = Cookies.get("access_key");
@@ -45,12 +45,23 @@ function Notices() {
     fetchNotice();
   }, []);
   const btnData = (
-    <NextLink href="/notices">
-      <Button variant="contained" sx={{ ml: "auto" }}>
-        View all
-      </Button>
-    </NextLink>
+    <>
+      <NextLink href="/notices">
+        <Button variant="contained" sx={{ ml: "auto" }}>
+          View all
+        </Button>
+      </NextLink>
+      <Divider/>
+      {/* <NextLink href="https://course.ccs.neu.edu/cs5100f11/resources/jakkula.pdf">
+        <a target="_blank">
+          <Button variant="contained" sx={{ ml: "auto" }}>
+            download
+          </Button>
+        </a>
+      </NextLink> */}
+    </>
   );
+
   return (
     <BaseCard title="Recent Notices" button="true" buttonData={btnData}>
       <Timeline
@@ -65,7 +76,7 @@ function Notices() {
                 fontSize: "14px",
                 fontWeight: "400",
                 flex: "none",
-                width:"180px"
+                width: "180px",
               }}
             >
               {new Date(activity.created_at).toLocaleString()}
@@ -84,7 +95,9 @@ function Notices() {
                 fontSize: "14px",
               }}
             >
-              <NextLink href={"/notices/"+activity.id}><a style={{ textDecoration: 'none' }}>{activity.title}</a></NextLink>
+              <NextLink href={"/notices/" + activity.id}>
+                <a style={{ textDecoration: "none" }}>{activity.title}</a>
+              </NextLink>
             </TimelineContent>
           </TimelineItem>
         ))}

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { BASE_URL } from "../../commonVariable";
 import {
   Box,
   TextField,
@@ -8,20 +9,17 @@ import {
   Button,
   Select,
   MenuItem,
-  Stack
 } from "@mui/material";
 import { Container } from "@mui/system";
-// import { useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
-import { commonConstants } from "../../src/constant/common.constant";
-import { styled } from '@mui/material/styles';
-import Paper from '@mui/material/Paper';
+// import { commonConstants } from "../../constant/common.constant";
 import axios from "axios";
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
-const BASE_URL = commonConstants.BaseUrl;
+
 
 const StudentRegister = () => {
   const [isVerifyEmail, setisVerifyEmail] = useState(false);
@@ -41,7 +39,8 @@ const StudentRegister = () => {
     department_id: "",
     semester: "",
     year: "",
-    registration_number: "",
+    roll_number:""
+
   });
 
   const [OtpInput, setOtpInput] = useState("");
@@ -59,7 +58,7 @@ const StudentRegister = () => {
   const getOtpInput = (e) => {
     setOtpInput(e.target.value);
   };
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const getInput = (e) => {
     setStudentDetails((prevState) => {
       return {
@@ -96,29 +95,33 @@ const StudentRegister = () => {
     } else if (!studentDetails.year) {
       setOpenAlert(true);
       setAlertMsg("please select year");
-    } else if (!studentDetails.registration_number) {
+    } else if (!studentDetails.roll_number) {
+      setOpenAlert(true);
+      setAlertMsg("please enter roll number");
+    } else if (!studentDetails.student_id) {
       setOpenAlert(true);
       setAlertMsg("please enter registration number");
-    } else {
+    } 
+    else {
       setLoading(true);
-      // dispatch(
-      //   registerStudent(studentDetails, (data) => {
-      //     setLoading(false);
-      //     if (
-      //       data != "error" &&
-      //       data?.status == 200 &&
-      //       data?.data?.status === 1
-      //     ) {
-      //       setAlertVisible("block");
-      //       setAlertMsg(
-      //         "You have successfully submited your details..! Please wait for admin approval"
-      //       );
-      //     } else {
-      //       setOpenAlert(true);
-      //       setAlertMsg(data?.data?.message);
-      //     }
-      //   })
-      // );
+      dispatch(
+        registerStudent(studentDetails, (data) => {
+          setLoading(false);
+          if (
+            data != "error" &&
+            data?.status == 200 &&
+            data?.data?.status === 1
+          ) {
+            setAlertVisible("block");
+            setAlertMsg(
+              "You have successfully submited your details..! Please wait for admin approval"
+            );
+          } else {
+            setOpenAlert(true);
+            setAlertMsg(data?.data?.message);
+          }
+        })
+      );
     }
   };
 
@@ -203,13 +206,6 @@ const StudentRegister = () => {
     fetchAllDepertment();
     fetchALlCourse();
   }, []);
-  const Stack = styled(Paper)(({ theme }) => ({
-    backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-    ...theme.typography.body2,
-    padding: theme.spacing(2),
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
-  }));
   return (
     <>
       <Container sx={{ mt: 2 }}>
@@ -236,7 +232,6 @@ const StudentRegister = () => {
         </Alert>
       </Snackbar>
       <Container sx={{ mt: 5 }}>
-      <Stack>
         <Box
           sx={{
             textAlign: "center",
@@ -331,7 +326,7 @@ const StudentRegister = () => {
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField
-              disabled={isVerifyEmail}
+              // disabled={isVerifyEmail}
               variant="outlined"
               required
               fullWidth
@@ -340,6 +335,7 @@ const StudentRegister = () => {
               name="email_address"
               autoComplete="on"
               onChange={getInput}
+              disabled={isSuccsessfullySendEmail}
               value={studentDetails.email_address}
             />
           </Grid>
@@ -437,10 +433,11 @@ const StudentRegister = () => {
               fullWidth
               id="RollNumber"
               label="Roll Number"
-              name="student_id"
-              autoComplete="off"
+              name="roll_number"
+              autoComplete="on"
               onChange={getInput}
-              value={studentDetails.student_id}
+              value={studentDetails.roll_number}
+              
             />
           </Grid>
           <Grid item xs={12} sm={4}>
@@ -450,10 +447,10 @@ const StudentRegister = () => {
               fullWidth
               id="RegNumber"
               label="Reg Number"
-              name="registration_number"
+              name="student_id"
               autoComplete="off"
               onChange={getInput}
-              value={studentDetails.registration_number}
+              value={studentDetails.student_id}
             />
           </Grid>
           <Grid item xs={6} sm={4}>
@@ -489,7 +486,7 @@ const StudentRegister = () => {
                       helperText={`Eneter OTP send your ${studentDetails.email_address}`}
                     />
                   </Grid>
-                  <Grid item xs={6} sm={2}>
+                  <Grid item xs={6} sm={1}>
                     <Button
                       onClick={VerifyOtp}
                       type="submit"
@@ -533,7 +530,6 @@ const StudentRegister = () => {
             </Link> */}
           </Grid>
         </Grid>
-        </Stack>
       </Container>
     </>
   );

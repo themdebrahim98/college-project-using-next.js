@@ -11,7 +11,11 @@ import {
   Button,
   TableContainer,
   Paper,
-  Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
 } from "@mui/material";
 
 import NextLink from "next/link";
@@ -21,16 +25,19 @@ import axios from "axios";
 import { BASE_URL } from "../../commonVariable";
 
 function pendingStudent() {
-
   const [allPendingStudents, setallPendingStudents] = useState([]);
-  const [open, setopen] = useState(false)
+  const [open, setopen] = useState(false);
+  const [currStudentTobeDeleted, setcurrStudentTobeDeleted] = useState({});
+  const [loading, setloading] = useState(false)
 
-  const handleApprove = async (
-    student_id,
-    first_name,
-    last_name,
-    email_address
-  ) => {
+  const selectCurrentStudentData = (student) => {
+    console.log(student)
+    setcurrStudentTobeDeleted(student);
+    setopen(true)
+  };
+  const handleApprove = async (student) => {
+    setloading(true)
+    const { student_id, first_name, last_name, email_address } = student;
     const token = Cookies.get("access_key");
     try {
       const res = await axios.post(
@@ -43,12 +50,13 @@ function pendingStudent() {
         },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      const filterPendingStudent = allPendingStudents.filter((elm)=>{
-        return elm.student_id != student_id
-      })
-      setallPendingStudents(filterPendingStudent)
-      console.log(res.data)
-      alert("approved succcessfully")
+      const filterPendingStudent = allPendingStudents.filter((elm) => {
+        return elm.student_id != student_id;
+      });
+      setallPendingStudents(filterPendingStudent);
+      console.log(res.data);
+      setloading(false)
+      alert("approved succcessfully");
     } catch (error) {
       alert(error);
     }
@@ -59,9 +67,13 @@ function pendingStudent() {
 
     const fetchallPendingStudents = async () => {
       try {
-        const res = await axios.post(`${BASE_URL}get_nonapproved_students`, null, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const res = await axios.post(
+          `${BASE_URL}get_nonapproved_students`,
+          null,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
         console.log(res.data);
         setallPendingStudents(res.data.data.nonapprovedstudents);
       } catch (error) {
@@ -71,24 +83,26 @@ function pendingStudent() {
 
     fetchallPendingStudents();
   }, []);
-  const handlePreview = (student_id)=>{
-    console.log(student_id)
-  }
+  const handlePreview = (student_id) => {
+    console.log(student_id);
+  };
 
   const handleClose = () => {
-    setOpen(false);
+    setopen(false);
+    alert("cancelleed succsessfully")
   };
 
   const handleConfirm = () => {
     // Handle the confirmation here
+    handleApprove(currStudentTobeDeleted);
+    setopen(false);
     console.log("Confirmed!");
-    setOpen(false);
   };
 
   return (
     <TableContainer
       component={Paper}
-      style={{ minHeight: '100vh', overflowX: "auto" }}
+      style={{ minHeight: "100vh", overflowX: "auto" }}
     >
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Confirmation</DialogTitle>
@@ -99,7 +113,9 @@ function pendingStudent() {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleConfirm} autoFocus>Confirm</Button>
+          <Button onClick={handleConfirm} autoFocus>
+            Confirm
+          </Button>
         </DialogActions>
       </Dialog>
       <Table
@@ -291,27 +307,32 @@ function pendingStudent() {
               </TableCell>
               <TableCell>
                 <Typography color="textSecondary" variant="h6">
-                  {student.is_approved!=0?"Yes":"No"}
+                  {student.is_approved != 0 ? "Yes" : "No"}
                 </Typography>
               </TableCell>
               <TableCell>
                 <Button
-                onClick={()=>setopen(true)}
-                  // onClick={() => {
-                  //   handleApprove(
-                  //     student.student_id,
-                  //     student.first_name,
-                  //     student.last_name,
-                  //     student.email_address
-                  //   );
-                  // }}
-                  sx={student.is_approved ? {bgcolor:'green'} : {bgcolor:'crimson'}}
+                disabled={loading}
+                  onClick={() => {
+                    selectCurrentStudentData(
+                      student
+                      // student.student_id,
+                      // student.first_name,
+                      // student.last_name,
+                      // student.email_address
+                    );
+                  }}
+                  sx={
+                    student.is_approved
+                      ? { bgcolor: "green" }
+                      : { bgcolor: "crimson" }
+                  }
                   variant="contained"
                 >
-                  Make Approved
+                  {loading && currStudentTobeDeleted.student_id == student.student_id?"Approving..." : ' Make Approved'}
+                 
                 </Button>
               </TableCell>
-             
             </TableRow>
           ))}
         </TableBody>
