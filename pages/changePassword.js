@@ -6,7 +6,7 @@ function changePassword() {
     <Container>
       <Grid container spacing={0}>
         <Grid item xs={12} lg={12} sx={{ mt: 2 }}>
-          <BaseCard title="Login">
+          <BaseCard title="Change your password">
             <Stack spacing={3}>
               <TextField
                 id="name-basic"

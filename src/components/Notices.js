@@ -84,9 +84,9 @@ function Notices() {
             <TimelineSeparator>
               <TimelineDot
                 variant="outlined"
-                // sx={{
-                //   borderColor: activity.title,
-                // }}
+                sx={{
+                  borderColor: "primary.main",
+                }}
               />
               <TimelineConnector />
             </TimelineSeparator>

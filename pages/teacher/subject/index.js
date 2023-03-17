@@ -19,6 +19,8 @@ import { BASE_URL } from "../../../commonVariable";
 import { useSelect } from "@mui/base";
 import { useSelector } from "react-redux";
 import Cookies from "js-cookie";
+import Snackbar from "@mui/material/Snackbar";
+import FeatherIcon from "feather-icons-react";
 const style = {
   position: "absolute",
   top: "50%",
@@ -26,20 +28,34 @@ const style = {
   transform: "translate(-50%, -50%)",
   minWidth: "30%",
   bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
+  boxShadow: 20,
   p: 4,
-  minHeight: "70%",
+  borderRadius: "5px"
 };
+import MuiAlert from "@mui/material/Alert";
+import { FileDownload, FileUpload, UploadFile } from "@mui/icons-material";
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 export default function index() {
+  const vertical = "top",
+  horizontal = "center";
+  const [openAlert, setOpenAlert] = useState(false);
+  const [alertMsg, setAlertMsg] = useState('');
+  const [alertSeverity,setAlertSeverity]=useState('');
   const [allSubjectOfTeacher, setallSubjectOfTeacher] = useState([]);
   const [open1, setopen1] = useState(false);
   const user = useSelector((store) => store.user);
   const [currSubjectDetails, setcurrSubjectDetails] = useState({});
+  const [uploading, setUploading] = useState(false);
   const [file, setfile] = useState(null);
-
+  const handleAlertClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpenAlert(false);
+  };
   const openModal1 = (subject_id, subject_name) => {
-    console.log(subject_name);
     setcurrSubjectDetails({ subject_id, subject_name });
     setopen1(true);
   };
@@ -47,30 +63,49 @@ export default function index() {
 
   const selectFile = (e) => {
     const file = e.target.files[0];
-    console.log(e.target.files);
     setfile(file);
   };
 
   const handleFileUpload = async () => {
-    console.log(file);
-    try {
-      const res = await axios.post(
-        `${BASE_URL}update_subject_syllabus`,
-        {
-          ...currSubjectDetails,
-          upload_file: file,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${Cookies.get("access_key")}`,
-            "Content-Type": "multipart/form-data",
+    if (file != null) {
+      try {
+        setUploading(true);
+        const res = await axios.post(
+          `${BASE_URL}update_subject_syllabus`,
+          {
+            ...currSubjectDetails,
+            upload_file: file,
           },
+          {
+            headers: {
+              Authorization: `Bearer ${Cookies.get("access_key")}`,
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+        if (res.data.data.status == 1) {
+          setAlertSeverity('success');
+          setUploading(false);
+          setopen1(false);
+          setOpenAlert(true);
+          setAlertMsg(res.data.data.message);
+        } else {
+          setAlertSeverity('error');
+          setUploading(false);
+          setopen1(true);
+          setOpenAlert(true);
+          setAlertMsg(res.data.data.message);
         }
-      );
-      alert("Successfully uploaded file");
-      setopen1(false);
-    } catch (err) {
-      alert("not uploaded file");
+      } catch (err) {
+        setAlertSeverity('error');
+        setOpenAlert(true);
+        setUploading(false);
+        setAlertMsg("Can't uploaded a file");
+      }
+    } else {
+      setAlertSeverity('warning');
+      setOpenAlert(true);
+      setAlertMsg("Please select a file");
     }
   };
 
@@ -89,6 +124,17 @@ export default function index() {
 
   return (
     <>
+      <Snackbar
+        anchorOrigin={{ vertical, horizontal }}
+        key={vertical + horizontal}
+        open={openAlert}
+        autoHideDuration={2000}
+        onClose={handleAlertClose}
+      >
+        <Alert severity={alertSeverity} sx={{ width: "100%" }}>
+          {alertMsg}
+        </Alert>
+      </Snackbar>
       <Modal
         open={open1}
         onClose={handleModal1Close1}
@@ -116,13 +162,14 @@ export default function index() {
               id="outlined-basic"
               variant="outlined"
             />
-
             <Button
               variant="contained"
               color="primary"
               onClick={handleFileUpload}
+              disabled={uploading ? true : false}
+              startIcon={<FileUpload/>}
             >
-              Upload
+              {uploading ? "Uploading..." : "Upload"}
             </Button>
           </Box>
         </Box>
@@ -151,7 +198,7 @@ export default function index() {
                     sx={{ fontSize: "15px", color: "black" }}
                     variant="h6"
                   >
-                    Id
+                    Sl. No.
                   </Typography>
                 </TableCell>
                 <TableCell>
@@ -203,14 +250,14 @@ export default function index() {
                     Assigned Teacher Name
                   </Typography>
                 </TableCell>
-                <TableCell>
+                {/* <TableCell>
                   <Typography
                     sx={{ fontSize: "15px", color: "black" }}
                     variant="h6"
                   >
                     Date
                   </Typography>
-                </TableCell>
+                </TableCell> */}
                 <TableCell>
                   <Typography
                     sx={{ fontSize: "15px", color: "black" }}
@@ -227,7 +274,7 @@ export default function index() {
                   <TableRow key={idx}>
                     <TableCell>
                       <Typography color="textSecondary" variant="h6">
-                        {subject.id}
+                        {idx+1}
                       </Typography>
                     </TableCell>
                     <TableCell>
@@ -261,15 +308,14 @@ export default function index() {
                         {subject.teacher_name}
                       </Typography>
                     </TableCell>
-                    <TableCell>
+                    {/* <TableCell>
                       <Typography color="textSecondary" variant="h6">
                         {subject.updated_at}
                       </Typography>
-                    </TableCell>
+                    </TableCell> */}
 
                     <TableCell>
                       <Typography color="textSecondary" variant="h6">
-                        {console.log(subject)}
                         {subject.syllabus.attachment_id == null ? (
                           <Button
                             onClick={() => {
@@ -277,24 +323,24 @@ export default function index() {
                             }}
                             color="secondary"
                             variant="contained"
+                            startIcon={<UploadFile/>}
                           >
-                            Upload Syllabus
+                            Upload
                           </Button>
                         ) : (
-                          <Button color="secondary" variant="contained">
-                            {console.log(subject)}
-                            <a
-                              style={{
-                                textDecoration: "none",
-                                color: "inherit",
-                              }}
-                              target="_blank"
-                              download
-                              href={`${subject.syllabus?.fileData?.url}`}
-                            >
-                              download
-                            </a>
+                          <a
+                          style={{
+                            textDecoration: "none",
+                            color: "inherit",
+                          }}
+                          target="_blank"
+                          download
+                          href={`${subject.syllabus?.fileData?.url}`}
+                        >
+                          <Button color="success" variant="contained" startIcon={<FileDownload/>}>
+                              Download
                           </Button>
+                          </a>
                         )}
                       </Typography>
                     </TableCell>
