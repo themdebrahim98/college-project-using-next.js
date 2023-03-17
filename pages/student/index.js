@@ -216,96 +216,9 @@ function pendingStudent() {
               </Typography>
             </TableCell>
           </TableRow>
-        </TableHead>{" "}
-        <TableBody>
-          {allApprovedStudents.map((student, idx) => (
-            <TableRow key={idx}>
-              <TableCell>
-                <Typography color="textSecondary" variant="h6">
-                  {idx+1}
-                </Typography>
-
-              </TableCell>
-              <TableCell>
-                <Typography variant="h6">Student Id</Typography>
-              </TableCell>
-              <TableCell>
-
-
-                <Typography color="textSecondary" variant="h6">
-                  {student.first_name+" "+student.last_name}
-
-                </Typography>
-              </TableCell>
-              <TableCell>
-                <Typography
-                  sx={{ fontSize: "15px", color: "black" }}
-                  variant="h6"
-                >
-                  DOB
-                </Typography>
-              </TableCell>
-              <TableCell>
-                <Typography
-                  sx={{ fontSize: "15px", color: "black" }}
-                  variant="h6"
-                >
-                  Gender
-                </Typography>
-              </TableCell>
-              <TableCell>
-                <Typography
-                  sx={{ fontSize: "15px", color: "black" }}
-                  variant="h6"
-                >
-                  Email Address
-                </Typography>
-              </TableCell>
-              <TableCell>
-                <Typography
-                  sx={{ fontSize: "15px", color: "black" }}
-                  variant="h6"
-                >
-                  Phone Number
-                </Typography>
-              </TableCell>
-
-              <TableCell>
-                <Typography
-                  sx={{ fontSize: "15px", color: "black" }}
-                  variant="h6"
-                >
-                  Role Number
-                </Typography>
-              </TableCell>
-              <TableCell>
-
-
-                <Typography color="textSecondary" variant="h6">
-                  {student.course_name}
-                </Typography>
-              </TableCell>
-              <TableCell>
-                <Typography color="textSecondary" variant="h6">
-                  {student.department_name}
-
-                </Typography>
-              </TableCell>
-              <TableCell>
-                <Typography
-                  sx={{ fontSize: "15px", color: "black" }}
-                  variant="h6"
-                >
-                  Year
-                </Typography>
-              </TableCell>
-              <TableCell>
-                <Typography color="textSecondary" variant="h6">
-                  {student.semester}
-                </Typography>
-              </TableCell>
-            </TableRow>
-          </TableHead>{" "}
+        </TableHead>
+        
+          
           <TableBody>
             {displayedData.map((student, idx) => (
               <TableRow key={idx}>
@@ -376,7 +289,7 @@ function pendingStudent() {
           </TableBody>
         </Table>
       </TableContainer>
-      </Box>
+      
       <TablePagination
         rowsPerPageOptions={[5, 10, 20, 40]}
         component="div"
