@@ -99,7 +99,7 @@ function pendingStudent() {
     }
   };
   return (
-    <Box component={Paper}>
+<Box component={Paper}>
       <TextField
         InputProps={{
           startAdornment: (
@@ -114,39 +114,127 @@ function pendingStudent() {
         value={filterText}
         onChange={handleFilterTextChange}
       />
-      <TableContainer
-        component={Paper}
-        style={{ minHeight: "100vh", overflowX: "auto" }}
+    <TableContainer
+      component={Paper}
+      style={{ minHeight: "100vh", overflowX: "auto" }}
+    >
+      <Table
+        aria-label="simple table"
+        sx={{
+          p: 2,
+          whiteSpace: "nowrap",
+        }}
+        size="small"
       >
-        <Table
-          aria-label="simple table"
-          sx={{
-            mt: 3,
-            whiteSpace: "nowrap",
-          }}
-        >
-          <TableHead>
-            <TableRow>
+        <TableHead sx={{fontWeight:"bold"}}>
+          <TableRow>
+            <TableCell>
+              <Typography variant="h6" sx={{ fontSize: "15px", color: "black" }}>Sl.no</Typography>
+            </TableCell>
+            <TableCell>
+              <Typography variant="h6" sx={{ fontSize: "15px", color: "black" }}>Reg. no.</Typography>
+            </TableCell>
+            <TableCell>
+              <Typography
+                sx={{ fontSize: "15px", color: "black" }}
+                variant="h6"
+              >
+                Full Name
+              </Typography>
+            </TableCell>
+            <TableCell>
+              <Typography
+                sx={{ fontSize: "15px", color: "black" }}
+                variant="h6"
+              >
+                DOB
+              </Typography>
+            </TableCell>
+            <TableCell>
+              <Typography
+                sx={{ fontSize: "15px", color: "black" }}
+                variant="h6"
+              >
+                Gender
+              </Typography>
+            </TableCell>
+            <TableCell>
+              <Typography
+                sx={{ fontSize: "15px", color: "black" }}
+                variant="h6"
+              >
+                Email
+              </Typography>
+            </TableCell>
+            <TableCell>
+              <Typography
+                sx={{ fontSize: "15px", color: "black" }}
+                variant="h6"
+              >
+                Phone No.
+              </Typography>
+            </TableCell>
+
+            <TableCell>
+              <Typography
+                sx={{ fontSize: "15px", color: "black" }}
+                variant="h6"
+              >
+                Roll No.
+              </Typography>
+            </TableCell>
+            <TableCell>
+              <Typography
+                sx={{ fontSize: "15px", color: "black" }}
+                variant="h6"
+              >
+                Course
+              </Typography>
+            </TableCell>
+            <TableCell>
+              <Typography
+                sx={{ fontSize: "15px", color: "black" }}
+                variant="h6"
+              >
+                Department
+              </Typography>
+            </TableCell>
+            <TableCell>
+              <Typography
+                sx={{ fontSize: "15px", color: "black" }}
+                variant="h6"
+              >
+                Year
+              </Typography>
+            </TableCell>
+            <TableCell>
+              <Typography
+                sx={{ fontSize: "15px", color: "black" }}
+                variant="h6"
+              >
+                Semester
+              </Typography>
+            </TableCell>
+          </TableRow>
+        </TableHead>{" "}
+        <TableBody>
+          {allApprovedStudents.map((student, idx) => (
+            <TableRow key={idx}>
               <TableCell>
-                <Typography variant="h6">Id</Typography>
+                <Typography color="textSecondary" variant="h6">
+                  {idx+1}
+                </Typography>
+
               </TableCell>
               <TableCell>
                 <Typography variant="h6">Student Id</Typography>
               </TableCell>
               <TableCell>
-                <Typography
-                  sx={{ fontSize: "15px", color: "black" }}
-                  variant="h6"
-                >
-                  First Name
-                </Typography>
-              </TableCell>
-              <TableCell>
-                <Typography
-                  sx={{ fontSize: "15px", color: "black" }}
-                  variant="h6"
-                >
-                  Last_name
+
+
+                <Typography color="textSecondary" variant="h6">
+                  {student.first_name+" "+student.last_name}
+
                 </Typography>
               </TableCell>
               <TableCell>
@@ -191,19 +279,16 @@ function pendingStudent() {
                 </Typography>
               </TableCell>
               <TableCell>
-                <Typography
-                  sx={{ fontSize: "15px", color: "black" }}
-                  variant="h6"
-                >
-                  Course Id
+
+
+                <Typography color="textSecondary" variant="h6">
+                  {student.course_name}
                 </Typography>
               </TableCell>
               <TableCell>
-                <Typography
-                  sx={{ fontSize: "15px", color: "black" }}
-                  variant="h6"
-                >
-                  Semester
+                <Typography color="textSecondary" variant="h6">
+                  {student.department_name}
+
                 </Typography>
               </TableCell>
               <TableCell>
@@ -212,6 +297,11 @@ function pendingStudent() {
                   variant="h6"
                 >
                   Year
+                </Typography>
+              </TableCell>
+              <TableCell>
+                <Typography color="textSecondary" variant="h6">
+                  {student.semester}
                 </Typography>
               </TableCell>
             </TableRow>
@@ -286,6 +376,7 @@ function pendingStudent() {
           </TableBody>
         </Table>
       </TableContainer>
+      </Box>
       <TablePagination
         rowsPerPageOptions={[5, 10, 20, 40]}
         component="div"

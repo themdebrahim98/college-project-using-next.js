@@ -16,16 +16,16 @@ import NextLink from "next/Link";
 import Cookies from "js-cookie";
 import axios from "axios";
 import { useSelector } from 'react-redux';
+import { AddCircle } from "@mui/icons-material";
 
 
 
 function notices() {
   const data = useSelector((store)=>store.user);
-  // console.log(data.userData.user_data.is_hod);
   const [noticeData, setnoticeData] = useState([]);
   const btnData = (
     <NextLink href="/notices/addNotice">
-      <Button variant="contained" sx={{ ml: "auto" }}>
+      <Button variant="contained" startIcon={<AddCircle/>} sx={{ ml: "auto",fontWeight:"bold" }}>
         Add Notice
       </Button>
     </NextLink>
@@ -42,12 +42,11 @@ function notices() {
       const allNotices = res.data.data.notices.map((elm, idx) => {
         return elm;
       });
-      // console.log(allTeachers, "allkjdscnkvn");
       setnoticeData(allNotices);
     };
     fetchNotice();
   },[]);
- 
+
   return (
     
     <BaseCard
@@ -146,7 +145,7 @@ function notices() {
                     }}
                   >
                     <Box>
-                      <NextLink href={"/notices/"+item.id}><Button variant="contained" color="success">View</Button></NextLink>
+                      <NextLink href={"/notices/"+item.id}><Button variant="contained" color="success" size="small">View</Button></NextLink>
                     </Box>
                   </Box>
                 </TableCell>
