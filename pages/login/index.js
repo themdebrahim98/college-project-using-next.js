@@ -1,12 +1,22 @@
-import { Grid, Stack, TextField, Button, IconButton } from "@mui/material";
+import {
+  Grid,
+  Stack,
+  TextField,
+  Button,
+  IconButton,
+  Typography,
+  Box
+} from "@mui/material";
+
 import { Container } from "@mui/system";
-import React,{useState} from "react";
+import React, { useState } from "react";
 import BaseCard from "../../src/components/baseCard/BaseCard";
 import { loginUser } from "../../redux/slices/userSlice";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/router";
 import { useCookies } from "react-cookie";
 import axios from "axios";
+import NextLink from 'next/link'
 
 function index() {
   const [cookies, setcookie] = useCookies(["access_key"]);
@@ -15,7 +25,7 @@ function index() {
     username: null,
     password: null,
   });
-  const router = useRouter()
+  const router = useRouter();
 
   const dispatch = useDispatch();
 
@@ -35,13 +45,11 @@ function index() {
       setLoading(false);
       alert(data.status.message);
     } else {
-      setcookie("access_key",res.data.data.access_key);
+      setcookie("access_key", res.data.data.access_key);
 
-    
       if (res.data.data.status.status == 1) {
-        const token = res.data.data.access_key
+        const token = res.data.data.access_key;
 
-       
         const res2 = await axios.post(
           "https://test.diptodiagnostic.com/api/get_user_details",
           null,
@@ -53,12 +61,11 @@ function index() {
         const userData = {
           user_data: { ...res2.data.data.user_data, type: res2.data.data.type },
         };
-        console.log(userData,"user");
+        console.log(userData, "user");
 
         setLoading(false);
         dispatch(loginUser(userData));
-        router.replace('/')
-   
+        router.replace("/");
       }
     }
 
@@ -80,7 +87,7 @@ function index() {
                 autoComplete="on"
               />
               <TextField
-              autoComplete="on"
+                autoComplete="on"
                 id="name-basic"
                 label="Password"
                 type="password"
@@ -90,9 +97,20 @@ function index() {
                 onChange={(e) => handleChange(e)}
               />
             </Stack>
+
+            <Box display='flex' alignItems='center' gap={3} mt={2}>
+              <Typography>Register Student </Typography>
+             <NextLink href='/student/studentSignup'><Button  variant="outlined">Register</Button></NextLink>
+            </Box>
+
             <Grid item xs={12} sx={{ mt: 4 }} lg={6}>
-              <Button variant="contained" type="submit" color="primary" onClick={handleSubmit}>
-                {loading?"Loging...":"Login"}
+              <Button
+                variant="contained"
+                type="submit"
+                color="primary"
+                onClick={handleSubmit}
+              >
+                {loading ? "Loging..." : "Login"}
               </Button>
             </Grid>
           </BaseCard>

@@ -35,38 +35,44 @@ export default function index() {
   const [allSubjectOfTeacher, setallSubjectOfTeacher] = useState([]);
   const [open1, setopen1] = useState(false);
   const user = useSelector((store) => store.user);
-  const [currSubjectDetails, setcurrSubjectDetails] = useState({})
-  const [file, setfile] = useState(null)
+  const [currSubjectDetails, setcurrSubjectDetails] = useState({});
+  const [file, setfile] = useState(null);
 
   const openModal1 = (subject_id, subject_name) => {
-    console.log(subject_name)
-    setcurrSubjectDetails({subject_id, subject_name})
+    console.log(subject_name);
+    setcurrSubjectDetails({ subject_id, subject_name });
     setopen1(true);
   };
   const handleModal1Close1 = () => setopen1(false);
 
   const selectFile = (e) => {
     const file = e.target.files[0];
-    console.log(file)
+    console.log(e.target.files);
     setfile(file);
-    
-    
   };
 
-  const handleFileUpload = async()=>{
-    const form_data = new FormData();
-    form_data.append("test.pdf", file);
-    console.log(form_data,'formdata');
-    console.log(file,"file")
-
-    // console.log(currSubjectDetails)
-    // const res = await axios.post(`${BASE_URL}update_subject_syllabus`,{
-    //     ...currSubjectDetails,
-    //     upload_file: form_data
-    // },
-    // {headers:{Authorization:`Bearer ${Cookies.get('access_key')}`}})
-    // alert("Successfully uploaded file")
-  }
+  const handleFileUpload = async () => {
+    console.log(file);
+    try {
+      const res = await axios.post(
+        `${BASE_URL}update_subject_syllabus`,
+        {
+          ...currSubjectDetails,
+          upload_file: file,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${Cookies.get("access_key")}`,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      alert("Successfully uploaded file");
+      setopen1(false);
+    } catch (err) {
+      alert("not uploaded file");
+    }
+  };
 
   useEffect(() => {
     const getSubjectOfTeacher = async () => {
@@ -79,7 +85,7 @@ export default function index() {
       console.log(res.data);
     };
     getSubjectOfTeacher();
-  }, []);
+  }, [open1]);
 
   return (
     <>
@@ -99,10 +105,14 @@ export default function index() {
             display="flex"
             flexDirection="column"
             gap={5}
+            component="form"
+            encType="multipart/form-data"
+            onChange={selectFile}
           >
             <TextField
-              onChange={selectFile}
+              inputProps={{ accept: ".pdf,.doc,.docx" }}
               type="file"
+              name="file"
               id="outlined-basic"
               variant="outlined"
             />
@@ -212,71 +222,84 @@ export default function index() {
               </TableRow>
             </TableHead>{" "}
             <TableBody>
-              {allSubjectOfTeacher.map((subject, idx) => (
-                <TableRow key={idx}>
-                  <TableCell>
-                    <Typography color="textSecondary" variant="h6">
-                      {subject.id}
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography color="textSecondary" variant="h6">
-                      {subject.name}
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography color="textSecondary" variant="h6">
-                      {subject.course_name}
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography color="textSecondary" variant="h6">
-                      {subject.department_name}
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography color="textSecondary" variant="h6">
-                      {subject.year}
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography color="textSecondary" variant="h6">
-                      {subject.semester}
-                    </Typography>
-                  </TableCell>
+              {allSubjectOfTeacher.length > 0 &&
+                allSubjectOfTeacher.map((subject, idx) => (
+                  <TableRow key={idx}>
+                    <TableCell>
+                      <Typography color="textSecondary" variant="h6">
+                        {subject.id}
+                      </Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography color="textSecondary" variant="h6">
+                        {subject.name}
+                      </Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography color="textSecondary" variant="h6">
+                        {subject.course_name}
+                      </Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography color="textSecondary" variant="h6">
+                        {subject.department_name}
+                      </Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography color="textSecondary" variant="h6">
+                        {subject.year}
+                      </Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography color="textSecondary" variant="h6">
+                        {subject.semester}
+                      </Typography>
+                    </TableCell>
 
-                  <TableCell>
-                    <Typography color="textSecondary" variant="h6">
-                      {subject.teacher_name}
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography color="textSecondary" variant="h6">
-                      {subject.updated_at}
-                    </Typography>
-                  </TableCell>
+                    <TableCell>
+                      <Typography color="textSecondary" variant="h6">
+                        {subject.teacher_name}
+                      </Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography color="textSecondary" variant="h6">
+                        {subject.updated_at}
+                      </Typography>
+                    </TableCell>
 
-                  <TableCell>
-                    <Typography color="textSecondary" variant="h6">
-                      {subject.syllabus.attachment_id == null ? (
-                        <Button
-                          onClick={()=>{openModal1(subject.id, subject.name)}}
-                          color="secondary"
-                          variant="contained"
-                        >
-                          Upload Syllabus
-                        </Button>
-                      ) : (
-                        <Button color="secondary" variant="contained">
-                          <a download href={`${subject.syllabus.fileData}`}>
-                            download
-                          </a>
-                        </Button>
-                      )}
-                    </Typography>
-                  </TableCell>
-                </TableRow>
-              ))}
+                    <TableCell>
+                      <Typography color="textSecondary" variant="h6">
+                        {console.log(subject)}
+                        {subject.syllabus.attachment_id == null ? (
+                          <Button
+                            onClick={() => {
+                              openModal1(subject.id, subject.name);
+                            }}
+                            color="secondary"
+                            variant="contained"
+                          >
+                            Upload Syllabus
+                          </Button>
+                        ) : (
+                          <Button color="secondary" variant="contained">
+                            {console.log(subject)}
+                            <a
+                              style={{
+                                textDecoration: "none",
+                                color: "inherit",
+                              }}
+                              target="_blank"
+                              download
+                              href={`${subject.syllabus?.fileData?.url}`}
+                            >
+                              download
+                            </a>
+                          </Button>
+                        )}
+                      </Typography>
+                    </TableCell>
+                  </TableRow>
+                ))}
             </TableBody>
           </Table>
         </TableContainer>
