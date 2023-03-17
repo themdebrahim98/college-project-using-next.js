@@ -5,7 +5,7 @@ import {
   Button,
   IconButton,
   Typography,
-  Box
+  Box,
 } from "@mui/material";
 
 import { Container } from "@mui/system";
@@ -16,9 +16,16 @@ import { useDispatch } from "react-redux";
 import { useRouter } from "next/router";
 import { useCookies } from "react-cookie";
 import axios from "axios";
-import NextLink from 'next/link';
+import NextLink from "next/link";
 import { HowToReg, Login } from "@mui/icons-material";
 
+const style = {
+  background: "rgb(238,174,202)",
+  background:
+    "radial-gradient(circle, rgba(238,174,202,1) 0%, rgba(148,187,233,1) 100%)",
+  height: "100vh",
+  overflow: "hidden",
+};
 function index() {
   const [cookies, setcookie] = useCookies(["access_key"]);
   const [loading, setLoading] = useState(false);
@@ -73,12 +80,16 @@ function index() {
     console.log(res.data.data);
   };
   return (
-    <Container>
+    <Box sx={style}>
       <Grid container spacing={0}>
         <Grid item xs={12} lg={12} textAlign="center" mt={4}>
-        <img src="https://upload.wikimedia.org/wikipedia/en/3/37/Maulana_Abul_Kalam_Azad_University_of_Technology_Logo.svg" height="180" width="100%"/>
+          <img
+            src="https://upload.wikimedia.org/wikipedia/en/3/37/Maulana_Abul_Kalam_Azad_University_of_Technology_Logo.svg"
+            height="180"
+            width="100%"
+          />
         </Grid>
-      <Grid item xs={12} lg={2}></Grid>
+        <Grid item xs={12} lg={2}></Grid>
         <Grid item xs={12} lg={8} sx={{ mt: 2 }}>
           <BaseCard title="Login" titleSize="h1">
             <Stack spacing={3}>
@@ -103,9 +114,20 @@ function index() {
               />
             </Stack>
 
-            <Box display='flex' alignItems='right' sx={{float:"right"}} gap={1} mt={2} mb={2}>
+            <Box
+              display="flex"
+              alignItems="right"
+              sx={{ float: "right" }}
+              gap={1}
+              mt={2}
+              mb={2}
+            >
               <Typography>Are you a student?</Typography>
-             <NextLink href='/student/studentSignup'><Button variant="contained" color="warning" size="small">Register here</Button></NextLink>
+              <NextLink href="/student/studentSignup">
+                <Button variant="contained" color="warning" size="small">
+                  Register here
+                </Button>
+              </NextLink>
             </Box>
 
             <Grid item xs={12} sx={{ mt: 4 }} lg={6}>
@@ -114,7 +136,7 @@ function index() {
                 type="submit"
                 color="primary"
                 onClick={handleSubmit}
-                startIcon={<Login/>}
+                startIcon={<Login />}
               >
                 {loading ? "Loging..." : "Login"}
               </Button>
@@ -123,7 +145,7 @@ function index() {
         </Grid>
         <Grid item xs={12} lg={2}></Grid>
       </Grid>
-    </Container>
+    </Box>
   );
 }
 

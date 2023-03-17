@@ -34,10 +34,10 @@ export default function MyApp(props) {
               />
             </Head>
             <ThemeProvider theme={theme}>
-              <CssBaseline />
-              {/* <FullLayout> */}
+              {/* <CssBaseline /> */}
+             
               <Component {...pageProps} />
-              {/* </FullLayout> */}
+              
             </ThemeProvider>
           </CacheProvider>
         </PersistGate>

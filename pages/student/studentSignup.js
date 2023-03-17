@@ -16,6 +16,7 @@ import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 // import { commonConstants } from "../../constant/common.constant";
 import axios from "axios";
+import router from "next/router";
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
@@ -115,7 +116,9 @@ const StudentRegister = () => {
             setAlertVisible("block");
             setAlertMsg(
               "You have successfully submited your details..! Please wait for admin approval"
+             
             );
+            router.replace("/login")
           } else {
             setOpenAlert(true);
             setAlertMsg(data?.data?.message);

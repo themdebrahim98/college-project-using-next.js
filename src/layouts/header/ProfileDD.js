@@ -1,7 +1,6 @@
 import React from "react";
 import FeatherIcon from "feather-icons-react";
 import Image from "next/image";
-
 import userimg from "../../../assets/images/users/avatr.png";
 import NextLink from "next/link";
 import { useDispatch, useSelector } from "react-redux";
@@ -37,7 +36,7 @@ const ProfileDD = () => {
     document.cookie =
       "access_key" + "=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;";
     dispatch(logout());
-    router.push('/login');
+    router.replace('/login');
   };
   return (
     <>

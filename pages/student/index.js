@@ -7,19 +7,14 @@ import {
   TableCell,
   TableHead,
   TableRow,
-  Chip,
-  Button,
   TableContainer,
   Paper,
   TextField,
   InputAdornment,
   IconButton,
-  Pagination,
   TablePagination
 } from "@mui/material";
 import FeatherIcon from "feather-icons-react";
-import NextLink from "next/link";
-import BaseCard from "../../src/components/baseCard/BaseCard";
 import Cookies from "js-cookie";
 import axios from "axios";
 import { BASE_URL } from "../../commonVariable";
@@ -71,33 +66,7 @@ function pendingStudent() {
 
     fetchAllApprovedStudents();
   }, []);
-  const handlePreview = (student_id) => {
-    console.log(student_id);
-  };
-  const handleApprove = async (
-    student_id,
-    first_name,
-    last_name,
-    email_address
-  ) => {
-    const token = Cookies.get("access_key");
-    try {
-      const res = await axios.post(
-        `${BASE_URL}approve_student`,
-        {
-          student_id,
-          first_name,
-          last_name,
-          email_address,
-        },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-
-      console.log(res.data);
-    } catch (error) {
-      alert(error);
-    }
-  };
+  
   return (
 <Box component={Paper}>
       <TextField
@@ -232,19 +201,16 @@ function pendingStudent() {
                     {student.student_id}
                   </Typography>
                 </TableCell>
+                
                 <TableCell>
                   <Typography color="textSecondary" variant="h6">
-                    {student.first_name}
-                  </Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography color="textSecondary" variant="h6">
-                    {student.last_name}
+                    {student.first_name + " " + student.last_name}
                   </Typography>
                 </TableCell>
                 <TableCell>
                   <Typography color="textSecondary" variant="h6">
                     {student.dob}
+                    {/* {new Date(student.dob)} */}
                   </Typography>
                 </TableCell>
                 <TableCell>
@@ -271,7 +237,12 @@ function pendingStudent() {
                 </TableCell>
                 <TableCell>
                   <Typography color="textSecondary" variant="h6">
-                    {student.course_id}
+                    {student.course_name}
+                  </Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography color="textSecondary" variant="h6">
+                    {student.department_name}
                   </Typography>
                 </TableCell>
                 <TableCell>
