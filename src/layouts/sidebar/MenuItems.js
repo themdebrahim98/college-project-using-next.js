@@ -16,7 +16,7 @@ export const useMenu = (data) => {
       icon:"clipboard",
       href: "/subject",
     });
-  } else {
+  } else if(data?.type == "teacher"){
     menuItem.push({
       title: "Dashbaord",
       icon: "home",
@@ -44,6 +44,22 @@ export const useMenu = (data) => {
         href: "/teacher/subject",
       });
     }
+  }else if(data?.type == "student"){
+    menuItem.push({
+      title: "Dashbaord",
+      icon: "home",
+      href: "/",
+    });
+    menuItem.push({
+        title: "Notices",
+        icon:"clipboard",
+        href: "/notices",
+    });
+    menuItem.push({
+        title: "Subjects",
+        icon:"clipboard",
+        href: "/student/subject",
+      });
   }
 
   return menuItem;

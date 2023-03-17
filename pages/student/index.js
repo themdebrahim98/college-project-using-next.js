@@ -72,32 +72,25 @@ function pendingStudent() {
       <Table
         aria-label="simple table"
         sx={{
-          mt: 3,
+          p: 2,
           whiteSpace: "nowrap",
         }}
+        size="small"
       >
-        <TableHead>
+        <TableHead sx={{fontWeight:"bold"}}>
           <TableRow>
             <TableCell>
-              <Typography variant="h6">Id</Typography>
+              <Typography variant="h6" sx={{ fontSize: "15px", color: "black" }}>Sl.no</Typography>
             </TableCell>
             <TableCell>
-              <Typography variant="h6">Student Id</Typography>
-            </TableCell>
-            <TableCell>
-              <Typography
-                sx={{ fontSize: "15px", color: "black" }}
-                variant="h6"
-              >
-                First Name
-              </Typography>
+              <Typography variant="h6" sx={{ fontSize: "15px", color: "black" }}>Reg. no.</Typography>
             </TableCell>
             <TableCell>
               <Typography
                 sx={{ fontSize: "15px", color: "black" }}
                 variant="h6"
               >
-                Last_name
+                Full Name
               </Typography>
             </TableCell>
             <TableCell>
@@ -121,7 +114,7 @@ function pendingStudent() {
                 sx={{ fontSize: "15px", color: "black" }}
                 variant="h6"
               >
-                Email Address
+                Email
               </Typography>
             </TableCell>
             <TableCell>
@@ -129,7 +122,7 @@ function pendingStudent() {
                 sx={{ fontSize: "15px", color: "black" }}
                 variant="h6"
               >
-                Phone Number
+                Phone No.
               </Typography>
             </TableCell>
 
@@ -138,7 +131,7 @@ function pendingStudent() {
                 sx={{ fontSize: "15px", color: "black" }}
                 variant="h6"
               >
-                Role Number
+                Roll No.
               </Typography>
             </TableCell>
             <TableCell>
@@ -146,7 +139,7 @@ function pendingStudent() {
                 sx={{ fontSize: "15px", color: "black" }}
                 variant="h6"
               >
-                Course Id
+                Course
               </Typography>
             </TableCell>
             <TableCell>
@@ -154,7 +147,7 @@ function pendingStudent() {
                 sx={{ fontSize: "15px", color: "black" }}
                 variant="h6"
               >
-                Semester
+                Department
               </Typography>
             </TableCell>
             <TableCell>
@@ -165,6 +158,14 @@ function pendingStudent() {
                 Year
               </Typography>
             </TableCell>
+            <TableCell>
+              <Typography
+                sx={{ fontSize: "15px", color: "black" }}
+                variant="h6"
+              >
+                Semester
+              </Typography>
+            </TableCell>
           </TableRow>
         </TableHead>{" "}
         <TableBody>
@@ -172,7 +173,7 @@ function pendingStudent() {
             <TableRow key={idx}>
               <TableCell>
                 <Typography color="textSecondary" variant="h6">
-                  {student.id}
+                  {idx+1}
                 </Typography>
               </TableCell>
               <TableCell>
@@ -182,12 +183,7 @@ function pendingStudent() {
               </TableCell>
               <TableCell>
                 <Typography color="textSecondary" variant="h6">
-                  {student.first_name}
-                </Typography>
-              </TableCell>
-              <TableCell>
-                <Typography color="textSecondary" variant="h6">
-                  {student.last_name}
+                  {student.first_name+" "+student.last_name}
                 </Typography>
               </TableCell>
               <TableCell>
@@ -219,17 +215,22 @@ function pendingStudent() {
               </TableCell>
               <TableCell>
                 <Typography color="textSecondary" variant="h6">
-                  {student.course_id}
+                  {student.course_name}
                 </Typography>
               </TableCell>
               <TableCell>
                 <Typography color="textSecondary" variant="h6">
-                  {student.semester}
+                  {student.department_name}
                 </Typography>
               </TableCell>
               <TableCell>
                 <Typography color="textSecondary" variant="h6">
                   {student.year}
+                </Typography>
+              </TableCell>
+              <TableCell>
+                <Typography color="textSecondary" variant="h6">
+                  {student.semester}
                 </Typography>
               </TableCell>
             </TableRow>
