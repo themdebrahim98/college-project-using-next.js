@@ -16,6 +16,10 @@ import {
   DialogContent,
   DialogContentText,
   DialogActions,
+  TablePagination,
+  InputAdornment,
+  IconButton,
+  TextField
 } from "@mui/material";
 
 import NextLink from "next/link";
@@ -23,12 +27,40 @@ import BaseCard from "../../src/components/baseCard/BaseCard";
 import Cookies from "js-cookie";
 import axios from "axios";
 import { BASE_URL } from "../../commonVariable";
-
+import FeatherIcon from "feather-icons-react";
 function pendingStudent() {
   const [allPendingStudents, setallPendingStudents] = useState([]);
   const [open, setopen] = useState(false);
   const [currStudentTobeDeleted, setcurrStudentTobeDeleted] = useState({});
   const [loading, setloading] = useState(false)
+  const [filterText, setFilterText] = useState("");
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [currentPage, setCurrentPage] = React.useState(0);
+
+
+  const handleChangePage = (event, newPage) => {
+    setCurrentPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setCurrentPage(0);
+  };
+
+  
+  const handleFilterTextChange = (event) => {
+    setFilterText(event.target.value);
+  };
+
+  const filteredData = allPendingStudents.filter((row) =>
+  [row.first_name, row.last_name].some((value) =>
+  value.toLowerCase().includes(filterText.toLowerCase())
+  )
+  );
+  const displayedData = filteredData.slice(
+    currentPage * rowsPerPage,
+    currentPage * rowsPerPage + rowsPerPage
+  );
 
   const selectCurrentStudentData = (student) => {
     console.log(student)
@@ -100,6 +132,21 @@ function pendingStudent() {
   };
 
   return (
+    <Box component={Paper}>
+    <TextField
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position="start">
+              <IconButton>
+                <FeatherIcon icon="filter" />
+              </IconButton>
+            </InputAdornment>
+          ),
+        }}
+        label="Filter table"
+        value={filterText}
+        onChange={handleFilterTextChange}
+      />
     <TableContainer
       component={Paper}
       style={{ minHeight: "100vh", overflowX: "auto" }}
@@ -236,7 +283,7 @@ function pendingStudent() {
           </TableRow>
         </TableHead>{" "}
         <TableBody>
-          {allPendingStudents.map((student, idx) => (
+          {displayedData.map((student, idx) => (
             <TableRow key={idx}>
               <TableCell>
                 <Typography color="textSecondary" variant="h6">
@@ -338,6 +385,16 @@ function pendingStudent() {
         </TableBody>
       </Table>
     </TableContainer>
+    <TablePagination
+    rowsPerPageOptions={[5, 10, 20, 40]}
+    component="div"
+    count={displayedData.length}
+    rowsPerPage={rowsPerPage}
+    page={currentPage}
+    onPageChange={handleChangePage}
+    onRowsPerPageChange={handleChangeRowsPerPage}
+  />
+  </Box>
   );
 }
 

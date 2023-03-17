@@ -13,14 +13,20 @@ import {
   Paper,
   Modal,
   TextField,
+  InputAdornment,
+  IconButton,
+  Pagination,
+  TablePagination
 } from "@mui/material";
 import axios from "axios";
 import { BASE_URL } from "../../../commonVariable";
 import { useSelect } from "@mui/base";
 import { useSelector } from "react-redux";
 import Cookies from "js-cookie";
+
 import Snackbar from "@mui/material/Snackbar";
 import FeatherIcon from "feather-icons-react";
+
 const style = {
   position: "absolute",
   top: "50%",
@@ -49,12 +55,43 @@ export default function index() {
   const [currSubjectDetails, setcurrSubjectDetails] = useState({});
   const [uploading, setUploading] = useState(false);
   const [file, setfile] = useState(null);
+
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [currentPage, setCurrentPage] = React.useState(0);
+  const [filterText, setFilterText] = useState("");
+
+
+  const handleChangePage = (event, newPage) => {
+    setCurrentPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setCurrentPage(0);
+  };
+
+  
+  const handleFilterTextChange = (event) => {
+    setFilterText(event.target.value);
+  };
+  
+  const filteredData = allSubjectOfTeacher.filter((row) =>
+  [row.name].some((value) =>
+  value.toLowerCase().includes(filterText.toLowerCase())
+  )
+  );
+  const displayedData = filteredData.slice(
+    currentPage * rowsPerPage,
+    currentPage * rowsPerPage + rowsPerPage
+  );
+
   const handleAlertClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
     }
     setOpenAlert(false);
   };
+
   const openModal1 = (subject_id, subject_name) => {
     setcurrSubjectDetails({ subject_id, subject_name });
     setopen1(true);
@@ -180,6 +217,20 @@ export default function index() {
             Subject and Syllabus
           </Typography>
         </Box>
+        <TextField
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position="start">
+              <IconButton>
+                <FeatherIcon icon="filter" />
+              </IconButton>
+            </InputAdornment>
+          ),
+        }}
+        label="Filter table"
+        value={filterText}
+        onChange={handleFilterTextChange}
+      />
         <TableContainer
           component={Paper}
           style={{ minHeight: "100vh", overflowX: "auto" }}
@@ -269,8 +320,8 @@ export default function index() {
               </TableRow>
             </TableHead>{" "}
             <TableBody>
-              {allSubjectOfTeacher.length > 0 &&
-                allSubjectOfTeacher.map((subject, idx) => (
+              {displayedData.length > 0 &&
+                displayedData.map((subject, idx) => (
                   <TableRow key={idx}>
                     <TableCell>
                       <Typography color="textSecondary" variant="h6">
@@ -349,6 +400,15 @@ export default function index() {
             </TableBody>
           </Table>
         </TableContainer>
+        <TablePagination
+        rowsPerPageOptions={[5, 10, 20, 40]}
+        component="div"
+        count={displayedData.length}
+        rowsPerPage={rowsPerPage}
+        page={currentPage}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
       </Box>
     </>
   );
