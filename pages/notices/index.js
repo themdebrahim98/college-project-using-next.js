@@ -7,6 +7,7 @@ import { Grid, Button,
   TableHead,
   TableRow,
   Chip,
+  TableContainer,
 } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import BaseCard from "../../src/components/baseCard/BaseCard";
@@ -46,38 +47,17 @@ function notices() {
     };
     fetchNotice();
   },[]);
-  // console.log(Cookies.get("access_key"));
  
-  // const products = [
-  //   {
-  //     id: "1",
-  //     title: "Sunil Joshi",
-  //     views: "Web Designer",
-  //   },
-  //   {
-  //     id: "2",
-  //     title: "Sunil Joshi",
-  //     views: "Web Designer",
-  //   },
-  //   {
-  //     id: "3",
-  //     title: "Sunil Joshi",
-  //     views: "Web Designer",
-  //   },
-  //   {
-  //     id: "4",
-  //     title: "Sunil Joshi",
-  //     views: "Web Designer",
-  //   },
-  // ];
   return (
+    
     <BaseCard
       title="Notice List"
       
       button={data.userData.user_data.type=='teacher' && data.userData.user_data.is_hod == 1?"true":"false"}
       buttonData={btnData}
-      sx={{ overFlow: "scroll" }}
+      // sx={{ overFlow: "scroll" }}
     >
+      <TableContainer sx={{overflow:'auto'}}>
       <Table
           aria-label="simple table"
           sx={{
@@ -174,6 +154,7 @@ function notices() {
             ))}
           </TableBody>
         </Table>
+        </TableContainer>
     </BaseCard>
   );
 }

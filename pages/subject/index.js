@@ -16,8 +16,11 @@ import {
   MenuItem,
   InputLabel,
   TableContainer,
-  TablePagination
+  TablePagination,
+  InputAdornment,
+  IconButton
 } from "@mui/material";
+import FeatherIcon from 'feather-icons-react'
 import React, { useState, useEffect } from "react";
 import BaseCard from "../../src/components/baseCard/BaseCard";
 import { BASE_URL } from "../../commonVariable";
@@ -48,6 +51,8 @@ function subjectIndex() {
   const [loading, setloading] = useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(2);
   const [currentPage, setCurrentPage] = React.useState(0);
+  const [filterText, setFilterText] = useState("");
+
   const btnData = (
     <NextLink href="/subject/addSubject">
       <Button variant="contained" sx={{ ml: "auto" }}>
@@ -55,8 +60,16 @@ function subjectIndex() {
       </Button>
     </NextLink>
   );
-
-  const displayedData = allSubjects.slice(currentPage * rowsPerPage, currentPage * rowsPerPage + rowsPerPage);
+  const handleFilterTextChange = (event) => {
+    setFilterText(event.target.value);
+  };
+  
+  const filteredData = allSubjects.filter((row) =>
+  [row.name].some((value) =>
+  value.toLowerCase().includes(filterText.toLowerCase())
+  )
+  );
+  const displayedData = filteredData.slice(currentPage * rowsPerPage, currentPage * rowsPerPage + rowsPerPage);
   
   const handleChangePage = (event, newPage) => {
     setCurrentPage(newPage);
@@ -122,8 +135,27 @@ function subjectIndex() {
 
   return (
     <>
-      <TableContainer sx={{ overflow: "auto" }}>
+      <Box display='flex' gap={2} sx={{float:'left'}} justifyContent='flex-start'>
         {btnData}
+        <TextField
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position="start">
+              <IconButton>
+                <FeatherIcon icon="filter" />
+              </IconButton>
+            </InputAdornment>
+          ),
+        }}
+        label="Filter table"
+        value={filterText}
+        onChange={handleFilterTextChange}
+      />
+
+        </Box>
+      
+      <TableContainer sx={{ overflow: "auto" }}>
+      
       
           <Table
             aria-label="simple table"
@@ -353,7 +385,7 @@ function subjectIndex() {
       <TablePagination
         rowsPerPageOptions={[5, 10, 25]}
         component="div"
-        count={allSubjects.length}
+        count={displayedData  .length}
         rowsPerPage={rowsPerPage}
         page={currentPage}
         onPageChange={handleChangePage}

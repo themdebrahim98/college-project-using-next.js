@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Modal from "@mui/material/Modal";
-import { TextField } from "@mui/material";
+import { InputLabel, TextField } from "@mui/material";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import { styled } from "@mui/material/styles";
 import {
@@ -20,6 +20,7 @@ import {
   FormControl,
   Select,
   MenuItem,
+  TablePagination,
 } from "@mui/material";
 
 import BaseCard from "../../src/components/baseCard/BaseCard";
@@ -69,11 +70,26 @@ function teachers() {
   const [department_id, setdepartment_id] = useState("");
   const [course_id, setcourse_id] = useState("");
   const [selectedTeacherData, setselectedTeacherData] = useState([]);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [currentPage, setCurrentPage] = React.useState(0);
 
   const closePannel = (e) => {
     setOpen2(false);
   };
 
+  const displayedData = teacherDatas.slice(
+    currentPage * rowsPerPage,
+    currentPage * rowsPerPage + rowsPerPage
+  );
+
+  const handleChangePage = (event, newPage) => {
+    setCurrentPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setCurrentPage(0);
+  };
   const handleModal1Close1 = () => setOpen1(false);
   const handleModal1Close2 = () => setOpen2(false);
 
@@ -196,15 +212,21 @@ function teachers() {
               label="teacher Id"
               disabled
             />
-            <FormControl fullWidth>
+
+            <FormControl>
+              <InputLabel id="demo-simple-select-label2">
+                Please select course
+              </InputLabel>
               <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
+                labelId="demo-simple-select-label2"
+                id="demo-simple-select2"
                 value={course_id}
                 onChange={(e) => {
                   setcourse_id(e.target.value);
                 }}
               >
+               
+
                 {allCourses.length > 0 &&
                   allCourses.map((elm, idx) => {
                     return (
@@ -214,13 +236,16 @@ function teachers() {
                     );
                   })}
               </Select>
-
+            </FormControl>
+            <FormControl>
+              <InputLabel id="demo-simple-select1-label1">
+                Please select department
+              </InputLabel>
               <Select
-                sx={{ marginTop: "25px" }}
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
+              autoWidth={true}
+                labelId="demo-simple-select1-label1"
+                id="demo-simple-select1"
                 value={department_id}
-                label="Depertment"
                 onChange={(e) => {
                   setdepartment_id(e.target.value);
                 }}
@@ -234,15 +259,15 @@ function teachers() {
                     );
                   })}
               </Select>
-              <Button
-                onClick={updateHod}
-                type="submit"
-                variant="contained"
-                sx={{ marginTop: "25px" }}
-              >
-                Submit
-              </Button>
             </FormControl>
+            <Button
+              onClick={updateHod}
+              type="submit"
+              variant="contained"
+              sx={{ marginTop: "25px" }}
+            >
+              Submit
+            </Button>
           </Box>
         </Box>
       </Modal>
@@ -263,7 +288,6 @@ function teachers() {
                 justifyContent: "start",
                 position: "relative",
               }}
-              
             >
               <AccountCircle sx={{ color: "action.active", mr: 1, my: 0.5 }} />
 
@@ -419,10 +443,9 @@ function teachers() {
 
       {/* teacher table */}
       <TableContainer
-      component={Paper}
-      style={{ minHeight: '100vh', overflowX: "auto" }}
-    >
-      
+        component={Paper}
+        style={{ minHeight: "80vh", overflowX: "auto" }}
+      >
         <Table
           aria-label="simple table"
           sx={{
@@ -485,7 +508,7 @@ function teachers() {
             </TableRow>
           </TableHead>{" "}
           <TableBody>
-            {teacherDatas.map((teacher, idx) => (
+            {displayedData.map((teacher, idx) => (
               <TableRow key={idx}>
                 <TableCell>
                   <Typography
@@ -550,7 +573,7 @@ function teachers() {
                 </TableCell>
                 <TableCell>
                   <Typography color="textSecondary" variant="h6">
-                    {teacher.is_hod==1?"Yes":"No"}
+                    {teacher.is_hod == 1 ? "Yes" : "No"}
                   </Typography>
                 </TableCell>
                 <TableCell>
@@ -579,7 +602,16 @@ function teachers() {
             ))}
           </TableBody>
         </Table>
-        </TableContainer>
+      </TableContainer>
+      <TablePagination
+        rowsPerPageOptions={[5, 10, 20, 40]}
+        component="div"
+        count={teacherDatas.length}
+        rowsPerPage={rowsPerPage}
+        page={currentPage}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
 
       {/* pannel for teacher preview */}
       <Box>
