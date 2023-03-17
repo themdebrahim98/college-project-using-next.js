@@ -18,6 +18,11 @@ export const useMenu = (data) => {
     });
   } else {
     menuItem.push({
+      title: "Dashbaord",
+      icon: "home",
+      href: "/",
+    });
+    menuItem.push({
       title: "Students",
       icon:'users',
       href: "/student",
@@ -36,7 +41,7 @@ export const useMenu = (data) => {
       menuItem.push({
         title: "Subjects",
         icon:"clipboard",
-        href: "teacher/subject",
+        href: "/teacher/subject",
       });
     }
   }
