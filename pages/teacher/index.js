@@ -21,7 +21,10 @@ import {
   Select,
   MenuItem,
   TablePagination,
+  InputAdornment,
+  IconButton,
 } from "@mui/material";
+import FeatherIcon from "feather-icons-react";
 
 import BaseCard from "../../src/components/baseCard/BaseCard";
 import { BASE_URL } from "../../commonVariable";
@@ -70,17 +73,9 @@ function teachers() {
   const [department_id, setdepartment_id] = useState("");
   const [course_id, setcourse_id] = useState("");
   const [selectedTeacherData, setselectedTeacherData] = useState([]);
+  const [filterText, setFilterText] = useState("");
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [currentPage, setCurrentPage] = React.useState(0);
-
-  const closePannel = (e) => {
-    setOpen2(false);
-  };
-
-  const displayedData = teacherDatas.slice(
-    currentPage * rowsPerPage,
-    currentPage * rowsPerPage + rowsPerPage
-  );
 
   const handleChangePage = (event, newPage) => {
     setCurrentPage(newPage);
@@ -90,6 +85,25 @@ function teachers() {
     setRowsPerPage(parseInt(event.target.value, 10));
     setCurrentPage(0);
   };
+
+  const handleFilterTextChange = (event) => {
+    setFilterText(event.target.value);
+  };
+
+  const filteredData = teacherDatas.filter((row) =>
+    [row.first_name, row.last_name].some((value) =>
+      value.toLowerCase().includes(filterText.toLowerCase())
+    )
+  );
+  const displayedData = filteredData.slice(
+    currentPage * rowsPerPage,
+    currentPage * rowsPerPage + rowsPerPage
+  );
+
+  const closePannel = (e) => {
+    setOpen2(false);
+  };
+
   const handleModal1Close1 = () => setOpen1(false);
   const handleModal1Close2 = () => setOpen2(false);
 
@@ -225,8 +239,6 @@ function teachers() {
                   setcourse_id(e.target.value);
                 }}
               >
-               
-
                 {allCourses.length > 0 &&
                   allCourses.map((elm, idx) => {
                     return (
@@ -242,7 +254,7 @@ function teachers() {
                 Please select department
               </InputLabel>
               <Select
-              autoWidth={true}
+                autoWidth={true}
                 labelId="demo-simple-select1-label1"
                 id="demo-simple-select1"
                 value={department_id}
@@ -442,167 +454,184 @@ function teachers() {
       </Modal>
 
       {/* teacher table */}
-      <TableContainer
-        component={Paper}
-        style={{ minHeight: "80vh", overflowX: "auto" }}
-      >
-        <Table
-          aria-label="simple table"
-          sx={{
-            mt: 3,
-            whiteSpace: "nowrap",
+      <Box component={Paper}>
+        <TextField
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <IconButton>
+                  <FeatherIcon icon="filter" />
+                </IconButton>
+              </InputAdornment>
+            ),
           }}
-        >
-          <TableHead>
-            <TableRow>
-              <TableCell>
-                <Typography color="textSecondary" variant="h6">
-                  Id
-                </Typography>
-              </TableCell>
-              <TableCell>
-                <Typography color="textSecondary" variant="h6">
-                  Teacher Id
-                </Typography>
-              </TableCell>
-              <TableCell>
-                <Typography color="textSecondary" variant="h6">
-                  First Name
-                </Typography>
-              </TableCell>
-              <TableCell>
-                <Typography color="textSecondary" variant="h6">
-                  last_name
-                </Typography>
-              </TableCell>
-              <TableCell>
-                <Typography color="textSecondary" variant="h6">
-                  gender
-                </Typography>
-              </TableCell>
-              <TableCell>
-                <Typography color="textSecondary" variant="h6">
-                  Email Address
-                </Typography>
-              </TableCell>
-              <TableCell>
-                <Typography color="textSecondary" variant="h6">
-                  Phone Number
-                </Typography>
-              </TableCell>
-              <TableCell>
-                <Typography color="textSecondary" variant="h6">
-                  {` Hod(yes/no)`}
-                </Typography>
-              </TableCell>
-              <TableCell>
-                <Typography color="textSecondary" variant="h6">
-                  Make Hod
-                </Typography>
-              </TableCell>
-              <TableCell>
-                <Typography color="textSecondary" variant="h6">
-                  Preview{" "}
-                </Typography>
-              </TableCell>
-            </TableRow>
-          </TableHead>{" "}
-          <TableBody>
-            {displayedData.map((teacher, idx) => (
-              <TableRow key={idx}>
-                <TableCell>
-                  <Typography
-                    sx={{
-                      fontSize: "15px",
-                      fontWeight: "500",
-                    }}
-                  >
-                    {teacher.id}
-                  </Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography
-                    sx={{
-                      fontSize: "15px",
-                      fontWeight: "500",
-                    }}
-                  >
-                    {teacher.teacher_id}
-                  </Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography
-                    sx={{
-                      fontSize: "15px",
-                      fontWeight: "500",
-                    }}
-                  >
-                    {teacher.first_name}
-                  </Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography
-                    sx={{
-                      fontSize: "15px",
-                      fontWeight: "500",
-                    }}
-                  >
-                    {teacher.last_name}
-                  </Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography
-                    sx={{
-                      fontSize: "15px",
-                      fontWeight: "500",
-                    }}
-                  >
-                    {teacher.gender}
-                  </Typography>
-                </TableCell>
+          label="Filter table"
+          value={filterText}
+          onChange={handleFilterTextChange}
+        />
 
+        <TableContainer
+          component={Paper}
+          style={{ minHeight: "80vh", overflowX: "auto" }}
+        >
+          <Table
+            aria-label="simple table"
+            sx={{
+              mt: 3,
+              whiteSpace: "nowrap",
+            }}
+          >
+            <TableHead>
+              <TableRow>
                 <TableCell>
                   <Typography color="textSecondary" variant="h6">
-                    {teacher.email_address}
+                    Id
                   </Typography>
                 </TableCell>
                 <TableCell>
                   <Typography color="textSecondary" variant="h6">
-                    {teacher.phone_number}
+                    Teacher Id
                   </Typography>
                 </TableCell>
                 <TableCell>
                   <Typography color="textSecondary" variant="h6">
-                    {teacher.is_hod == 1 ? "Yes" : "No"}
+                    First Name
                   </Typography>
                 </TableCell>
                 <TableCell>
-                  <Button
-                    onClick={() => {
-                      handleModal1(teacher.teacher_id);
-                    }}
-                    color="secondary"
-                    variant="contained"
-                  >
+                  <Typography color="textSecondary" variant="h6">
+                    last_name
+                  </Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography color="textSecondary" variant="h6">
+                    gender
+                  </Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography color="textSecondary" variant="h6">
+                    Email Address
+                  </Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography color="textSecondary" variant="h6">
+                    Phone Number
+                  </Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography color="textSecondary" variant="h6">
+                    {` Hod(yes/no)`}
+                  </Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography color="textSecondary" variant="h6">
                     Make Hod
-                  </Button>
+                  </Typography>
                 </TableCell>
                 <TableCell>
-                  <Button
-                    onClick={() => {
-                      handleModal2(teacher);
-                    }}
-                    color="secondary"
-                    variant="contained"
-                  >
-                    Preview
-                  </Button>
+                  <Typography color="textSecondary" variant="h6">
+                    Preview{" "}
+                  </Typography>
                 </TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+            </TableHead>{" "}
+            <TableBody>
+              {displayedData.map((teacher, idx) => (
+                <TableRow key={idx}>
+                  <TableCell>
+                    <Typography
+                      sx={{
+                        fontSize: "15px",
+                        fontWeight: "500",
+                      }}
+                    >
+                      {teacher.id}
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography
+                      sx={{
+                        fontSize: "15px",
+                        fontWeight: "500",
+                      }}
+                    >
+                      {teacher.teacher_id}
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography
+                      sx={{
+                        fontSize: "15px",
+                        fontWeight: "500",
+                      }}
+                    >
+                      {teacher.first_name}
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography
+                      sx={{
+                        fontSize: "15px",
+                        fontWeight: "500",
+                      }}
+                    >
+                      {teacher.last_name}
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography
+                      sx={{
+                        fontSize: "15px",
+                        fontWeight: "500",
+                      }}
+                    >
+                      {teacher.gender}
+                    </Typography>
+                  </TableCell>
+
+                  <TableCell>
+                    <Typography color="textSecondary" variant="h6">
+                      {teacher.email_address}
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography color="textSecondary" variant="h6">
+                      {teacher.phone_number}
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography color="textSecondary" variant="h6">
+                      {teacher.is_hod == 1 ? "Yes" : "No"}
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Button
+                      onClick={() => {
+                        handleModal1(teacher.teacher_id);
+                      }}
+                      color="secondary"
+                      variant="contained"
+                    >
+                      Make Hod
+                    </Button>
+                  </TableCell>
+                  <TableCell>
+                    <Button
+                      onClick={() => {
+                        handleModal2(teacher);
+                      }}
+                      color="secondary"
+                      variant="contained"
+                    >
+                      Previews
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Box>
       <TablePagination
         rowsPerPageOptions={[5, 10, 20, 40]}
         component="div"

@@ -89,8 +89,8 @@ function index() {
             width="100%"
           />
         </Grid>
-        <Grid item xs={12} lg={2}></Grid>
-        <Grid item xs={12} lg={8} sx={{ mt: 2 }}>
+        <Grid item xs={12} lg={4}></Grid>
+        <Grid item xs={12} lg={4} sx={{ mt: 2 }}>
           <BaseCard title="Login" titleSize="h1">
             <Stack spacing={3}>
               <TextField
@@ -143,7 +143,7 @@ function index() {
             </Grid>
           </BaseCard>
         </Grid>
-        <Grid item xs={12} lg={2}></Grid>
+        <Grid item xs={12} lg={4}></Grid>
       </Grid>
     </Box>
   );

@@ -52,7 +52,7 @@ function notices() {
     <BaseCard
       title="Notice List"
       
-      button={data.userData.user_data.type=='teacher' && data.userData.user_data.is_hod == 1?"true":"false"}
+      button={data&& data.userData?.user_data?.type=='teacher' && data.userData?.user_data?.is_hod == 1?"true":"false"}
       buttonData={btnData}
       // sx={{ overFlow: "scroll" }}
     >
