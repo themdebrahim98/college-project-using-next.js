@@ -12,7 +12,7 @@ import { Grid, Button,
 import React, { useState, useEffect } from "react";
 import BaseCard from "../../src/components/baseCard/BaseCard";
 import { BASE_URL } from "../../commonVariable";
-import Link from "next/Link";
+import Link from "next/link";
 import Cookies from "js-cookie";
 import axios from "axios";
 import { useSelector } from 'react-redux';
