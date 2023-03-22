@@ -22,7 +22,7 @@ import {
   TextField
 } from "@mui/material";
 
-import NextLink from "next/link";
+import Link from "next/link";
 import BaseCard from "../../src/components/baseCard/BaseCard";
 import Cookies from "js-cookie";
 import axios from "axios";

@@ -1,12 +1,11 @@
 import React from "react";
-import NextLink from "next/link";
+import Link from "next/link";
 import PropTypes from "prop-types";
 import {
   Box,
   Drawer,
   useMediaQuery,
   List,
-  Link,
   Button,
   Typography,
   ListItem,
@@ -47,7 +46,7 @@ const Sidebar = ({ isMobileSidebarOpen, onSidebarClose, isSidebarOpen }) => {
         <List>
           {Menuitems.map((item, index) => (
             <List component="li" disablePadding key={item.title}>
-              <NextLink href={item.href}>
+              <Link href={item.href} style={{color:'inherit', textDecoration:'none'}} >
                 <ListItem
                   onClick={() => handleClick(index)}
                   button
@@ -76,7 +75,7 @@ const Sidebar = ({ isMobileSidebarOpen, onSidebarClose, isSidebarOpen }) => {
                     {item.title}
                   </ListItemText>
                 </ListItem>
-              </NextLink>
+              </Link>
             </List>
           ))}
         </List>

@@ -24,7 +24,7 @@ import FeatherIcon from 'feather-icons-react'
 import React, { useState, useEffect } from "react";
 import BaseCard from "../../src/components/baseCard/BaseCard";
 import { BASE_URL } from "../../commonVariable";
-import NextLink from "next/Link";
+import Link from "next/Link";
 import Cookies from "js-cookie";
 import axios from "axios";
 import { useSelector } from "react-redux";
@@ -54,11 +54,11 @@ function subjectIndex() {
   const [filterText, setFilterText] = useState("");
 
   const btnData = (
-    <NextLink href="/subject/addSubject">
+    <Link style={{color:'inherit', textDecoration:'none'}} href="/subject/addSubject">
       <Button variant="contained" sx={{ ml: "auto" }}>
         Add Subject
       </Button>
-    </NextLink>
+    </Link>
   );
   const handleFilterTextChange = (event) => {
     setFilterText(event.target.value);

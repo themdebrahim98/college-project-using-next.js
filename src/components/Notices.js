@@ -19,7 +19,7 @@ import {
   Button,
   Divider,
 } from "@mui/material";
-import NextLink from "next/link";
+import Link from "next/link";
 import { BASE_URL } from "../../commonVariable";
 import Cookies from "js-cookie";
 import axios from "axios";
@@ -46,19 +46,19 @@ function Notices() {
   }, []);
   const btnData = (
     <>
-      <NextLink href="/notices">
+      <Link style={{color:"inherit", textDecoration:'none'}} href="/notices">
         <Button variant="contained" sx={{ ml: "auto" }}>
           View all
         </Button>
-      </NextLink>
+      </Link>
       <Divider/>
-      {/* <NextLink href="https://course.ccs.neu.edu/cs5100f11/resources/jakkula.pdf">
+      {/* <Link href="https://course.ccs.neu.edu/cs5100f11/resources/jakkula.pdf">
         <a target="_blank">
           <Button variant="contained" sx={{ ml: "auto" }}>
             download
           </Button>
         </a>
-      </NextLink> */}
+      </Link> */}
     </>
   );
 
@@ -95,9 +95,9 @@ function Notices() {
                 fontSize: "14px",
               }}
             >
-              <NextLink href={"/notices/" + activity.id}>
+              <Link legacyBehavior  href={"/notices/" + activity.id}>
                 <a style={{ textDecoration: "none" }}>{activity.title}</a>
-              </NextLink>
+              </Link>
             </TimelineContent>
           </TimelineItem>
         ))}

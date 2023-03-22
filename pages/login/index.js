@@ -3,12 +3,11 @@ import {
   Stack,
   TextField,
   Button,
-  IconButton,
   Typography,
   Box,
 } from "@mui/material";
 
-import { Container } from "@mui/system";
+
 import React, { useState } from "react";
 import BaseCard from "../../src/components/baseCard/BaseCard";
 import { loginUser } from "../../redux/slices/userSlice";
@@ -16,8 +15,8 @@ import { useDispatch } from "react-redux";
 import { useRouter } from "next/router";
 import { useCookies } from "react-cookie";
 import axios from "axios";
-import NextLink from "next/link";
-import { HowToReg, Login } from "@mui/icons-material";
+import Link from "next/link";
+import {  Login } from "@mui/icons-material";
 
 const style = {
   background: "rgb(238,174,202)",
@@ -123,11 +122,11 @@ function index() {
               mb={2}
             >
               <Typography>Are you a student?</Typography>
-              <NextLink href="/student/studentSignup">
+              <Link href="/student/studentSignup" style={{color:"inherit", textDecoration:'none'}}>
                 <Button variant="contained" color="warning" size="small">
                   Register here
                 </Button>
-              </NextLink>
+              </Link>
             </Box>
 
             <Grid item xs={12} sx={{ mt: 4 }} lg={6}>

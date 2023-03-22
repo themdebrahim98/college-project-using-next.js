@@ -84,7 +84,7 @@ function viewNotice() {
                   </Typography>
                 {/* </Item2> */}
                 {/* <Item2> */}
-                <NexLink href={BASE_URL+"download_notice_by_id?notice_id="+elment.id}>
+                <NexLink legacyBehavior href={BASE_URL+"download_notice_by_id?notice_id="+elment.id}>
                 <a target="_blank" style={{textDecoration: 'none'}}><Button variant="contained" color="success">
                     {" "}
                     <FeatherIcon icon="download-cloud" width="20" height="20" />

@@ -12,7 +12,7 @@ import { Grid, Button,
 import React, { useState, useEffect } from "react";
 import BaseCard from "../../src/components/baseCard/BaseCard";
 import { BASE_URL } from "../../commonVariable";
-import NextLink from "next/Link";
+import Link from "next/Link";
 import Cookies from "js-cookie";
 import axios from "axios";
 import { useSelector } from 'react-redux';
@@ -20,15 +20,16 @@ import { AddCircle } from "@mui/icons-material";
 
 
 
-function notices() {
+function notices({token}) {
+  console.log(token,'check')
   const data = useSelector((store)=>store.user);
   const [noticeData, setnoticeData] = useState([]);
   const btnData = (
-    <NextLink href="/notices/addNotice">
+    <Link style={{color:"inherit", textDecoration:'none'}} href="/notices/addNotice">
       <Button variant="contained" startIcon={<AddCircle/>} sx={{ ml: "auto",fontWeight:"bold" }}>
         Add Notice
       </Button>
-    </NextLink>
+    </Link>
   );
   useEffect(() => {
      const token = Cookies.get("access_key");
@@ -145,7 +146,7 @@ function notices() {
                     }}
                   >
                     <Box>
-                      <NextLink href={"/notices/"+item.id}><Button variant="contained" color="success" size="small">View</Button></NextLink>
+                      <Link href={"/notices/"+item.id}><Button variant="contained" color="success" size="small">View</Button></Link>
                     </Box>
                   </Box>
                 </TableCell>
@@ -159,3 +160,5 @@ function notices() {
 }
 
 export default notices;
+
+
