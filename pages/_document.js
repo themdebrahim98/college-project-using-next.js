@@ -11,11 +11,13 @@ export default class MyDocument extends Document {
         <Head>
           <link href="https://upload.wikimedia.org/wikipedia/en/thumb/3/37/Maulana_Abul_Kalam_Azad_University_of_Technology_Logo.svg/1200px-Maulana_Abul_Kalam_Azad_University_of_Technology_Logo.svg.png" rel="shortcut icon"/>
           {/* PWA primary color */}
-          <meta name="theme-color" content={theme.palette.primary.main} />
+          <meta name="theme-color" content="#5E5EFC" />
           <link
             rel="stylesheet"
             href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
           />
+        <link rel="manifest" href='/manifest.json'/>
+        <link rel="apple-touch-icon" href='/icon.png'/>
         </Head>
         <body>
           <Main />
