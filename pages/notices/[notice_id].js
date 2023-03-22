@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/dist/client/router";
 import BaseCard from "../../src/components/baseCard/BaseCard";
 import { styled } from "@mui/material/styles";
-import { BASE_URL } from "../../commonVariable";
+
 import {
   Grid,
   Button,
@@ -42,7 +42,7 @@ function viewNotice() {
     const token = Cookies.get("access_key");
     const getNotice = async () => {
       const res = await axios.post(
-        `${BASE_URL}get_notice_by_id`,
+        `${process.env.NEXT_PUBLIC_BASE_URL}get_notice_by_id`,
         { notice_id: noticeId },
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -84,7 +84,7 @@ function viewNotice() {
                   </Typography>
                 {/* </Item2> */}
                 {/* <Item2> */}
-                <NexLink legacyBehavior href={BASE_URL+"download_notice_by_id?notice_id="+elment.id}>
+                <NexLink legacyBehavior href={process.env.NEXT_PUBLIC_BASE_URL+"download_notice_by_id?notice_id="+elment.id}>
                 <a target="_blank" style={{textDecoration: 'none'}}><Button variant="contained" color="success">
                     {" "}
                     <FeatherIcon icon="download-cloud" width="20" height="20" />

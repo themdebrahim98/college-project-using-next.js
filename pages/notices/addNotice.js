@@ -17,7 +17,6 @@ import {
 import { styled } from "@mui/material/styles";
 import NexLink from "next/link";
 import axios from "axios";
-import { BASE_URL } from "../../commonVariable";
 import Cookies from "js-cookie";
 import { useRouter } from "next/dist/client/router";
 
@@ -47,7 +46,7 @@ function addNotice() {
           " " +
           user.userData.user_data.last_name,
       };
-      const res = await axios.post(`${BASE_URL}add_notice`, data, {
+      const res = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}add_notice`, data, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setopenAlert(true)

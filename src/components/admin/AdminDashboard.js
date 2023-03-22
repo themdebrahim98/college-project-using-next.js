@@ -14,7 +14,6 @@ import {
 import NextLink from "next/link";
 import Notices from "../Notices";
 import DataCount from "../DataCount";
-import { BASE_URL } from "../../../commonVariable";
 import Cookies from "js-cookie";
 import axios from "axios";
 import { useSelector } from "react-redux";

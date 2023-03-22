@@ -16,7 +16,6 @@ import {
 } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import BaseCard from "../../src/components/baseCard/BaseCard";
-import { BASE_URL } from "../../commonVariable";
 import Link from "next/link";
 import Cookies from "js-cookie";
 import axios from "axios";
@@ -70,12 +69,12 @@ function addSubject() {
 
   useEffect(() => {
     const fetchAllDepertment = async () => {
-      const res2 = await axios.post(`${BASE_URL}get_departments`, null);
+      const res2 = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}get_departments`, null);
       setallDepertments([...res2.data.data.departments]);
     };
 
     const fetchALlCourse = async () => {
-      const res2 = await axios.post(`${BASE_URL}get_courses`, null);
+      const res2 = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}get_courses`, null);
       setallCourses([...res2.data.data.courses]);
     };
     fetchAllDepertment();
@@ -97,7 +96,7 @@ function addSubject() {
       setOpenAlert(true);
       setAlertMsg("please select year");
     }
-    const res = await axios.post(`${BASE_URL}add_subject`,subjectDetails,{
+    const res = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}add_subject`,subjectDetails,{
       headers:{Authorization:`Bearer ${Cookies.get("access_key")}`}
     });
     setLoading(false)

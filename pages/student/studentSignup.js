@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { BASE_URL } from "../../commonVariable";
 import {
   Box,
   TextField,
@@ -138,7 +137,7 @@ const StudentRegister = () => {
     return async () => {
       axios({
         method: "POST",
-        url: `${BASE_URL}student_signup`,
+        url: `${process.env.NEXT_PUBLIC_BASE_URL}student_signup`,
         data: _payload,
       })
         .then((response) => {
@@ -159,7 +158,7 @@ const StudentRegister = () => {
       studentDetails.last_name !=""
     ) {
       setLoadingEmailVerify(true);
-      const res = await axios.post(`${BASE_URL}verify_mail`, {
+      const res = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}verify_mail`, {
         first_name: studentDetails.first_name,
         last_name: studentDetails.last_name,
         email_address: studentDetails.email_address,

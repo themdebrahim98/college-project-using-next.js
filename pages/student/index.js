@@ -17,7 +17,6 @@ import {
 import FeatherIcon from "feather-icons-react";
 import Cookies from "js-cookie";
 import axios from "axios";
-import { BASE_URL } from "../../commonVariable";
 
 function pendingStudent() {
   const [allApprovedStudents, setallApprovedStudents] = useState([]);
@@ -54,7 +53,7 @@ function pendingStudent() {
 
     const fetchAllApprovedStudents = async () => {
       try {
-        const res = await axios.post(`${BASE_URL}get_all_students`, null, {
+        const res = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}get_all_students`, null, {
           headers: { Authorization: `Bearer ${token}` },
         });
         console.log(res.data);

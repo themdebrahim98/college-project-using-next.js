@@ -26,7 +26,6 @@ import Link from "next/link";
 import BaseCard from "../../src/components/baseCard/BaseCard";
 import Cookies from "js-cookie";
 import axios from "axios";
-import { BASE_URL } from "../../commonVariable";
 import FeatherIcon from "feather-icons-react";
 function pendingStudent() {
   const [allPendingStudents, setallPendingStudents] = useState([]);
@@ -73,7 +72,7 @@ function pendingStudent() {
     const token = Cookies.get("access_key");
     try {
       const res = await axios.post(
-        `${BASE_URL}approve_student`,
+        `${process.env.NEXT_PUBLIC_BASE_URL}approve_student`,
         {
           student_id,
           first_name,
@@ -100,7 +99,7 @@ function pendingStudent() {
     const fetchallPendingStudents = async () => {
       try {
         const res = await axios.post(
-          `${BASE_URL}get_nonapproved_students`,
+          `${process.env.NEXT_PUBLIC_BASE_URL}get_nonapproved_students`,
           null,
           {
             headers: { Authorization: `Bearer ${token}` },
