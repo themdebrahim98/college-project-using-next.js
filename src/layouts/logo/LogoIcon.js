@@ -5,9 +5,9 @@ import LogoMakaut from "../../../assets/images/logos/logo_makaut.png";
 
 const LogoIcon = () => {
   return (
-    <Link href="/">
-      <Image src={LogoMakaut} alt={LogoMakaut} />
-    </Link>
+  
+      <Image width={200} style={{textAlign:'center'}} src={LogoMakaut} alt={LogoMakaut} />
+    
   );
 };
 

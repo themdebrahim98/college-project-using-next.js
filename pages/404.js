@@ -11,7 +11,7 @@ import {
 import Image from "next/image";
 import ErrorImage from "../assets/images/backgrounds/error_404.png";
 import FeatherIcon from "feather-icons-react";
-import NextLink from "next/link"
+import Link from "next/link"
 export default function Error() {
   return (
     <Container sx={{ height: "100%" }}>
@@ -33,14 +33,14 @@ export default function Error() {
                 cook together with your guests. Add 1 cup of frozen peas along
                 with the mussels, if you like.
               </Typography> */}
-              <NextLink href="/"><Button variant="contained" sx={{ mt: 2 }}>
+              <Link style={{color:"inherit", textDecoration:'none'}} href="/"><Button variant="contained" sx={{ mt: 2 }}>
                 <FeatherIcon
                   icon='corner-up-left'
                   width="20"
                   height="20"
                 />
                  Back
-              </Button></NextLink>
+              </Button></Link>
             </CardContent>
           </Card>
         </Grid>

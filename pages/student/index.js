@@ -60,7 +60,7 @@ function pendingStudent() {
         console.log(res.data);
         setallApprovedStudents(res.data.data.students);
       } catch (error) {
-        alert(err);
+        alert(error);
       }
     };
 
