@@ -130,7 +130,7 @@ function teachers() {
     const token = Cookies.get("access_key");
 
     const fetchTeacher = async () => {
-      const res = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}get_all_teacher`, null, {
+      const res = await axios.post(`${process.env.BASE_URL}get_all_teacher`, null, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -143,7 +143,7 @@ function teachers() {
     };
 
     const fetchAllDepertment = async () => {
-      const res2 = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}get_departments`, null, {
+      const res2 = await axios.post(`${process.env.BASE_URL}get_departments`, null, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -153,7 +153,7 @@ function teachers() {
     };
 
     const fetchALlCourse = async () => {
-      const res2 = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}get_courses`, null, {
+      const res2 = await axios.post(`${process.env.BASE_URL}get_courses`, null, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
