@@ -22,6 +22,8 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { styled } from "@mui/material/styles";
 import { useRouter } from "next/dist/client/router";
+import NexLink from "next/link";
+import FeatherIcon from "feather-icons-react";
 
 const vertical = "top",
 horizontal = "right";
@@ -131,6 +133,13 @@ function addSubject() {
 
       <Item>
         <Grid container p={1} spacing={2}>
+        <Grid item xs={12} lg={12} sx={{ mb: 2 }} textAlign="start">
+          <Button variant="contained" onClick={() => router.back()}>
+            {" "}
+            <FeatherIcon icon="arrow-left" width="20" height="20" />
+            Back
+          </Button>
+      </Grid>
           <Grid item xs={12} lg={12} sx={{ mb: 2 }} textAlign="start">
             <Typography variant="h3" textAlign="start" color="">
               <b>Add subject</b>
@@ -239,7 +248,7 @@ function addSubject() {
           {/*  */}
         </Grid>
         <Button
-          sx={{ bgcolor: "primary" }}
+          sx={{ bgcolor: "primary",ml:1}}
           variant="contained"
           onClick={handleCreateSubject}
           disabled={loading}

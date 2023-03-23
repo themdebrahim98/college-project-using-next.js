@@ -132,7 +132,13 @@ function pendingStudent() {
 
   return (
     <Box component={Paper}>
+      <Box sx={{ padding: "15px", fontWeight: "900" }}>
+          <Typography sx={{ fontSize: "25px" }}>
+            Pending students
+          </Typography>
+        </Box>
     <TextField
+    sx={{p:1,float:'right'}}
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">

@@ -19,6 +19,7 @@ import {
   TablePagination,
   InputAdornment,
   IconButton,
+  Paper
 } from "@mui/material";
 import FeatherIcon from "feather-icons-react";
 import React, { useState, useEffect } from "react";
@@ -151,13 +152,14 @@ function subjectIndex() {
 
   return (
     <>
-    
+          <Box component={Paper}>
         <Box
           display="flex"
           alignItems="center"
-          justifyContent="start"
-          alignContent="center"
-          px={{ lg: 5, md: 2, sm: 0 }}
+          flexDirection={{ md: 'row', xs: 'column' }}
+          justifyContent={{md:'space-between',xs:'center'}}        
+          px={{ lg: 2, md: 2, sm: 0 }}
+          py={2}
           gap={2}
         >
           <TextField
@@ -173,6 +175,10 @@ function subjectIndex() {
             label="Filter table"
             value={filterText}
             onChange={handleFilterTextChange}
+            sx={{order: {
+              xs: "2",
+              md: "0",
+            }}}
           />
 
           <Link
@@ -181,7 +187,6 @@ function subjectIndex() {
           >
             <Button
               variant="contained"
-              sx={{ fontSize: { md: "18px", sm: "16px" } }}
             >
               Add Subject
             </Button>
@@ -403,6 +408,7 @@ function subjectIndex() {
                         }}
                         variant="contained"
                         color="success"
+                        size="small"
                       >
                         Assign Teacher
                       </Button>
@@ -486,6 +492,7 @@ function subjectIndex() {
           </Box>
         </Box>
       </Modal>
+      </Box>
     </>
   );
 }

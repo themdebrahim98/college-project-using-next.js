@@ -217,6 +217,7 @@ export default function index() {
           </Typography>
         </Box>
         <TextField
+        sx={{p:1,float:'right'}}
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
@@ -374,6 +375,7 @@ export default function index() {
                             color="secondary"
                             variant="contained"
                             startIcon={<UploadFile/>}
+                            size="small"
                           >
                             Upload
                           </Button>
@@ -387,7 +389,7 @@ export default function index() {
                           download
                           href={`${subject.syllabus?.fileData?.url}`}
                         >
-                          <Button color="success" variant="contained" startIcon={<FileDownload/>}>
+                          <Button color="success" variant="contained" size="small" startIcon={<FileDownload/>}>
                               Download
                           </Button>
                           </a>

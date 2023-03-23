@@ -460,8 +460,9 @@ function teachers() {
         <Box
           display="flex"
           alignItems="center"
-          
-          px={{ lg: 5, md: 2, sm: 0 }}
+          flexDirection={{ md: 'row', xs: 'column' }}
+          justifyContent={{md:'space-between',xs:'center'}}        
+          px={{ lg: 2, md: 2, sm: 0 }}
           py={2}
           gap={2}
         >
@@ -478,8 +479,12 @@ function teachers() {
             label="Filter table"
             value={filterText}
             onChange={handleFilterTextChange}
+            sx={{order: {
+              xs: "2",
+              md: "0",
+            }}}
           />
-            <Button  sx={{fontSize:{md:'25px', sm: '20px'}}} onClick={handleOpen} variant="contained">Add Teacher</Button>
+            <Button  onClick={handleOpen} variant="contained">Add Teacher</Button>
         </Box>
 
         <TableContainer

@@ -46,18 +46,10 @@ function Notices() {
   const btnData = (
     <>
       <Link style={{color:"inherit", textDecoration:'none'}} href="/notices">
-        <Button variant="contained" sx={{ ml: "25px" }}>
+        <Button variant="contained" sx={{}}>
           View all
         </Button>
       </Link>
-      <Divider/>
-      {/* <Link href="https://course.ccs.neu.edu/cs5100f11/resources/jakkula.pdf">
-        <a target="_blank">
-          <Button variant="contained" sx={{ ml: "auto" }}>
-            download
-          </Button>
-        </a>
-      </Link> */}
     </>
   );
 

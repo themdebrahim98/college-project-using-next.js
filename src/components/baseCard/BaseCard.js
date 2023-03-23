@@ -13,7 +13,7 @@ import {
 const BaseCard = (props) => {
   return (
     <Card>
-      <Box p={2} display="flex" alignItems="center">
+      <Box p={2} display="flex" alignItems="center" justifyContent='space-between'>
         <Typography sx={{fontWeight:700}} variant={props.titleSize !=""?props.titleSize:"h4"}>{props.title}</Typography>
         {props.button == "true" ? props.buttonData : ""
           }
