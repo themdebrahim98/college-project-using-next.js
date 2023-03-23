@@ -25,7 +25,7 @@ function notices({token}) {
   const [noticeData, setnoticeData] = useState([]);
   const btnData = (
     <Link style={{color:"inherit", textDecoration:'none'}} href="/notices/addNotice">
-      <Button variant="contained" startIcon={<AddCircle/>} sx={{ ml: "auto",fontWeight:"bold" }}>
+      <Button variant="contained" size="small" startIcon={<AddCircle/>} sx={{ ml: "auto",fontWeight:"bold" }}>
         Add Notice
       </Button>
     </Link>
@@ -145,7 +145,7 @@ function notices({token}) {
                     }}
                   >
                     <Box>
-                      <Link href={"/notices/"+item.id}><Button variant="contained" color="success" size="small">View</Button></Link>
+                      <Link style={{color:'inherit', textDecoration:'none'}} href={"/notices/"+item.id}><Button variant="contained" color="success" size="small">View</Button></Link>
                     </Box>
                   </Box>
                 </TableCell>

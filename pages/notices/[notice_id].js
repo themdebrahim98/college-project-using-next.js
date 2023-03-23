@@ -55,65 +55,73 @@ function viewNotice() {
 
   return (
     <Grid container p={2}>
-              {noticeData != undefined
-          ? noticeData.map((elment, idx) => (
-              <>
-      <Grid
-        item
-        xs={12}
-        lg={12}
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          p: 1,
-          mb:2,
-          bgcolor: "background.paper",
-          borderRadius: 1,
-        }}
-      >
-        {/* <Item2> */}
-          <Button variant="contained" onClick={() => router.back()}>
-            {" "}
-            <FeatherIcon icon="arrow-left" width="20" height="20" />
-            Back
-          </Button>
-        {/* </Item2> */}
-                {/* <Item2 > */}
-                  <Typography variant="h3" textAlign="end" color="">
-                    <b>Subject</b>: {elment.title}
-                  </Typography>
-                {/* </Item2> */}
-                {/* <Item2> */}
-                <NexLink legacyBehavior href={process.env.NEXT_PUBLIC_BASE_URL+"download_notice_by_id?notice_id="+elment.id}>
-                <a target="_blank" style={{textDecoration: 'none'}}><Button variant="contained" color="success">
-                    {" "}
-                    <FeatherIcon icon="download-cloud" width="20" height="20" />
-                    Download
-                  </Button></a>
-                  </NexLink>
-                {/* </Item2> */}
-                
-      </Grid>
+      {noticeData != undefined
+        ? noticeData.map((elment, idx) => (
+          <>
+            <Grid
+              item
+              xs={12}
+              lg={12}
+              sx={{
+                display: "flex",
+                p: 1,
+                mb: 2,
+                bgcolor: "background.paper",
+                borderRadius: 1,
+              }}
+              flexDirection={{ md: 'row', xs: 'column' }}
+              justifyContent={{ lg: "space-between", sm: "flex-start" }}
+              alignItems="center"
+              style={{"overflow-wrap":"anywhere"}}
+            >
+              {/* <Item2> */}
+              <Button variant="contained" size="small" sx={{mt:1,mb:1}} onClick={() => router.back()}>
+                {" "}
+                <FeatherIcon icon="arrow-left" width="20" height="20" />
+                Back
+              </Button>
+              {/* </Item2> */}
+              {/* <Item2 > */}
+              <Typography variant={{lg:'h3',xs:'h5'}} sx={{mt:1,
+                order: {
+                  xs: "3",
+                  lg: "0",
+                }
+              }} textAlign="center" color="">
+                <b>Subject</b>: {elment.title}
+              </Typography>
+              {/* </Item2> */}
+              {/* <Item2> */}
+              <NexLink legacyBehavior href={process.env.NEXT_PUBLIC_BASE_URL + "download_notice_by_id?notice_id=" + elment.id}>
+                <a target="_blank" style={{ textDecoration: 'none' }}><Button sx={{mt:1,mb:1}} variant="contained" size="small" color="success">
+                  {" "}
+                  <FeatherIcon icon="download-cloud" width="20" height="20" />
+                  Download
+                </Button></a>
+              </NexLink>
+              {/* </Item2> */}
 
-      {/* <Grid item xs={12} lg={6} sx={{ mb: 2 }} textAlign="start">
+            </Grid>
+
+            {/* <Grid item xs={12} lg={6} sx={{ mb: 2 }} textAlign="start">
         <Button variant="contained" onClick={() => router.back()}>
           {" "}
           <FeatherIcon icon="arrow-left" width="20" height="20" />
           Back
         </Button>
       </Grid> */}
-      <Grid item xs={12} lg={12} sx={{ mb: 2 }} textAlign="start">
-        <Box sx={{ width: "100%" }}>
-          <Stack spacing={2}>
-            <Item>
-              <p dangerouslySetInnerHTML={{ __html: elment.description }}></p>
-            </Item>
-          </Stack>
-        </Box>
-      </Grid>
-      </>
-      ))
-    : ""}
+            <Grid item xs={12} lg={12} sx={{ mb: 2 }} textAlign="start">
+              <Box sx={{ width: "100%" }}>
+                <Stack spacing={2}>
+                  <Item>
+                    <p dangerouslySetInnerHTML={{ __html: elment.description }}></p>
+                  </Item>
+                </Stack>
+              </Box>
+            </Grid>
+          </>
+        ))
+        : ""}
     </Grid>
   );
 }
