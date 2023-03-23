@@ -31,7 +31,7 @@ function Notices() {
     const token = Cookies.get("access_key");
 
     const fetchNotice = async () => {
-      const res = await axios.post(`${process.env.BASE_URL}get_all_notice`, null, {
+      const res = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}get_all_notice`, null, {
         headers: { Authorization: `Bearer ${token}` },
       });
 

@@ -72,7 +72,7 @@ function pendingStudent() {
     const token = Cookies.get("access_key");
     try {
       const res = await axios.post(
-        `${process.env.BASE_URL}approve_student`,
+        `${process.env.NEXT_PUBLIC_BASE_URL}approve_student`,
         {
           student_id,
           first_name,
@@ -99,7 +99,7 @@ function pendingStudent() {
     const fetchallPendingStudents = async () => {
       try {
         const res = await axios.post(
-          `${process.env.BASE_URL}get_nonapproved_students`,
+          `${process.env.NEXT_PUBLIC_BASE_URL}get_nonapproved_students`,
           null,
           {
             headers: { Authorization: `Bearer ${token}` },

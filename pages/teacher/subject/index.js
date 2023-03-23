@@ -107,7 +107,7 @@ export default function index() {
       try {
         setUploading(true);
         const res = await axios.post(
-          `${process.env.BASE_URL}update_subject_syllabus`,
+          `${process.env.NEXT_PUBLIC_BASE_URL}update_subject_syllabus`,
           {
             ...currSubjectDetails,
             upload_file: file,
@@ -148,7 +148,7 @@ export default function index() {
   useEffect(() => {
     const getSubjectOfTeacher = async () => {
       const res = await axios.post(
-        `${process.env.BASE_URL}get_teacher_subject_sylabus`,
+        `${process.env.NEXT_PUBLIC_BASE_URL}get_teacher_subject_sylabus`,
         { teacher_id: user.userData.user_data.teacher_id },
         { headers: { Authorization: `Bearer ${Cookies.get("access_key")}` } }
       );

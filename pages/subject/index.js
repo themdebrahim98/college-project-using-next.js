@@ -83,7 +83,7 @@ function subjectIndex() {
     setloading(true);
     const token = Cookies.get("access_key");
     const res = await axios.post(
-      `${process.env.BASE_URL}update_subject_teacher`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}update_subject_teacher`,
       {
         teacher_id: teacherId,
         subject_id: currSub,
@@ -98,7 +98,7 @@ function subjectIndex() {
   useEffect(() => {
     const token = Cookies.get("access_key");
     const getALLSubjects = async () => {
-      const res = await axios.post(`${process.env.BASE_URL}get_all_subject`, null, {
+      const res = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}get_all_subject`, null, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const allSubjects = res.data.data.subjects.map((elm, idx) => {
@@ -109,7 +109,7 @@ function subjectIndex() {
     };
 
     const getALLTeacher = async () => {
-      const res = await axios.post(`${process.env.BASE_URL}get_all_teacher`, null, {
+      const res = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}get_all_teacher`, null, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const allTeachers = res.data.data.teachers.map((elm, idx) => {
@@ -129,7 +129,7 @@ function subjectIndex() {
   const handleModal1Close1 = () => setopen1(false);
 
   const assignTeacher = async () => {
-    const res = await axios.post(`${process.env.BASE_URL}update_subject_teacher`, {});
+    const res = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}update_subject_teacher`, {});
   };
 
   return (

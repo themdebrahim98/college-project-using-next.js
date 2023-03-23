@@ -46,7 +46,7 @@ function addNotice() {
           " " +
           user.userData.user_data.last_name,
       };
-      const res = await axios.post(`${process.env.BASE_URL}add_notice`, data, {
+      const res = await axios.post(`https://test.diptodiagnostic.com/api/add_notice`, data, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setopenAlert(true)
