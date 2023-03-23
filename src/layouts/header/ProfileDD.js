@@ -2,7 +2,7 @@ import React from "react";
 import FeatherIcon from "feather-icons-react";
 import Image from "next/image";
 import userimg from "../../../assets/images/users/avatr.png";
-import NextLink from "next/link";
+import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../../redux/slices/userSlice";
 
@@ -10,7 +10,6 @@ import {
   Box,
   Menu,
   Typography,
-  Link,
   ListItemButton,
   List,
   ListItemText,
@@ -116,14 +115,15 @@ const ProfileDD = () => {
                 <ListItemText primary="Edit Profile" />
               </ListItemButton> */}
               <ListItemButton>
-                <NextLink href="/account">
+                <Link style={{color:'inherit', textDecoration:'none'}} href="/account">
                   <ListItemText primary="Account" />
-                </NextLink>
+          
+                </Link>
               </ListItemButton>
               <ListItemButton>
-                <NextLink href="/changePassword">
+                <Link style={{color:'inherit', textDecoration:'none'}}  href='/changePassword'>
                   <ListItemText primary="Change Password" />
-                </NextLink>
+                </Link>
               </ListItemButton>
               {/* <ListItemButton>
                 <ListItemText primary="My Settings" />
@@ -132,7 +132,7 @@ const ProfileDD = () => {
           </Box>
           <Divider />
           <Box p={2}>
-            <Link to="/">
+            <Link href="/" style={{color:'inherit', textDecoration:'none'}} > 
               <Button
                 onClick={handleLogOut}
                 fullWidth

@@ -46,7 +46,7 @@ function Notices() {
   const btnData = (
     <>
       <Link style={{color:"inherit", textDecoration:'none'}} href="/notices">
-        <Button variant="contained" sx={{ ml: "auto" }}>
+        <Button variant="contained" sx={{ ml: "25px" }}>
           View all
         </Button>
       </Link>
@@ -62,7 +62,7 @@ function Notices() {
   );
 
   return (
-    <BaseCard title="Recent Notices" button="true" buttonData={btnData}>
+    <BaseCard titleSize='h4' title="Recent Notices" sx={{fontSize:'25px'}} button="true" buttonData={btnData}>
       <Timeline
         sx={{
           p: 0,

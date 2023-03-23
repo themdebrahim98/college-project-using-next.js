@@ -18,9 +18,9 @@ import {
   TableContainer,
   TablePagination,
   InputAdornment,
-  IconButton
+  IconButton,
 } from "@mui/material";
-import FeatherIcon from 'feather-icons-react'
+import FeatherIcon from "feather-icons-react";
 import React, { useState, useEffect } from "react";
 import BaseCard from "../../src/components/baseCard/BaseCard";
 import Link from "next/link";
@@ -32,11 +32,11 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  minWidth: "50%",
+  width: { lg: "30%", xs: "80%", sm: "50%" },
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
-  p: 4,
+  p: 2,
   minHeight: "70%",
 };
 
@@ -53,7 +53,10 @@ function subjectIndex() {
   const [filterText, setFilterText] = useState("");
 
   const btnData = (
-    <Link style={{color:'inherit', textDecoration:'none'}} href="/subject/addSubject">
+    <Link
+      style={{ color: "inherit", textDecoration: "none" }}
+      href="/subject/addSubject"
+    >
       <Button variant="contained" sx={{ ml: "auto" }}>
         Add Subject
       </Button>
@@ -62,14 +65,17 @@ function subjectIndex() {
   const handleFilterTextChange = (event) => {
     setFilterText(event.target.value);
   };
-  
+
   const filteredData = allSubjects.filter((row) =>
-  [row.name].some((value) =>
-  value.toLowerCase().includes(filterText.toLowerCase())
-  )
+    [row.name].some((value) =>
+      value.toLowerCase().includes(filterText.toLowerCase())
+    )
   );
-  const displayedData = filteredData.slice(currentPage * rowsPerPage, currentPage * rowsPerPage + rowsPerPage);
-  
+  const displayedData = filteredData.slice(
+    currentPage * rowsPerPage,
+    currentPage * rowsPerPage + rowsPerPage
+  );
+
   const handleChangePage = (event, newPage) => {
     setCurrentPage(newPage);
   };
@@ -98,9 +104,13 @@ function subjectIndex() {
   useEffect(() => {
     const token = Cookies.get("access_key");
     const getALLSubjects = async () => {
-      const res = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}get_all_subject`, null, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_BASE_URL}get_all_subject`,
+        null,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
       const allSubjects = res.data.data.subjects.map((elm, idx) => {
         return elm;
       });
@@ -109,9 +119,13 @@ function subjectIndex() {
     };
 
     const getALLTeacher = async () => {
-      const res = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}get_all_teacher`, null, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_BASE_URL}get_all_teacher`,
+        null,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
       const allTeachers = res.data.data.teachers.map((elm, idx) => {
         return elm;
       });
@@ -129,262 +143,281 @@ function subjectIndex() {
   const handleModal1Close1 = () => setopen1(false);
 
   const assignTeacher = async () => {
-    const res = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}update_subject_teacher`, {});
+    const res = await axios.post(
+      `${process.env.NEXT_PUBLIC_BASE_URL}update_subject_teacher`,
+      {}
+    );
   };
 
   return (
     <>
-      <Box display='flex' gap={2} sx={{float:'left'}} justifyContent='flex-start'>
-        {btnData}
-        <TextField
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <IconButton>
-                <FeatherIcon icon="filter" />
-              </IconButton>
-            </InputAdornment>
-          ),
-        }}
-        label="Filter table"
-        value={filterText}
-        onChange={handleFilterTextChange}
-      />
+    
+        <Box
+          display="flex"
+          alignItems="center"
+          justifyContent="start"
+          alignContent="center"
+          px={{ lg: 5, md: 2, sm: 0 }}
+          gap={2}
+        >
+          <TextField
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <IconButton>
+                    <FeatherIcon icon="filter" />
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+            label="Filter table"
+            value={filterText}
+            onChange={handleFilterTextChange}
+          />
 
+          <Link
+            style={{ color: "inherit", textDecoration: "none" }}
+            href="/subject/addSubject"
+          >
+            <Button
+              variant="contained"
+              sx={{ fontSize: { md: "18px", sm: "16px" } }}
+            >
+              Add Subject
+            </Button>
+          </Link>
         </Box>
       
+
       <TableContainer sx={{ overflow: "auto" }}>
-      
-      
-          <Table
-            aria-label="simple table"
-            sx={{
-              mt: 3,
-              whiteSpace: "nowrap",
-            }}
-          >
-            <TableHead>
-              <TableRow>
+        <Table
+          aria-label="simple table"
+          sx={{
+            mt: 3,
+            whiteSpace: "nowrap",
+          }}
+        >
+          <TableHead>
+            <TableRow>
+              <TableCell>
+                <Typography color="textSecondary" variant="h6">
+                  Id
+                </Typography>
+              </TableCell>
+              <TableCell>
+                <Typography color="textSecondary" variant="h6">
+                  name
+                </Typography>
+              </TableCell>
+              <TableCell>
+                <Typography color="textSecondary" variant="h6">
+                  course_id
+                </Typography>
+              </TableCell>
+
+              <TableCell>
+                <Typography color="textSecondary" variant="h6">
+                  department_id
+                </Typography>
+              </TableCell>
+              <TableCell>
+                <Typography color="textSecondary" variant="h6">
+                  year
+                </Typography>
+              </TableCell>
+              <TableCell>
+                <Typography color="textSecondary" variant="h6">
+                  Semester
+                </Typography>
+              </TableCell>
+              <TableCell>
+                <Typography color="textSecondary" variant="h6">
+                  Assigned Teacher
+                </Typography>
+              </TableCell>
+              <TableCell>
+                <Typography color="textSecondary" variant="h6">
+                  Date
+                </Typography>
+              </TableCell>
+              <TableCell>
+                <Typography color="textSecondary" variant="h6">
+                  Assign Teacher
+                </Typography>
+              </TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {displayedData.map((item) => (
+              <TableRow key={item.id}>
                 <TableCell>
-                  <Typography color="textSecondary" variant="h6">
-                    Id
+                  <Typography
+                    sx={{
+                      fontSize: "15px",
+                      fontWeight: "500",
+                    }}
+                  >
+                    {item.id}
                   </Typography>
                 </TableCell>
                 <TableCell>
-                  <Typography color="textSecondary" variant="h6">
-                    name
-                  </Typography>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Box>
+                      <Typography
+                        sx={{
+                          fontSize: "13px",
+                        }}
+                      >
+                        {item.name}
+                      </Typography>
+                    </Box>
+                  </Box>
                 </TableCell>
                 <TableCell>
-                  <Typography color="textSecondary" variant="h6">
-                    course_id
-                  </Typography>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Box>
+                      <Typography
+                        sx={{
+                          fontSize: "13px",
+                        }}
+                      >
+                        {item.course_id}
+                      </Typography>
+                    </Box>
+                  </Box>
+                </TableCell>
+                <TableCell>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Box>
+                      <Typography
+                        sx={{
+                          fontSize: "13px",
+                        }}
+                      >
+                        {item.department_id}
+                      </Typography>
+                    </Box>
+                  </Box>
+                </TableCell>
+                <TableCell>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Box>
+                      <Typography
+                        sx={{
+                          fontSize: "13px",
+                        }}
+                      >
+                        {item.year}
+                      </Typography>
+                    </Box>
+                  </Box>
+                </TableCell>
+                <TableCell>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Box>
+                      <Typography
+                        sx={{
+                          fontSize: "13px",
+                        }}
+                      >
+                        {item.semester}
+                      </Typography>
+                    </Box>
+                  </Box>
                 </TableCell>
 
                 <TableCell>
-                  <Typography color="textSecondary" variant="h6">
-                    department_id
-                  </Typography>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Box>
+                      <Typography
+                        sx={{
+                          fontSize: "13px",
+                        }}
+                      >
+                        {item.assigned_teacher == null
+                          ? "N/A"
+                          : item.assigned_teacher}
+                      </Typography>
+                    </Box>
+                  </Box>
                 </TableCell>
                 <TableCell>
-                  <Typography color="textSecondary" variant="h6">
-                    year
-                  </Typography>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Box>
+                      <Typography
+                        sx={{
+                          fontSize: "13px",
+                        }}
+                      >
+                        {item.updated_at}
+                      </Typography>
+                    </Box>
+                  </Box>
                 </TableCell>
                 <TableCell>
-                  <Typography color="textSecondary" variant="h6">
-                    Semester
-                  </Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography color="textSecondary" variant="h6">
-                    Assigned Teacher
-                  </Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography color="textSecondary" variant="h6">
-                    Date
-                  </Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography color="textSecondary" variant="h6">
-                    Assign Teacher
-                  </Typography>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Box>
+                      <Button
+                        onClick={() => {
+                          handleModal1(item.id);
+                        }}
+                        variant="contained"
+                        color="success"
+                      >
+                        Assign Teacher
+                      </Button>
+                    </Box>
+                  </Box>
                 </TableCell>
               </TableRow>
-            </TableHead>
-            <TableBody>
-              {displayedData.map((item) => (
-                <TableRow key={item.id}>
-                  <TableCell>
-                    <Typography
-                      sx={{
-                        fontSize: "15px",
-                        fontWeight: "500",
-                      }}
-                    >
-                      {item.id}
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Box
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                      }}
-                    >
-                      <Box>
-                        <Typography
-                          sx={{
-                            fontSize: "13px",
-                          }}
-                        >
-                          {item.name}
-                        </Typography>
-                      </Box>
-                    </Box>
-                  </TableCell>
-                  <TableCell>
-                    <Box
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                      }}
-                    >
-                      <Box>
-                        <Typography
-                          sx={{
-                            fontSize: "13px",
-                          }}
-                        >
-                          {item.course_id}
-                        </Typography>
-                      </Box>
-                    </Box>
-                  </TableCell>
-                  <TableCell>
-                    <Box
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                      }}
-                    >
-                      <Box>
-                        <Typography
-                          sx={{
-                            fontSize: "13px",
-                          }}
-                        >
-                          {item.department_id}
-                        </Typography>
-                      </Box>
-                    </Box>
-                  </TableCell>
-                  <TableCell>
-                    <Box
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                      }}
-                    >
-                      <Box>
-                        <Typography
-                          sx={{
-                            fontSize: "13px",
-                          }}
-                        >
-                          {item.year}
-                        </Typography>
-                      </Box>
-                    </Box>
-                  </TableCell>
-                  <TableCell>
-                    <Box
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                      }}
-                    >
-                      <Box>
-                        <Typography
-                          sx={{
-                            fontSize: "13px",
-                          }}
-                        >
-                          {item.semester}
-                        </Typography>
-                      </Box>
-                    </Box>
-                  </TableCell>
-
-                  <TableCell>
-                    <Box
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                      }}
-                    >
-                      <Box>
-                        <Typography
-                          sx={{
-                            fontSize: "13px",
-                          }}
-                        >
-                          {item.assigned_teacher == null
-                            ? "N/A"
-                            : item.assigned_teacher}
-                        </Typography>
-                      </Box>
-                    </Box>
-                  </TableCell>
-                  <TableCell>
-                    <Box
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                      }}
-                    >
-                      <Box>
-                        <Typography
-                          sx={{
-                            fontSize: "13px",
-                          }}
-                        >
-                          {item.updated_at}
-                        </Typography>
-                      </Box>
-                    </Box>
-                  </TableCell>
-                  <TableCell>
-                    <Box
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                      }}
-                    >
-                      <Box>
-                        <Button
-                          onClick={() => {
-                            handleModal1(item.id);
-                          }}
-                          variant="contained"
-                          color="success"
-                        >
-                          Assign Teacher
-                        </Button>
-                      </Box>
-                    </Box>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        
+            ))}
+          </TableBody>
+        </Table>
       </TableContainer>
       <TablePagination
         rowsPerPageOptions={[5, 10, 25]}
         component="div"
-        count={displayedData  .length}
+        count={displayedData.length}
         rowsPerPage={rowsPerPage}
         page={currentPage}
         onPageChange={handleChangePage}

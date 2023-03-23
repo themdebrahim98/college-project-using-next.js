@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Modal from "@mui/material/Modal";
 import { InputLabel, TextField } from "@mui/material";
-import AccountCircle from "@mui/icons-material/AccountCircle";
 import { styled } from "@mui/material/styles";
 import {
   Typography,
@@ -41,11 +40,11 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  minWidth: "30%",
+  width:{lg:'30%', xs: '80%',sm:'50%'},
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
-  p: 4,
+  p: 2,
   minHeight: "70%",
 };
 
@@ -130,9 +129,13 @@ function teachers() {
     const token = Cookies.get("access_key");
 
     const fetchTeacher = async () => {
-      const res = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}get_all_teacher`, null, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_BASE_URL}get_all_teacher`,
+        null,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
 
       console.log(res.data.data.teachers, "teacher");
       const allTeachers = res.data.data.teachers.map((elm, idx) => {
@@ -143,21 +146,29 @@ function teachers() {
     };
 
     const fetchAllDepertment = async () => {
-      const res2 = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}get_departments`, null, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const res2 = await axios.post(
+        `${process.env.NEXT_PUBLIC_BASE_URL}get_departments`,
+        null,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       console.log(res2.data.data.departments);
       setallDepertments([...res2.data.data.departments]);
     };
 
     const fetchALlCourse = async () => {
-      const res2 = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}get_courses`, null, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const res2 = await axios.post(
+        `${process.env.NEXT_PUBLIC_BASE_URL}get_courses`,
+        null,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       console.log(res2.data.data.courses);
       setallCourses([...res2.data.data.courses]);
     };
@@ -193,11 +204,7 @@ function teachers() {
     console.log(inputs);
   };
 
-  const btnData = (
-    <Button variant="contained" sx={{ ml: "auto" }} onClick={handleOpen}>
-      Add Teacher
-    </Button>
-  );
+ 
   return (
     <>
       {/* make teacher as a hod modal */}
@@ -208,8 +215,8 @@ function teachers() {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style} gap={5} display="flex" flexDirection="column">
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            Make Teacher as a HOD
+          <Typography id="modal-modal-title" variant="h6" sx={{fontWeight:500, textAlign:"center"}} component="h2">
+            Makes Teacher As A HOD
           </Typography>
 
           <Box
@@ -282,15 +289,18 @@ function teachers() {
           </Box>
         </Box>
       </Modal>
+
       {/* teacher add modal */}
       <Modal
         open={open}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
+        sx={{width:{xs:'100vw'}}}
       >
         <Box sx={style} gap={5}>
-          <Box gap={2} width="100" component="form" onSubmit={handleSubmit}>
+          <Typography  sx={{textAlign:'center', fontWeight:800}}>Fills Teacher's Data</Typography>
+          <Box gap={2}  component="form" onSubmit={handleSubmit}>
             <Box
               sx={{
                 marginTop: "15px",
@@ -300,7 +310,6 @@ function teachers() {
                 position: "relative",
               }}
             >
-              <AccountCircle sx={{ color: "action.active", mr: 1, my: 0.5 }} />
 
               <TextField
                 onChange={handleChange}
@@ -322,7 +331,6 @@ function teachers() {
                 position: "relative",
               }}
             >
-              <AccountCircle sx={{ color: "action.active", mr: 1, my: 0.5 }} />
               <TextField
                 onChange={handleChange}
                 value={inputs.first_name}
@@ -343,7 +351,6 @@ function teachers() {
                 position: "relative",
               }}
             >
-              <AccountCircle sx={{ color: "action.active", mr: 1, my: 0.5 }} />
               <TextField
                 onChange={handleChange}
                 value={inputs.last_name}
@@ -364,7 +371,6 @@ function teachers() {
                 position: "relative",
               }}
             >
-              <AccountCircle sx={{ color: "action.active", mr: 1, my: 0.5 }} />
               <TextField
                 onChange={handleChange}
                 value={inputs.gender}
@@ -385,7 +391,6 @@ function teachers() {
                 position: "relative",
               }}
             >
-              <AccountCircle sx={{ color: "action.active", mr: 1, my: 0.5 }} />
               <TextField
                 onChange={handleChange}
                 value={inputs.phone_number}
@@ -407,7 +412,6 @@ function teachers() {
                 position: "relative",
               }}
             >
-              <AccountCircle sx={{ color: "action.active", mr: 1, my: 0.5 }} />
               <TextField
                 onChange={handleChange}
                 value={inputs.email_address}
@@ -429,7 +433,6 @@ function teachers() {
                 position: "relative",
               }}
             >
-              <AccountCircle sx={{ color: "action.active", mr: 1, my: 0.5 }} />
               <TextField
                 onChange={handleChange}
                 value={inputs.is_hod}
@@ -454,20 +457,30 @@ function teachers() {
 
       {/* teacher table */}
       <Box component={Paper}>
-        <TextField
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <IconButton>
-                  <FeatherIcon icon="filter" />
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
-          label="Filter table"
-          value={filterText}
-          onChange={handleFilterTextChange}
-        />
+        <Box
+          display="flex"
+          alignItems="center"
+          
+          px={{ lg: 5, md: 2, sm: 0 }}
+          py={2}
+          gap={2}
+        >
+          <TextField
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <IconButton>
+                    <FeatherIcon icon="filter" />
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+            label="Filter table"
+            value={filterText}
+            onChange={handleFilterTextChange}
+          />
+            <Button  sx={{fontSize:{md:'25px', sm: '20px'}}} onClick={handleOpen} variant="contained">Add Teacher</Button>
+        </Box>
 
         <TableContainer
           component={Paper}
@@ -646,7 +659,7 @@ function teachers() {
         {/* <Button variant="contained"> close</Button> */}
         <Drawer
           PaperProps={{
-            sx: { width: "40%", padding: "15px" },
+            sx: { width: {lg:'40%', md:'60%', xs: '100%'}, padding: "15px" },
           }}
           anchor="right"
           open={open2}
