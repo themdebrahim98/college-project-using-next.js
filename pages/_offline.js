@@ -9,7 +9,7 @@ import {
   Container,
 } from "@mui/material";
 import Image from "next/image";
-import ErrorImage from "../assets/images/backgrounds/error_404.png";
+import ErrorImage from "../assets/images/backgrounds/offline.png";
 import FeatherIcon from "feather-icons-react";
 import Link from "next/link";
 import { useRouter } from "next/dist/client/router";
@@ -27,9 +27,15 @@ export default function Error() {
               <Image
                 // loader={myLoader}
                 src={ErrorImage}
-                alt="Page not found"
+                alt="You Are Offline"
                 style={{width:'100%',height:'100%'}}
               />
+              {/* <Typography variant="h4">About Card</Typography>
+              <Typography variant="body1">
+                This impressive paella is a perfect party dish and a fun meal to
+                cook together with your guests. Add 1 cup of frozen peas along
+                with the mussels, if you like.
+              </Typography> */}
               <Button variant="contained" sx={{ mt: 2 }} onClick={() => router.back()}>
                 <FeatherIcon
                   icon='corner-up-left'

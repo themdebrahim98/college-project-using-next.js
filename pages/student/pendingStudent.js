@@ -389,8 +389,7 @@ function pendingStudent() {
           ))}
         </TableBody>
       </Table>
-    </TableContainer>
-    <TablePagination
+      <TablePagination
     rowsPerPageOptions={[5, 10, 20, 40]}
     component="div"
     count={displayedData.length}
@@ -399,6 +398,8 @@ function pendingStudent() {
     onPageChange={handleChangePage}
     onRowsPerPageChange={handleChangeRowsPerPage}
   />
+    </TableContainer>
+    
   </Box>
   );
 }

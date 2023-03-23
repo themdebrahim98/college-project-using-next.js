@@ -35,7 +35,6 @@ function Notices() {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      console.log(res.data.data.notices);
       const allNotices = res.data.data.notices.map((elm, idx) => {
         return elm;
       });
