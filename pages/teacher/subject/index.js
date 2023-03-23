@@ -233,7 +233,7 @@ export default function index() {
       />
         <TableContainer
           component={Paper}
-          style={{ minHeight: "100vh", overflowX: "auto" }}
+          style={{ minHeight: "100vh", overflowX: "auto",width:'100%' }}
         >
           <Table
             aria-label="simple table"
@@ -400,8 +400,7 @@ export default function index() {
                 ))}
             </TableBody>
           </Table>
-        </TableContainer>
-        <TablePagination
+          <TablePagination
         rowsPerPageOptions={[5, 10, 20, 40]}
         component="div"
         count={displayedData.length}
@@ -410,6 +409,7 @@ export default function index() {
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
+        </TableContainer>
       </Box>
     </>
   );

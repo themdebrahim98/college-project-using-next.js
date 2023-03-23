@@ -20,7 +20,7 @@ export default function MyApp(props) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   if (
     router.pathname == "/student/studentSignup" ||
-    router.pathname == "/login" || router.pathname=='/_error'
+    router.pathname == "/login" || router.pathname=='/404' || router.pathname=='/_offline'
   ){
     return (
       <Provider store={store}>

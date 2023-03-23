@@ -71,18 +71,17 @@ function addNotice() {
         </Alert>
       </Snackbar>
       <Grid item xs={12} lg={12} sx={{ mb: 2 }} textAlign="start">
-        <NexLink href="/notices">
-          <Button variant="contained">
-            {" "}
-            <FeatherIcon icon="arrow-left" width="20" height="20" />
-            Back
-          </Button>
-        </NexLink>{" "}
+      <Button variant="contained" size="small" sx={{mt:1,mb:1}} onClick={() => router.back()}>
+                {" "}
+                <FeatherIcon icon="arrow-left" width="20" height="20" />
+                Back
+              </Button>
         <Button
           variant="contained"
           color="success"
           onClick={handleSubmitNotice}
-          sx={{ float: "right" }}
+          sx={{ float: "right",mt:1,mb:1}}
+          size="small"
         >
           {" "}
           <FeatherIcon icon="save" width="20" height="20" />
@@ -105,9 +104,6 @@ function addNotice() {
                 fullWidth
               />
             </Item>
-            {console.log(title, "ebrahim")}
-
-            {console.log(editorData)}
             <Item>
               <Typography variant="h2" sx={{ mb: 2 }} color="#26c6da">
                 Notice Content

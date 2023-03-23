@@ -33,8 +33,6 @@ function viewNotice() {
     color: "",
   }));
   const router = useRouter();
-
-  console.log(router.back);
   const noticeId = router.query.notice_id;
   const [noticeData, setnoticeData] = useState([]);
   const [editorData, SeteditorData] = useState("");
