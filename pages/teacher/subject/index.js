@@ -217,6 +217,7 @@ export default function index() {
           </Typography>
         </Box>
         <TextField
+         size="small"
         sx={{p:1,float:'right'}}
         InputProps={{
           startAdornment: (

@@ -467,6 +467,7 @@ function teachers() {
           gap={2}
         >
           <TextField
+           size="small"
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">

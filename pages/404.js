@@ -9,7 +9,7 @@ import {
   Container,
 } from "@mui/material";
 import Image from "next/image";
-import ErrorImage from "../assets/images/backgrounds/error_404.png";
+import ErrorImage from "/public/static/images/backgrounds/error_404.png";
 import FeatherIcon from "feather-icons-react";
 import Link from "next/link";
 import { useRouter } from "next/dist/client/router";

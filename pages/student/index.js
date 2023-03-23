@@ -12,7 +12,7 @@ import {
   TextField,
   InputAdornment,
   IconButton,
-  TablePagination
+  TablePagination,
 } from "@mui/material";
 import FeatherIcon from "feather-icons-react";
 import Cookies from "js-cookie";
@@ -24,7 +24,6 @@ function pendingStudent() {
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [currentPage, setCurrentPage] = React.useState(0);
 
-
   const handleChangePage = (event, newPage) => {
     setCurrentPage(newPage);
   };
@@ -34,15 +33,14 @@ function pendingStudent() {
     setCurrentPage(0);
   };
 
-  
   const handleFilterTextChange = (event) => {
     setFilterText(event.target.value);
   };
-  
+
   const filteredData = allApprovedStudents.filter((row) =>
-  [row.first_name, row.last_name].some((value) =>
-  value.toLowerCase().includes(filterText.toLowerCase())
-  )
+    [row.first_name, row.last_name].some((value) =>
+      value.toLowerCase().includes(filterText.toLowerCase())
+    )
   );
   const displayedData = filteredData.slice(
     currentPage * rowsPerPage,
@@ -53,9 +51,13 @@ function pendingStudent() {
 
     const fetchAllApprovedStudents = async () => {
       try {
-        const res = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}get_all_students`, null, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const res = await axios.post(
+          `${process.env.NEXT_PUBLIC_BASE_URL}get_all_students`,
+          null,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
         console.log(res.data);
         setallApprovedStudents(res.data.data.students);
       } catch (error) {
@@ -65,15 +67,15 @@ function pendingStudent() {
 
     fetchAllApprovedStudents();
   }, []);
-  
+
   return (
-<Box component={Paper}><Box sx={{ padding: "15px", fontWeight: "900" }}>
-          <Typography sx={{ fontSize: "25px" }}>
-            Student List
-          </Typography>
-        </Box>
-        <TextField
-        sx={{p:1,float:'right'}}
+    <Box component={Paper}>
+      <Box sx={{ padding: "15px", fontWeight: "900" }}>
+        <Typography sx={{ fontSize: "25px" }}>Student List</Typography>
+      </Box>
+      <TextField
+        size="small"
+        sx={{ p: 1, float: "right" }}
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
@@ -87,111 +89,120 @@ function pendingStudent() {
         value={filterText}
         onChange={handleFilterTextChange}
       />
-    <TableContainer
-      component={Paper}
-      style={{ minHeight: "100vh", overflowX: "auto" }}
-    >
-      <Table
-        aria-label="simple table"
-        sx={{
-          p: 2,
-          whiteSpace: "nowrap",
-        }}
-        size="small"
+      <TableContainer
+        component={Paper}
+        style={{ minHeight: "100vh", overflowX: "auto" }}
       >
-        <TableHead sx={{fontWeight:"bold"}}>
-          <TableRow>
-            <TableCell>
-              <Typography variant="h6" sx={{ fontSize: "15px", color: "black" }}>Sl.no</Typography>
-            </TableCell>
-            <TableCell>
-              <Typography variant="h6" sx={{ fontSize: "15px", color: "black" }}>Reg. no.</Typography>
-            </TableCell>
-            <TableCell>
-              <Typography
-                sx={{ fontSize: "15px", color: "black" }}
-                variant="h6"
-              >
-                Full Name
-              </Typography>
-            </TableCell>
-            <TableCell>
-              <Typography
-                sx={{ fontSize: "15px", color: "black" }}
-                variant="h6"
-              >
-                DOB
-              </Typography>
-            </TableCell>
-            <TableCell>
-              <Typography
-                sx={{ fontSize: "15px", color: "black" }}
-                variant="h6"
-              >
-                Gender
-              </Typography>
-            </TableCell>
-            <TableCell>
-              <Typography
-                sx={{ fontSize: "15px", color: "black" }}
-                variant="h6"
-              >
-                Email
-              </Typography>
-            </TableCell>
-            <TableCell>
-              <Typography
-                sx={{ fontSize: "15px", color: "black" }}
-                variant="h6"
-              >
-                Phone No.
-              </Typography>
-            </TableCell>
+        <Table
+          aria-label="simple table"
+          sx={{
+            p: 2,
+            whiteSpace: "nowrap",
+          }}
+          size="small"
+        >
+          <TableHead sx={{ fontWeight: "bold" }}>
+            <TableRow>
+              <TableCell>
+                <Typography
+                  variant="h6"
+                  sx={{ fontSize: "15px", color: "black" }}
+                >
+                  Sl.no
+                </Typography>
+              </TableCell>
+              <TableCell>
+                <Typography
+                  variant="h6"
+                  sx={{ fontSize: "15px", color: "black" }}
+                >
+                  Reg. no.
+                </Typography>
+              </TableCell>
+              <TableCell>
+                <Typography
+                  sx={{ fontSize: "15px", color: "black" }}
+                  variant="h6"
+                >
+                  Full Name
+                </Typography>
+              </TableCell>
+              <TableCell>
+                <Typography
+                  sx={{ fontSize: "15px", color: "black" }}
+                  variant="h6"
+                >
+                  DOB
+                </Typography>
+              </TableCell>
+              <TableCell>
+                <Typography
+                  sx={{ fontSize: "15px", color: "black" }}
+                  variant="h6"
+                >
+                  Gender
+                </Typography>
+              </TableCell>
+              <TableCell>
+                <Typography
+                  sx={{ fontSize: "15px", color: "black" }}
+                  variant="h6"
+                >
+                  Email
+                </Typography>
+              </TableCell>
+              <TableCell>
+                <Typography
+                  sx={{ fontSize: "15px", color: "black" }}
+                  variant="h6"
+                >
+                  Phone No.
+                </Typography>
+              </TableCell>
 
-            <TableCell>
-              <Typography
-                sx={{ fontSize: "15px", color: "black" }}
-                variant="h6"
-              >
-                Roll No.
-              </Typography>
-            </TableCell>
-            <TableCell>
-              <Typography
-                sx={{ fontSize: "15px", color: "black" }}
-                variant="h6"
-              >
-                Course
-              </Typography>
-            </TableCell>
-            <TableCell>
-              <Typography
-                sx={{ fontSize: "15px", color: "black" }}
-                variant="h6"
-              >
-                Department
-              </Typography>
-            </TableCell>
-            <TableCell>
-              <Typography
-                sx={{ fontSize: "15px", color: "black" }}
-                variant="h6"
-              >
-                Year
-              </Typography>
-            </TableCell>
-            <TableCell>
-              <Typography
-                sx={{ fontSize: "15px", color: "black" }}
-                variant="h6"
-              >
-                Semester
-              </Typography>
-            </TableCell>
-          </TableRow>
-        </TableHead>
-        
-          
+              <TableCell>
+                <Typography
+                  sx={{ fontSize: "15px", color: "black" }}
+                  variant="h6"
+                >
+                  Roll No.
+                </Typography>
+              </TableCell>
+              <TableCell>
+                <Typography
+                  sx={{ fontSize: "15px", color: "black" }}
+                  variant="h6"
+                >
+                  Course
+                </Typography>
+              </TableCell>
+              <TableCell>
+                <Typography
+                  sx={{ fontSize: "15px", color: "black" }}
+                  variant="h6"
+                >
+                  Department
+                </Typography>
+              </TableCell>
+              <TableCell>
+                <Typography
+                  sx={{ fontSize: "15px", color: "black" }}
+                  variant="h6"
+                >
+                  Year
+                </Typography>
+              </TableCell>
+              <TableCell>
+                <Typography
+                  sx={{ fontSize: "15px", color: "black" }}
+                  variant="h6"
+                >
+                  Semester
+                </Typography>
+              </TableCell>
+            </TableRow>
+          </TableHead>
+
           <TableBody>
             {displayedData.map((student, idx) => (
               <TableRow key={idx}>
@@ -205,7 +216,7 @@ function pendingStudent() {
                     {student.student_id}
                   </Typography>
                 </TableCell>
-                
+
                 <TableCell>
                   <Typography color="textSecondary" variant="h6">
                     {student.first_name + " " + student.last_name}
@@ -264,14 +275,14 @@ function pendingStudent() {
           </TableBody>
         </Table>
         <TablePagination
-        rowsPerPageOptions={[5, 10, 20, 40]}
-        component="div"
-        count={filteredData.length}
-        rowsPerPage={rowsPerPage}
-        page={currentPage}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
+          rowsPerPageOptions={[5, 10, 20, 40]}
+          component="div"
+          count={filteredData.length}
+          rowsPerPage={rowsPerPage}
+          page={currentPage}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
       </TableContainer>
     </Box>
   );

@@ -79,6 +79,7 @@ const Sidebar = ({ isMobileSidebarOpen, onSidebarClose, isSidebarOpen }) => {
             </List>
           ))}
         </List>
+   
       </Box>
 
       {/* <Buynow /> */}
