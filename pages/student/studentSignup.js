@@ -192,7 +192,7 @@ const StudentRegister = () => {
   useEffect(() => {
     const fetchAllDepertment = async () => {
       const res2 = await axios.post(
-        "http://test.diptodiagnostic.com/api/get_departments",
+        `${process.env.NEXT_PUBLIC_BASE_URL}get_departments`,
         null
       );
       setallDepertments([...res2.data.data.departments]);
@@ -200,7 +200,7 @@ const StudentRegister = () => {
 
     const fetchALlCourse = async () => {
       const res2 = await axios.post(
-        "http://test.diptodiagnostic.com/api/get_courses",
+        `${process.env.NEXT_PUBLIC_BASE_URL}get_courses`,
         null
       );
       setallCourses([...res2.data.data.courses]);
