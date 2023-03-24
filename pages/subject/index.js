@@ -19,7 +19,8 @@ import {
   TablePagination,
   InputAdornment,
   IconButton,
-  Paper
+  Paper,
+  Fab
 } from "@mui/material";
 import FeatherIcon from "feather-icons-react";
 import React, { useState, useEffect } from "react";
@@ -152,18 +153,21 @@ function subjectIndex() {
 
   return (
     <>
-          <Box component={Paper}>
+      <Box component={Paper}>
         <Box
           display="flex"
           alignItems="center"
           flexDirection={{ md: 'row', xs: 'column' }}
-          justifyContent={{md:'space-between',xs:'center'}}        
+          justifyContent={{ md: 'space-between', xs: 'center' }}
           px={{ lg: 2, md: 2, sm: 0 }}
           py={2}
           gap={2}
         >
+          <Typography variant="h2" sx={{ ml: 1, fontWeight:'bold'}}>
+            Subject List
+          </Typography>
           <TextField
-           size="small"
+            size="small"
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
@@ -176,323 +180,335 @@ function subjectIndex() {
             label="Filter table"
             value={filterText}
             onChange={handleFilterTextChange}
-            sx={{order: {
-              xs: "2",
-              md: "0",
-            }}}
+            sx={{
+              order: {
+                xs: "2",
+                md: "0",
+              }
+            }}
           />
 
           <Link
             style={{ color: "inherit", textDecoration: "none" }}
             href="/subject/addSubject"
           >
-            <Button
+            {/* <Button
               variant="contained"
             >
               Add Subject
-            </Button>
+            </Button> */}
+            <Fab variant="extended" size="small" color="primary" sx={{ p: 2 }}>
+              Add Subject
+            </Fab>
           </Link>
         </Box>
-      
 
-      <TableContainer sx={{ overflow: "auto" }}>
-        <Table
-          aria-label="simple table"
-          sx={{
-            mt: 3,
-            whiteSpace: "nowrap",
-          }}
-        >
-          <TableHead>
-            <TableRow>
-              <TableCell>
-                <Typography color="textSecondary" variant="h6">
-                  Id
-                </Typography>
-              </TableCell>
-              <TableCell>
-                <Typography color="textSecondary" variant="h6">
-                  name
-                </Typography>
-              </TableCell>
-              <TableCell>
-                <Typography color="textSecondary" variant="h6">
-                  course_id
-                </Typography>
-              </TableCell>
 
-              <TableCell>
-                <Typography color="textSecondary" variant="h6">
-                  department_id
-                </Typography>
-              </TableCell>
-              <TableCell>
-                <Typography color="textSecondary" variant="h6">
-                  year
-                </Typography>
-              </TableCell>
-              <TableCell>
-                <Typography color="textSecondary" variant="h6">
-                  Semester
-                </Typography>
-              </TableCell>
-              <TableCell>
-                <Typography color="textSecondary" variant="h6">
-                  Assigned Teacher
-                </Typography>
-              </TableCell>
-              <TableCell>
-                <Typography color="textSecondary" variant="h6">
-                  Date
-                </Typography>
-              </TableCell>
-              <TableCell>
-                <Typography color="textSecondary" variant="h6">
-                  Assign Teacher
-                </Typography>
-              </TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {displayedData.map((item) => (
-              <TableRow key={item.id}>
+        <TableContainer sx={{ overflowX: "auto" }} className="table_scroll">
+
+          <Table
+            aria-label="simple table"
+            sx={{
+              mt: 3,
+              whiteSpace: "nowrap",
+            }}
+            size="small"
+          >
+            <TableHead>
+              <TableRow>
                 <TableCell>
-                  <Typography
-                    sx={{
-                      fontSize: "15px",
-                      fontWeight: "500",
-                    }}
-                  >
-                    {item.id}
+                  <Typography color="textSecondary" variant="h6">
+                    Sl. no.
                   </Typography>
                 </TableCell>
                 <TableCell>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Box>
-                      <Typography
-                        sx={{
-                          fontSize: "13px",
-                        }}
-                      >
-                        {item.name}
-                      </Typography>
-                    </Box>
-                  </Box>
+                  <Typography color="textSecondary" variant="h6">
+                    Name
+                  </Typography>
                 </TableCell>
                 <TableCell>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Box>
-                      <Typography
-                        sx={{
-                          fontSize: "13px",
-                        }}
-                      >
-                        {item.course_id}
-                      </Typography>
-                    </Box>
-                  </Box>
-                </TableCell>
-                <TableCell>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Box>
-                      <Typography
-                        sx={{
-                          fontSize: "13px",
-                        }}
-                      >
-                        {item.department_id}
-                      </Typography>
-                    </Box>
-                  </Box>
-                </TableCell>
-                <TableCell>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Box>
-                      <Typography
-                        sx={{
-                          fontSize: "13px",
-                        }}
-                      >
-                        {item.year}
-                      </Typography>
-                    </Box>
-                  </Box>
-                </TableCell>
-                <TableCell>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Box>
-                      <Typography
-                        sx={{
-                          fontSize: "13px",
-                        }}
-                      >
-                        {item.semester}
-                      </Typography>
-                    </Box>
-                  </Box>
+                  <Typography color="textSecondary" variant="h6">
+                    Course
+                  </Typography>
                 </TableCell>
 
                 <TableCell>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Box>
-                      <Typography
-                        sx={{
-                          fontSize: "13px",
-                        }}
-                      >
-                        {item.assigned_teacher == null
-                          ? "N/A"
-                          : item.assigned_teacher}
-                      </Typography>
-                    </Box>
-                  </Box>
+                  <Typography color="textSecondary" variant="h6">
+                    Department
+                  </Typography>
                 </TableCell>
                 <TableCell>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Box>
-                      <Typography
-                        sx={{
-                          fontSize: "13px",
-                        }}
-                      >
-                        {item.updated_at}
-                      </Typography>
-                    </Box>
-                  </Box>
+                  <Typography color="textSecondary" variant="h6">
+                    Year
+                  </Typography>
                 </TableCell>
                 <TableCell>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Box>
-                      <Button
-                        onClick={() => {
-                          handleModal1(item.id);
-                        }}
-                        variant="contained"
-                        color="success"
-                        size="small"
-                      >
-                        Assign Teacher
-                      </Button>
-                    </Box>
-                  </Box>
+                  <Typography color="textSecondary" variant="h6">
+                    Semester
+                  </Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography color="textSecondary" variant="h6">
+                    Assigned Teacher
+                  </Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography color="textSecondary" variant="h6">
+                    Updated at
+                  </Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography color="textSecondary" variant="h6">
+                    Assign Teacher
+                  </Typography>
                 </TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <TablePagination
-        rowsPerPageOptions={[5, 10, 25]}
-        component="div"
-        count={displayedData.length}
-        rowsPerPage={rowsPerPage}
-        page={currentPage}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
+            </TableHead>
+            <TableBody>
+              {displayedData.map((item, idx) => (
+                <TableRow key={item.id}>
+                  <TableCell>
+                    <Typography
+                      sx={{
+                        fontSize: "15px",
+                        fontWeight: "500",
+                      }}
+                    >
+                      {idx + 1}
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Box>
+                        <Typography
+                          sx={{
+                            fontSize: "13px",
+                          }}
+                        >
+                          {item.name}
+                        </Typography>
+                      </Box>
+                    </Box>
+                  </TableCell>
+                  <TableCell>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Box>
+                        <Typography
+                          sx={{
+                            fontSize: "13px",
+                          }}
+                        >
+                          {item.course_name}
+                        </Typography>
+                      </Box>
+                    </Box>
+                  </TableCell>
+                  <TableCell>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Box>
+                        <Typography
+                          sx={{
+                            fontSize: "13px",
+                          }}
+                        >
+                          {item.department_name}
+                        </Typography>
+                      </Box>
+                    </Box>
+                  </TableCell>
+                  <TableCell>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Box>
+                        <Typography
+                          sx={{
+                            fontSize: "13px",
+                          }}
+                        >
+                          {item.year}
+                        </Typography>
+                      </Box>
+                    </Box>
+                  </TableCell>
+                  <TableCell>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Box>
+                        <Typography
+                          sx={{
+                            fontSize: "13px",
+                          }}
+                        >
+                          {item.semester}
+                        </Typography>
+                      </Box>
+                    </Box>
+                  </TableCell>
 
-      <Modal
-        open={open1}
-        onClose={handleModal1Close1}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style} gap={5} display="flex" flexDirection="column">
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            Assign Teacher to subject
-          </Typography>
+                  <TableCell>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Box>
+                        <Typography
+                          sx={{
+                            fontSize: "13px",
+                          }}
+                        >
+                          {item.assigned_teacher == null
+                            ? "N/A"
+                            : item.teacher_name}
+                        </Typography>
+                      </Box>
+                    </Box>
+                  </TableCell>
+                  <TableCell>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Box>
+                        <Typography
+                          sx={{
+                            fontSize: "13px",
+                          }}
+                        >
+                          {new Date(item.updated_at).toLocaleString()}
+                        </Typography>
+                      </Box>
+                    </Box>
+                  </TableCell>
+                  <TableCell>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Box>
+                        {/* <Button
+                          onClick={() => {
+                            handleModal1(item.id);
+                          }}
+                          variant="contained"
+                          color="success"
+                          size="small"
+                        >
+                          Assign Teacher
+                        </Button> */}
+                        <Fab variant="extended" size="small" color="success" sx={{ p: 2 }} onClick={() => {
+                            handleModal1(item.id);
+                          }}>
+                        Assign Teacher
+                        </Fab>
+                      </Box>
+                    </Box>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <TablePagination
+          rowsPerPageOptions={[5, 10, 25]}
+          component="div"
+          count={displayedData.length}
+          rowsPerPage={rowsPerPage}
+          page={currentPage}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
 
-          <Box
-            sx={{ minWidth: 120 }}
-            display="flex"
-            flexDirection="column"
-            gap={5}
-          >
-            <TextField
-              value={currSub}
-              id="outlined-basic"
-              variant="outlined"
-              label="teacher Id"
-              disabled
-            />
-            <FormControl fullWidth>
-              <InputLabel>Please select teacher</InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={teacherId}
-                onChange={(e) => {
-                  setteacherId(e.target.value);
-                }}
-                defaultValue="fksdnkn"
-              >
-                <MenuItem value="" disabled>
-                  Please Select teacher to assign
-                </MenuItem>
+        <Modal
+          open={open1}
+          onClose={handleModal1Close1}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Box sx={style} gap={5} display="flex" flexDirection="column">
+            <Typography id="modal-modal-title" variant="h6" component="h2">
+              Assign Teacher to subject
+            </Typography>
 
-                {allTeachers.length > 0 &&
-                  allTeachers.map((elm, idx) => {
-                    return (
-                      <MenuItem key={idx} value={elm.teacher_id}>
-                        {elm.first_name + " " + elm.last_name}
-                      </MenuItem>
-                    );
-                  })}
-              </Select>
+            <Box
+              sx={{ minWidth: 120 }}
+              display="flex"
+              flexDirection="column"
+              gap={5}
+            >
+              <TextField
+                value={currSub}
+                id="outlined-basic"
+                variant="outlined"
+                label="teacher Id"
+                disabled
+              />
+              <FormControl fullWidth>
+                <InputLabel>Please select teacher</InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={teacherId}
+                  onChange={(e) => {
+                    setteacherId(e.target.value);
+                  }}
+                  defaultValue="fksdnkn"
+                >
+                  <MenuItem value="" disabled>
+                    Please Select teacher to assign
+                  </MenuItem>
 
-              <Button
-                onClick={updateSubject}
-                type="submit"
-                variant="contained"
-                sx={{ marginTop: "25px" }}
-                disabled={loading}
-              >
-                {loading ? "Updating..." : "Update"}
-              </Button>
-            </FormControl>
+                  {allTeachers.length > 0 &&
+                    allTeachers.map((elm, idx) => {
+                      return (
+                        <MenuItem key={idx} value={elm.teacher_id}>
+                          {elm.first_name + " " + elm.last_name}
+                        </MenuItem>
+                      );
+                    })}
+                </Select>
+
+                <Button
+                  onClick={updateSubject}
+                  type="submit"
+                  variant="contained"
+                  sx={{ marginTop: "25px" }}
+                  disabled={loading}
+                >
+                  {loading ? "Updating..." : "Update"}
+                </Button>
+              </FormControl>
+            </Box>
           </Box>
-        </Box>
-      </Modal>
+        </Modal>
       </Box>
     </>
   );

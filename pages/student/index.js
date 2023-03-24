@@ -70,9 +70,15 @@ function pendingStudent() {
 
   return (
     <Box component={Paper}>
-      <Box sx={{ padding: "15px", fontWeight: "900" }}>
-        <Typography sx={{ fontSize: "25px" }}>Student List</Typography>
-      </Box>
+      <Box display="flex"
+          alignItems="center"
+          flexDirection={{ md: 'row', xs: 'column' }}
+          justifyContent={{ md: 'space-between', xs: 'center' }}
+          px={{ lg: 2, md: 2, sm: 0 }}
+          py={2}
+          gap={2}>
+        <Typography variant="h2" sx={{ ml: 1, fontWeight:'bold'}}>Student List</Typography>
+      
       <TextField
         size="small"
         sx={{ p: 1, float: "right" }}
@@ -89,9 +95,11 @@ function pendingStudent() {
         value={filterText}
         onChange={handleFilterTextChange}
       />
+      </Box>
       <TableContainer
         component={Paper}
-        style={{ minHeight: "100vh", overflowX: "auto" }}
+        style={{overflowX: "auto" }}
+        className="table_scroll"
       >
         <Table
           aria-label="simple table"

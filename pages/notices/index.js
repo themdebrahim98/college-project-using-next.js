@@ -1,4 +1,5 @@
-import { Grid, Button,
+import {
+  Grid, Button,
   Typography,
   Box,
   Table,
@@ -8,6 +9,7 @@ import { Grid, Button,
   TableRow,
   Chip,
   TableContainer,
+  Fab,
 } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import BaseCard from "../../src/components/baseCard/BaseCard";
@@ -15,23 +17,24 @@ import Link from "next/link";
 import Cookies from "js-cookie";
 import axios from "axios";
 import { useSelector } from 'react-redux';
-import { AddCircle } from "@mui/icons-material";
+import { AddCircle, RemoveRedEye } from "@mui/icons-material";
 
 
 
-function notices({token}) {
-  console.log(token,'check')
-  const data = useSelector((store)=>store.user);
+function notices({ token }) {
+  console.log(token, 'check')
+  const data = useSelector((store) => store.user);
   const [noticeData, setnoticeData] = useState([]);
   const btnData = (
-    <Link style={{color:"inherit", textDecoration:'none'}} href="/notices/addNotice">
-      <Button variant="contained" size="small" startIcon={<AddCircle/>} sx={{ ml: "auto",fontWeight:"bold" }}>
+    <Link style={{ color: "inherit", textDecoration: 'none' }} href="/notices/addNotice">
+      <Button variant="contained" size="small" startIcon={<AddCircle />} sx={{ ml: "auto", fontWeight: "bold" }}>
         Add Notice
       </Button>
+      {/* <Fab variant="extended" size="small" color="primary" title="add notice">Add Notice</Fab> */}
     </Link>
   );
   useEffect(() => {
-     const token = Cookies.get("access_key");
+    const token = Cookies.get("access_key");
 
     const fetchNotice = async () => {
       const res = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}get_all_notice`, null, {
@@ -45,30 +48,31 @@ function notices({token}) {
       setnoticeData(allNotices);
     };
     fetchNotice();
-  },[]);
+  }, []);
 
   return (
-    
+
     <BaseCard
       title="Notice List"
-      
-      button={data&& data.userData?.user_data?.type=='teacher' && data.userData?.user_data?.is_hod == 1?"true":"false"}
+      titleSize="h2"
+      button={data && data.userData?.user_data?.type == 'teacher' && data.userData?.user_data?.is_hod == 1 ? "true" : "false"}
       buttonData={btnData}
-      // sx={{ overFlow: "scroll" }}
+    // sx={{ overFlow: "scroll" }}
     >
-      <TableContainer sx={{overflow:'auto'}}>
-      <Table
+      <TableContainer style={{ overflowX: "auto" }} className="table_scroll">
+        <Table
           aria-label="simple table"
           sx={{
             mt: 3,
             whiteSpace: "nowrap",
           }}
+          size="small"
         >
           <TableHead>
             <TableRow>
               <TableCell>
                 <Typography color="textSecondary" variant="h6">
-                  Id
+                  Sl. No.
                 </Typography>
               </TableCell>
               <TableCell>
@@ -89,7 +93,7 @@ function notices({token}) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {noticeData.map((item) => (
+            {noticeData.map((item,idx) => (
               <TableRow key={item.id}>
                 <TableCell>
                   <Typography
@@ -98,7 +102,7 @@ function notices({token}) {
                       fontWeight: "500",
                     }}
                   >
-                    {item.id}
+                    {idx+1}
                   </Typography>
                 </TableCell>
                 <TableCell>
@@ -145,7 +149,10 @@ function notices({token}) {
                     }}
                   >
                     <Box>
-                      <Link style={{color:'inherit', textDecoration:'none'}} href={"/notices/"+item.id}><Button variant="contained" color="success" size="small">View</Button></Link>
+                      <Link style={{ color: 'inherit', textDecoration: 'none' }} href={"/notices/" + item.id}>
+                        {/* <Button variant="contained" color="success" size="small">View</Button> */}
+                        <Fab variant="extended" size="small" color="success" title="view notice"><RemoveRedEye/></Fab>
+                        </Link>
                     </Box>
                   </Box>
                 </TableCell>
@@ -153,7 +160,7 @@ function notices({token}) {
             ))}
           </TableBody>
         </Table>
-        </TableContainer>
+      </TableContainer>
     </BaseCard>
   );
 }

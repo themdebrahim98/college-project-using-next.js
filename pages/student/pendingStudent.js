@@ -46,15 +46,15 @@ function pendingStudent() {
     setCurrentPage(0);
   };
 
-  
+
   const handleFilterTextChange = (event) => {
     setFilterText(event.target.value);
   };
 
   const filteredData = allPendingStudents.filter((row) =>
-  [row.first_name, row.last_name].some((value) =>
-  value.toLowerCase().includes(filterText.toLowerCase())
-  )
+    [row.first_name, row.last_name].some((value) =>
+      value.toLowerCase().includes(filterText.toLowerCase())
+    )
   );
   const displayedData = filteredData.slice(
     currentPage * rowsPerPage,
@@ -132,276 +132,284 @@ function pendingStudent() {
 
   return (
     <Box component={Paper}>
-      <Box sx={{ padding: "15px", fontWeight: "900" }}>
-          <Typography sx={{ fontSize: "25px" }}>
-            Pending students
-          </Typography>
-        </Box>
-    <TextField
-    size="small"
-    sx={{p:1,float:'right'}}
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <IconButton>
-                <FeatherIcon icon="filter" />
-              </IconButton>
-            </InputAdornment>
-          ),
-        }}
-        label="Filter table"
-        value={filterText}
-        onChange={handleFilterTextChange}
-      />
-    <TableContainer
-      component={Paper}
-      style={{ minHeight: "100vh", overflowX: "auto" }}
-    >
-      <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Confirmation</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            Are you sure you want to perform this action?
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleConfirm} autoFocus>
-            Confirm
-          </Button>
-        </DialogActions>
-      </Dialog>
-      <Table
-        aria-label="simple table"
-        sx={{
-          mt: 3,
-          whiteSpace: "nowrap",
-        }}
+      <Box display="flex"
+        alignItems="center"
+        flexDirection={{ md: 'row', xs: 'column' }}
+        justifyContent={{ md: 'space-between', xs: 'center' }}
+        px={{ lg: 2, md: 2, sm: 0 }}
+        py={2}
+        gap={2}>
+        <Typography variant="h2" sx={{ ml: 1, fontWeight: 'bold' }}>
+          Pending students
+        </Typography>
+
+        <TextField
+          size="small"
+          sx={{ p: 1, float: 'right' }}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <IconButton>
+                  <FeatherIcon icon="filter" />
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
+          label="Filter table"
+          value={filterText}
+          onChange={handleFilterTextChange}
+        />
+      </Box>
+      <TableContainer
+        component={Paper}
+        style={{ overflowX: "auto" }}
+        className="table_scroll"
       >
-        <TableHead>
-          <TableRow>
-            <TableCell>
-              <Typography variant="h6">Id</Typography>
-            </TableCell>
-            <TableCell>
-              <Typography variant="h6">Student Id</Typography>
-            </TableCell>
-            <TableCell>
-              <Typography
-                sx={{ fontSize: "15px", color: "black" }}
-                variant="h6"
-              >
-                First Name
-              </Typography>
-            </TableCell>
-            <TableCell>
-              <Typography
-                sx={{ fontSize: "15px", color: "black" }}
-                variant="h6"
-              >
-                Last_name
-              </Typography>
-            </TableCell>
-            <TableCell>
-              <Typography
-                sx={{ fontSize: "15px", color: "black" }}
-                variant="h6"
-              >
-                DOB
-              </Typography>
-            </TableCell>
-            <TableCell>
-              <Typography
-                sx={{ fontSize: "15px", color: "black" }}
-                variant="h6"
-              >
-                Gender
-              </Typography>
-            </TableCell>
-            <TableCell>
-              <Typography
-                sx={{ fontSize: "15px", color: "black" }}
-                variant="h6"
-              >
-                Email Address
-              </Typography>
-            </TableCell>
-            <TableCell>
-              <Typography
-                sx={{ fontSize: "15px", color: "black" }}
-                variant="h6"
-              >
-                Phone Number
-              </Typography>
-            </TableCell>
-
-            <TableCell>
-              <Typography
-                sx={{ fontSize: "15px", color: "black" }}
-                variant="h6"
-              >
-                Role Number
-              </Typography>
-            </TableCell>
-            <TableCell>
-              <Typography
-                sx={{ fontSize: "15px", color: "black" }}
-                variant="h6"
-              >
-                Course Id
-              </Typography>
-            </TableCell>
-            <TableCell>
-              <Typography
-                sx={{ fontSize: "15px", color: "black" }}
-                variant="h6"
-              >
-                Semester
-              </Typography>
-            </TableCell>
-            <TableCell>
-              <Typography
-                sx={{ fontSize: "15px", color: "black" }}
-                variant="h6"
-              >
-                Year
-              </Typography>
-            </TableCell>
-            <TableCell>
-              <Typography
-                sx={{ fontSize: "15px", color: "black" }}
-                variant="h6"
-              >
-                Status
-              </Typography>
-            </TableCell>
-            <TableCell>
-              <Typography
-                sx={{ fontSize: "15px", color: "black" }}
-                variant="h6"
-              >
-                'Approved(Yes/NO)'
-              </Typography>
-            </TableCell>
-            <TableCell>
-              <Chip color="secondary" label="Make Approved" />
-            </TableCell>
-          </TableRow>
-        </TableHead>{" "}
-        <TableBody>
-          {displayedData.map((student, idx) => (
-            <TableRow key={idx}>
+        <Dialog open={open} onClose={handleClose}>
+          <DialogTitle>Confirmation</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              Are you sure you want to perform this action?
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose}>Cancel</Button>
+            <Button onClick={handleConfirm} autoFocus>
+              Confirm
+            </Button>
+          </DialogActions>
+        </Dialog>
+        <Table
+          aria-label="simple table"
+          sx={{
+            mt: 3,
+            whiteSpace: "nowrap",
+          }}
+        >
+          <TableHead>
+            <TableRow>
               <TableCell>
-                <Typography color="textSecondary" variant="h6">
-                  {student.id}
-                </Typography>
+                <Typography variant="h6">Sl. No.</Typography>
               </TableCell>
               <TableCell>
-                <Typography color="textSecondary" variant="h6">
-                  {student.student_id}
-                </Typography>
+                <Typography variant="h6">Student Id</Typography>
               </TableCell>
               <TableCell>
-                <Typography color="textSecondary" variant="h6">
-                  {student.first_name}
-                </Typography>
-              </TableCell>
-              <TableCell>
-                <Typography color="textSecondary" variant="h6">
-                  {student.last_name}
-                </Typography>
-              </TableCell>
-              <TableCell>
-                <Typography color="textSecondary" variant="h6">
-                  {student.dob}
-                </Typography>
-              </TableCell>
-              <TableCell>
-                <Typography color="textSecondary" variant="h6">
-                  {student.gender}
-                </Typography>
-              </TableCell>
-
-              <TableCell>
-                <Typography color="textSecondary" variant="h6">
-                  {student.email_address}
-                </Typography>
-              </TableCell>
-              <TableCell>
-                <Typography color="textSecondary" variant="h6">
-                  {student.phone_number}
-                </Typography>
-              </TableCell>
-
-              <TableCell>
-                <Typography color="textSecondary" variant="h6">
-                  {student.roll_number}
-                </Typography>
-              </TableCell>
-              <TableCell>
-                <Typography color="textSecondary" variant="h6">
-                  {student.course_id}
-                </Typography>
-              </TableCell>
-              <TableCell>
-                <Typography color="textSecondary" variant="h6">
-                  {student.semester}
-                </Typography>
-              </TableCell>
-              <TableCell>
-                <Typography color="textSecondary" variant="h6">
-                  {student.year}
-                </Typography>
-              </TableCell>
-              <TableCell>
-                <Typography color="textSecondary" variant="h6">
-                  {student.status}
-                </Typography>
-              </TableCell>
-              <TableCell>
-                <Typography color="textSecondary" variant="h6">
-                  {student.is_approved != 0 ? "Yes" : "No"}
-                </Typography>
-              </TableCell>
-              <TableCell>
-                <Button
-                disabled={loading}
-                  onClick={() => {
-                    selectCurrentStudentData(
-                      student
-                      // student.student_id,
-                      // student.first_name,
-                      // student.last_name,
-                      // student.email_address
-                    );
-                  }}
-                  sx={
-                    student.is_approved
-                      ? { bgcolor: "green" }
-                      : { bgcolor: "crimson" }
-                  }
-                  variant="contained"
+                <Typography
+                  sx={{ fontSize: "15px", color: "black" }}
+                  variant="h6"
                 >
-                  {loading && currStudentTobeDeleted.student_id == student.student_id?"Approving..." : ' Make Approved'}
-                 
-                </Button>
+                  Full Name
+                </Typography>
+              </TableCell>
+              {/* <TableCell>
+                <Typography
+                  sx={{ fontSize: "15px", color: "black" }}
+                  variant="h6"
+                >
+                  Last_name
+                </Typography>
+              </TableCell> */}
+              <TableCell>
+                <Typography
+                  sx={{ fontSize: "15px", color: "black" }}
+                  variant="h6"
+                >
+                  DOB
+                </Typography>
+              </TableCell>
+              <TableCell>
+                <Typography
+                  sx={{ fontSize: "15px", color: "black" }}
+                  variant="h6"
+                >
+                  Gender
+                </Typography>
+              </TableCell>
+              <TableCell>
+                <Typography
+                  sx={{ fontSize: "15px", color: "black" }}
+                  variant="h6"
+                >
+                  Email Address
+                </Typography>
+              </TableCell>
+              <TableCell>
+                <Typography
+                  sx={{ fontSize: "15px", color: "black" }}
+                  variant="h6"
+                >
+                  Phone Number
+                </Typography>
+              </TableCell>
+
+              <TableCell>
+                <Typography
+                  sx={{ fontSize: "15px", color: "black" }}
+                  variant="h6"
+                >
+                  Role Number
+                </Typography>
+              </TableCell>
+              <TableCell>
+                <Typography
+                  sx={{ fontSize: "15px", color: "black" }}
+                  variant="h6"
+                >
+                  Course
+                </Typography>
+              </TableCell>
+              <TableCell>
+                <Typography
+                  sx={{ fontSize: "15px", color: "black" }}
+                  variant="h6"
+                >
+                  Semester
+                </Typography>
+              </TableCell>
+              <TableCell>
+                <Typography
+                  sx={{ fontSize: "15px", color: "black" }}
+                  variant="h6"
+                >
+                  Year
+                </Typography>
+              </TableCell>
+              <TableCell>
+                <Typography
+                  sx={{ fontSize: "15px", color: "black" }}
+                  variant="h6"
+                >
+                  Status
+                </Typography>
+              </TableCell>
+              <TableCell>
+                <Typography
+                  sx={{ fontSize: "15px", color: "black" }}
+                  variant="h6"
+                >
+                  Approved(Yes/NO)
+                </Typography>
+              </TableCell>
+              <TableCell>
+                <Chip color="secondary" label="Make Approved" />
               </TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-      <TablePagination
-    rowsPerPageOptions={[5, 10, 20, 40]}
-    component="div"
-    count={displayedData.length}
-    rowsPerPage={rowsPerPage}
-    page={currentPage}
-    onPageChange={handleChangePage}
-    onRowsPerPageChange={handleChangeRowsPerPage}
-  />
-    </TableContainer>
-    
-  </Box>
+          </TableHead>{" "}
+          <TableBody>
+            {displayedData.map((student, idx) => (
+              <TableRow key={idx}>
+                <TableCell>
+                  <Typography color="textSecondary" variant="h6">
+                    {idx+1}
+                  </Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography color="textSecondary" variant="h6">
+                    {student.student_id}
+                  </Typography>
+                </TableCell>
+                {/* <TableCell>
+                  <Typography color="textSecondary" variant="h6">
+                    {student.first_name}
+                  </Typography>
+                </TableCell> */}
+                <TableCell>
+                  <Typography color="textSecondary" variant="h6">
+                    {student.first_name+''+student.last_name}
+                  </Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography color="textSecondary" variant="h6">
+                    {student.dob}
+                  </Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography color="textSecondary" variant="h6">
+                    {student.gender}
+                  </Typography>
+                </TableCell>
+
+                <TableCell>
+                  <Typography color="textSecondary" variant="h6">
+                    {student.email_address}
+                  </Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography color="textSecondary" variant="h6">
+                    {student.phone_number}
+                  </Typography>
+                </TableCell>
+
+                <TableCell>
+                  <Typography color="textSecondary" variant="h6">
+                    {student.roll_number}
+                  </Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography color="textSecondary" variant="h6">
+                    {student.course_id}
+                  </Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography color="textSecondary" variant="h6">
+                    {student.semester}
+                  </Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography color="textSecondary" variant="h6">
+                    {student.year}
+                  </Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography color="textSecondary" variant="h6">
+                    {student.status}
+                  </Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography color="textSecondary" variant="h6">
+                    {student.is_approved != 0 ? "Yes" : "No"}
+                  </Typography>
+                </TableCell>
+                <TableCell>
+                  <Button
+                    disabled={loading}
+                    onClick={() => {
+                      selectCurrentStudentData(
+                        student
+                        // student.student_id,
+                        // student.first_name,
+                        // student.last_name,
+                        // student.email_address
+                      );
+                    }}
+                    sx={
+                      student.is_approved
+                        ? { bgcolor: "green" }
+                        : { bgcolor: "crimson" }
+                    }
+                    variant="contained"
+                  >
+                    {loading && currStudentTobeDeleted.student_id == student.student_id ? "Approving..." : ' Make Approved'}
+
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+        <TablePagination
+          rowsPerPageOptions={[5, 10, 20, 40]}
+          component="div"
+          count={displayedData.length}
+          rowsPerPage={rowsPerPage}
+          page={currentPage}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+      </TableContainer>
+
+    </Box>
   );
 }
 

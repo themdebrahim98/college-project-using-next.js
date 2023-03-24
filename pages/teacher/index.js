@@ -28,6 +28,8 @@ import FeatherIcon from "feather-icons-react";
 import BaseCard from "../../src/components/baseCard/BaseCard";
 import Cookies from "js-cookie";
 import axios from "axios";
+import Fab from '@mui/material/Fab';
+import NavigationIcon from '@mui/icons-material/Navigation';
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
   ...theme.typography.body2,
@@ -40,7 +42,7 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width:{lg:'30%', xs: '80%',sm:'50%'},
+  width: { lg: '30%', xs: '80%', sm: '50%' },
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
@@ -204,7 +206,7 @@ function teachers() {
     console.log(inputs);
   };
 
- 
+
   return (
     <>
       {/* make teacher as a hod modal */}
@@ -215,7 +217,7 @@ function teachers() {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style} gap={5} display="flex" flexDirection="column">
-          <Typography id="modal-modal-title" variant="h6" sx={{fontWeight:500, textAlign:"center"}} component="h2">
+          <Typography id="modal-modal-title" variant="h6" sx={{ fontWeight: 500, textAlign: "center" }} component="h2">
             Makes Teacher As A HOD
           </Typography>
 
@@ -296,11 +298,11 @@ function teachers() {
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
-        sx={{width:{xs:'100vw'}}}
+        sx={{ width: { xs: '100vw' } }}
       >
         <Box sx={style} gap={5}>
-          <Typography  sx={{textAlign:'center', fontWeight:800}}>Fills Teacher's Data</Typography>
-          <Box gap={2}  component="form" onSubmit={handleSubmit}>
+          <Typography sx={{ textAlign: 'center', fontWeight: 800 }}>Fills Teacher's Data</Typography>
+          <Box gap={2} component="form" onSubmit={handleSubmit}>
             <Box
               sx={{
                 marginTop: "15px",
@@ -461,13 +463,15 @@ function teachers() {
           display="flex"
           alignItems="center"
           flexDirection={{ md: 'row', xs: 'column' }}
-          justifyContent={{md:'space-between',xs:'center'}}        
-          px={{ lg: 2, md: 2, sm: 0 }}
-          py={2}
+          justifyContent={{ md: 'space-between', xs: 'center' }}
+          p={{ lg: 2, md: 2, sm: 0 }}
           gap={2}
         >
+          <Typography variant="h2" sx={{ p: 1, flexGrow: 1,fontWeight:'bold' }}>
+            Teacher List
+          </Typography>
           <TextField
-           size="small"
+            size="small"
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
@@ -480,17 +484,21 @@ function teachers() {
             label="Filter table"
             value={filterText}
             onChange={handleFilterTextChange}
-            sx={{order: {
-              xs: "2",
-              md: "0",
-            }}}
+            sx={{
+              order: {
+                xs: "2",
+                md: "0",
+              }
+            }}
           />
-            <Button  onClick={handleOpen} variant="contained">Add Teacher</Button>
+          {/* <Button onClick={handleOpen} variant="contained">Add Teacher</Button> */}
+          <Fab variant="extended" size="small" color="primary" sx={{ p: 2 }} onClick={handleOpen}>Add Teacher</Fab>
         </Box>
 
         <TableContainer
           component={Paper}
-          style={{ minHeight: "80vh", overflowX: "auto" }}
+          style={{ overflowX: "auto" }}
+          className="table_scroll"
         >
           <Table
             aria-label="simple table"
@@ -498,12 +506,13 @@ function teachers() {
               mt: 3,
               whiteSpace: "nowrap",
             }}
+            size="small"
           >
             <TableHead>
               <TableRow>
                 <TableCell>
                   <Typography color="textSecondary" variant="h6">
-                    Id
+                    Sl. No.
                   </Typography>
                 </TableCell>
                 <TableCell>
@@ -563,7 +572,7 @@ function teachers() {
                         fontWeight: "500",
                       }}
                     >
-                      {teacher.id}
+                      {idx + 1}
                     </Typography>
                   </TableCell>
                   <TableCell>
@@ -623,7 +632,7 @@ function teachers() {
                     </Typography>
                   </TableCell>
                   <TableCell>
-                    <Button
+                    {/* <Button
                       onClick={() => {
                         handleModal1(teacher.teacher_id);
                       }}
@@ -631,10 +640,15 @@ function teachers() {
                       variant="contained"
                     >
                       Make Hod
-                    </Button>
+                    </Button> */}
+                    <Fab variant="extended" color="primary" size="small" onClick={() => {
+                      handleModal1(teacher.teacher_id);
+                    }}>
+                      Make Hod
+                    </Fab>
                   </TableCell>
                   <TableCell>
-                    <Button
+                    {/* <Button
                       onClick={() => {
                         handleModal2(teacher);
                       }}
@@ -642,15 +656,16 @@ function teachers() {
                       variant="contained"
                     >
                       Previews
-                    </Button>
+                    </Button> */}
+                    <Fab variant="extended" color="warning" size="small" onClick={() => {handleModal2(teacher);}}>
+                    Preview
+                    </Fab>
                   </TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
-        </TableContainer>
-      </Box>
-      <TablePagination
+          <TablePagination
         rowsPerPageOptions={[5, 10, 20, 40]}
         component="div"
         count={teacherDatas.length}
@@ -659,13 +674,15 @@ function teachers() {
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
+        </TableContainer>
+      </Box>
 
       {/* pannel for teacher preview */}
       <Box>
         {/* <Button variant="contained"> close</Button> */}
         <Drawer
           PaperProps={{
-            sx: { width: {lg:'40%', md:'60%', xs: '100%'}, padding: "15px" },
+            sx: { width: { lg: '40%', md: '60%', xs: '100%' }, padding: "15px" },
           }}
           anchor="right"
           open={open2}

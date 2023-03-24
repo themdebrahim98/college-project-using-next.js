@@ -12,7 +12,24 @@ html,body{
   width: 100%;
   height: 100%;
 }
+.table_scroll::-webkit-scrollbar {
+  width: 2px;
+  height: 4px;
+}
 
-/* .MuiCardContent-root{
-  overflow: auto;
-} */
+/* Track */
+.table_scroll::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 2px grey; 
+  border-radius: 10px;
+}
+
+/* Handle */
+.table_scroll::-webkit-scrollbar-thumb {
+  background: #8c929b; 
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+.table_scroll::-webkit-scrollbar-thumb:hover {
+  background: #009eb3; 
+}

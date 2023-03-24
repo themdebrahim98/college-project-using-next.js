@@ -16,7 +16,8 @@ import {
   InputAdornment,
   IconButton,
   Pagination,
-  TablePagination
+  TablePagination,
+  Fab
 } from "@mui/material";
 import axios from "axios";
 import { useSelect } from "@mui/base";
@@ -211,11 +212,16 @@ export default function index() {
         </Box>
       </Modal>
       <Box component={Paper}>
-        <Box sx={{ padding: "15px", fontWeight: "900" }}>
-          <Typography sx={{ fontSize: "25px" }}>
+        <Box display="flex"
+          alignItems="center"
+          flexDirection={{ md: 'row', xs: 'column' }}
+          justifyContent={{ md: 'space-between', xs: 'center' }}
+          p={{ lg: 2, md: 2, sm: 0 }}
+          gap={2}>
+          <Typography variant="h2" sx={{p:1,flexGrow:1,fontWeight:'bold'}}>
             Subject and Syllabus
           </Typography>
-        </Box>
+
         <TextField
          size="small"
         sx={{p:1,float:'right'}}
@@ -232,9 +238,11 @@ export default function index() {
         value={filterText}
         onChange={handleFilterTextChange}
       />
+              </Box>
         <TableContainer
           component={Paper}
-          style={{ minHeight: "100vh", overflowX: "auto",width:'100%' }}
+          style={{overflowX: "auto" }}
+          className="table_scroll"
         >
           <Table
             aria-label="simple table"
@@ -242,6 +250,7 @@ export default function index() {
               mt: 3,
               whiteSpace: "nowrap",
             }}
+            size="small"
           >
             <TableHead>
               <TableRow>
@@ -266,7 +275,7 @@ export default function index() {
                     sx={{ fontSize: "15px", color: "black" }}
                     variant="h6"
                   >
-                    Course Name
+                    Course
                   </Typography>
                 </TableCell>
                 <TableCell>
@@ -274,7 +283,7 @@ export default function index() {
                     sx={{ fontSize: "15px", color: "black" }}
                     variant="h6"
                   >
-                    Department Name
+                    Department
                   </Typography>
                 </TableCell>
                 <TableCell>
@@ -299,17 +308,9 @@ export default function index() {
                     sx={{ fontSize: "15px", color: "black" }}
                     variant="h6"
                   >
-                    Assigned Teacher Name
+                    Assigned Teacher
                   </Typography>
                 </TableCell>
-                {/* <TableCell>
-                  <Typography
-                    sx={{ fontSize: "15px", color: "black" }}
-                    variant="h6"
-                  >
-                    Date
-                  </Typography>
-                </TableCell> */}
                 <TableCell>
                   <Typography
                     sx={{ fontSize: "15px", color: "black" }}
@@ -369,17 +370,21 @@ export default function index() {
                     <TableCell>
                       <Typography color="textSecondary" variant="h6">
                         {subject.syllabus.attachment_id == null ? (
-                          <Button
-                            onClick={() => {
-                              openModal1(subject.id, subject.name);
-                            }}
-                            color="secondary"
-                            variant="contained"
-                            startIcon={<UploadFile/>}
-                            size="small"
-                          >
-                            Upload
-                          </Button>
+                          // <Button
+                          //   onClick={() => {
+                          //     openModal1(subject.id, subject.name);
+                          //   }}
+                          //   color="secondary"
+                          //   variant="contained"
+                          //   startIcon={<UploadFile/>}
+                          //   size="small"
+                          // >
+                          //   Upload
+                          // </Button>
+                          <Fab color="warning" size="small" onClick={() => {openModal1(subject.id, subject.name);}} title="Upload Syllabus">
+                            <UploadFile />
+                            {/* Upload */}
+                          </Fab>
                         ) : (
                           <a
                           style={{
@@ -390,9 +395,13 @@ export default function index() {
                           download
                           href={`${subject.syllabus?.fileData?.url}`}
                         >
-                          <Button color="success" variant="contained" size="small" startIcon={<FileDownload/>}>
+                          {/* <Button color="success" variant="contained" size="small" startIcon={<FileDownload/>}>
                               Download
-                          </Button>
+                          </Button> */}
+                          <Fab color="success" size="small" title="Download Syllabus">
+                            <FileDownload />
+                            {/* Upload */}
+                          </Fab>
                           </a>
                         )}
                       </Typography>

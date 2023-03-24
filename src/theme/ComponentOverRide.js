@@ -72,7 +72,7 @@ const components = {
   MuiCard: {
     styleOverrides: {
       root: {
-        borderRadius: "20px",
+        borderRadius: "4px",
         padding: "14px",
         margin: "15px",
         boxShadow: "0px 7px 30px 0px rgba(90, 114, 123, 0.11)",
