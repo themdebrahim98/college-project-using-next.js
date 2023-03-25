@@ -50,7 +50,7 @@ function subjectIndex() {
   const [allTeachers, setallTeachers] = useState([]);
   const [teacherId, setteacherId] = useState("");
   const [loading, setloading] = useState(false);
-  const [rowsPerPage, setRowsPerPage] = React.useState(2);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [currentPage, setCurrentPage] = React.useState(0);
   const [filterText, setFilterText] = useState("");
 

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import {
   Typography,
   Box,
@@ -35,6 +36,7 @@ function pendingStudent() {
   const [filterText, setFilterText] = useState("");
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [currentPage, setCurrentPage] = React.useState(0);
+  const data = useSelector((store)=>store.user.userData.user_data.hod_data[0])
 
 
   const handleChangePage = (event, newPage) => {
@@ -100,7 +102,7 @@ function pendingStudent() {
       try {
         const res = await axios.post(
           `${process.env.NEXT_PUBLIC_BASE_URL}get_nonapproved_students`,
-          null,
+          {department_id:data.department_id, course_id:data.course_id},
           {
             headers: { Authorization: `Bearer ${token}` },
           }

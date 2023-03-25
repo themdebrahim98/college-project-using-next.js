@@ -17,13 +17,14 @@ import {
 import FeatherIcon from "feather-icons-react";
 import Cookies from "js-cookie";
 import axios from "axios";
+import { useSelector } from "react-redux";
 
 function pendingStudent() {
   const [allApprovedStudents, setallApprovedStudents] = useState([]);
   const [filterText, setFilterText] = useState("");
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [currentPage, setCurrentPage] = React.useState(0);
-
+  const data = useSelector((store)=>store.user.userData.user_data.hod_data[0])
   const handleChangePage = (event, newPage) => {
     setCurrentPage(newPage);
   };
@@ -37,7 +38,7 @@ function pendingStudent() {
     setFilterText(event.target.value);
   };
 
-  const filteredData = allApprovedStudents.filter((row) =>
+  const filteredData = allApprovedStudents?.filter((row) =>
     [row.first_name, row.last_name].some((value) =>
       value.toLowerCase().includes(filterText.toLowerCase())
     )
@@ -53,7 +54,7 @@ function pendingStudent() {
       try {
         const res = await axios.post(
           `${process.env.NEXT_PUBLIC_BASE_URL}get_all_students`,
-          null,
+          {department_id:data.department_id, course_id:data.course_id},
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -270,12 +271,12 @@ function pendingStudent() {
                 </TableCell>
                 <TableCell>
                   <Typography color="textSecondary" variant="h6">
-                    {student.semester}
+                    {student.year}
                   </Typography>
                 </TableCell>
                 <TableCell>
                   <Typography color="textSecondary" variant="h6">
-                    {student.year}
+                    {student.semester}
                   </Typography>
                 </TableCell>
               </TableRow>
