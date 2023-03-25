@@ -163,7 +163,7 @@ function subjectIndex() {
           py={2}
           gap={2}
         >
-          <Typography variant="h2" sx={{ ml: 1, fontWeight:'bold'}}>
+          <Typography variant="h2" sx={{ ml: 1, fontWeight: 'bold' }}>
             Subject List
           </Typography>
           <TextField
@@ -204,61 +204,87 @@ function subjectIndex() {
         </Box>
 
 
-        <TableContainer sx={{ overflowX: "auto" }} className="table_scroll">
+        <TableContainer sx={{ overflowX: "auto", p: 1 }} className="table_scroll">
 
           <Table
             aria-label="simple table"
             sx={{
-              mt: 3,
               whiteSpace: "nowrap",
             }}
             size="small"
           >
-            <TableHead>
+            <TableHead sx={{ background: '#03c9d7', }}>
               <TableRow>
                 <TableCell>
-                  <Typography color="textSecondary" variant="h6">
+                  <Typography
+                    variant="h6"
+                    sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
+                  >
                     Sl. no.
                   </Typography>
                 </TableCell>
                 <TableCell>
-                  <Typography color="textSecondary" variant="h6">
+                  <Typography
+                    variant="h6"
+                    sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
+                  >
                     Name
                   </Typography>
                 </TableCell>
                 <TableCell>
-                  <Typography color="textSecondary" variant="h6">
+                  <Typography
+                    variant="h6"
+                    sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
+                  >
                     Course
                   </Typography>
                 </TableCell>
 
                 <TableCell>
-                  <Typography color="textSecondary" variant="h6">
+                  <Typography
+                    variant="h6"
+                    sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
+                  >
                     Department
                   </Typography>
                 </TableCell>
                 <TableCell>
-                  <Typography color="textSecondary" variant="h6">
+                  <Typography
+                    variant="h6"
+                    sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
+                  >
                     Year
                   </Typography>
                 </TableCell>
                 <TableCell>
-                  <Typography color="textSecondary" variant="h6">
+                  <Typography
+                    variant="h6"
+                    sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
+                  >
                     Semester
                   </Typography>
                 </TableCell>
                 <TableCell>
-                  <Typography color="textSecondary" variant="h6">
+                  <Typography
+                    variant="h6"
+                    sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
+                  >
                     Assigned Teacher
                   </Typography>
                 </TableCell>
                 <TableCell>
-                  <Typography color="textSecondary" variant="h6">
+                  <Typography
+                    variant="h6"
+                    sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
+                  >
                     Updated at
                   </Typography>
                 </TableCell>
                 <TableCell>
-                  <Typography color="textSecondary" variant="h6">
+                  <Typography
+                    variant="h6"
+                    sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
+                  >
                     Assign Teacher
                   </Typography>
                 </TableCell>
@@ -425,9 +451,9 @@ function subjectIndex() {
                           Assign Teacher
                         </Button> */}
                         <Fab variant="extended" size="small" color="success" sx={{ p: 2 }} onClick={() => {
-                            handleModal1(item.id);
-                          }}>
-                        Assign Teacher
+                          handleModal1(item.id);
+                        }}>
+                          Assign Teacher
                         </Fab>
                       </Box>
                     </Box>

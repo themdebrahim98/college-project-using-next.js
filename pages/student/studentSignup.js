@@ -174,7 +174,7 @@ const StudentRegister = () => {
       }
       console.log(res, "eamil");
     }else{
-      alert("please filled ")
+      alert("Please filled first name,last name & email")
     }
   };
 
@@ -455,7 +455,7 @@ const StudentRegister = () => {
               value={studentDetails.student_id}
             />
           </Grid>
-          <Grid item xs={6} sm={4}>
+          <Grid item xs={12} sm={4}>
             {isSuccsessfullySendEmail ? null : (
               <Button
                 onClick={emailVerify}
@@ -474,7 +474,7 @@ const StudentRegister = () => {
             <>
               {isVerifyEmail ? null : (
                 <>
-                  <Grid item xs={6} sm={3}>
+                  <Grid item xs={6} sm={4}>
                     <TextField
                       variant="outlined"
                       required
@@ -488,7 +488,7 @@ const StudentRegister = () => {
                       helperText={`Eneter OTP send your ${studentDetails.email_address}`}
                     />
                   </Grid>
-                  <Grid item xs={6} sm={1}>
+                  <Grid item xs={6} sm={4}>
                     <Button
                       onClick={VerifyOtp}
                       type="submit"

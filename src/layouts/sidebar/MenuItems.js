@@ -27,13 +27,6 @@ export const useMenu = (data) => {
       icon:'users',
       href: "/student",
     });
-
-    menuItem.push({
-      title: "Syllabus",
-      icon:"clipboard",
-      href: "/teacher/syllabus",
-    });
-
     if (data?.is_hod == 1) {
       menuItem.push({
         title: "Pending Students",
@@ -50,7 +43,12 @@ export const useMenu = (data) => {
       //   icon:"clipboard",
       //   href: "/teacher/allSubject",
       // });
-    
+      menuItem.push({
+        title: "Syllabus",
+        icon:"clipboard",
+        href: "/teacher/syllabus",
+      });
+  
       menuItem.push({
         title: "Routine",
         icon:"clipboard",
@@ -68,11 +66,11 @@ export const useMenu = (data) => {
         icon:"clipboard",
         href: "/notices",
     });
-    menuItem.push({
-        title: "Subjects",
-        icon:"clipboard",
-        href: "/student/subject",
-      });
+    // menuItem.push({
+    //     title: "Subjects",
+    //     icon:"clipboard",
+    //     href: "/student/subject",
+    //   });
   }
 
   return menuItem;

@@ -24,7 +24,7 @@ function pendingStudent() {
   const [filterText, setFilterText] = useState("");
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [currentPage, setCurrentPage] = React.useState(0);
-  const data = useSelector((store)=>store.user.userData.user_data.hod_data[0])
+  const data = useSelector((store) => store.user.userData.user_data.hod_data[0])
   const handleChangePage = (event, newPage) => {
     setCurrentPage(newPage);
   };
@@ -54,7 +54,7 @@ function pendingStudent() {
       try {
         const res = await axios.post(
           `${process.env.NEXT_PUBLIC_BASE_URL}get_all_students`,
-          {department_id:data.department_id, course_id:data.course_id},
+          { department_id: data.department_id, course_id: data.course_id },
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -72,50 +72,51 @@ function pendingStudent() {
   return (
     <Box component={Paper}>
       <Box display="flex"
-          alignItems="center"
-          flexDirection={{ md: 'row', xs: 'column' }}
-          justifyContent={{ md: 'space-between', xs: 'center' }}
-          px={{ lg: 2, md: 2, sm: 0 }}
-          py={2}
-          gap={2}>
-        <Typography variant="h2" sx={{ ml: 1, fontWeight:'bold'}}>Student List</Typography>
-      
-      <TextField
-        size="small"
-        sx={{ p: 1, float: "right" }}
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <IconButton>
-                <FeatherIcon icon="filter" />
-              </IconButton>
-            </InputAdornment>
-          ),
-        }}
-        label="Filter table"
-        value={filterText}
-        onChange={handleFilterTextChange}
-      />
+        alignItems="center"
+        flexDirection={{ md: 'row', xs: 'column' }}
+        justifyContent={{ md: 'space-between', xs: 'center' }}
+        px={{ lg: 2, md: 2, sm: 0 }}
+        py={2}
+        gap={2}>
+        <Typography variant="h2" sx={{ ml: 1, fontWeight: 'bold' }}>Student List</Typography>
+
+        <TextField
+          size="small"
+          sx={{ p: 1, float: "right" }}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <IconButton>
+                  <FeatherIcon icon="filter" />
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
+          label="Filter table"
+          value={filterText}
+          onChange={handleFilterTextChange}
+        />
       </Box>
       <TableContainer
         component={Paper}
-        style={{overflowX: "auto" }}
+        style={{ overflowX: "auto" }}
         className="table_scroll"
+        sx={{ p: 1 }}
       >
         <Table
           aria-label="simple table"
           sx={{
-            p: 2,
+            // p: 2,
             whiteSpace: "nowrap",
           }}
           size="small"
         >
-          <TableHead sx={{ fontWeight: "bold" }}>
+          <TableHead sx={{ fontWeight: "bold", background: '#03c9d7', }}>
             <TableRow>
               <TableCell>
                 <Typography
                   variant="h6"
-                  sx={{ fontSize: "15px", color: "black" }}
+                  sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
                 >
                   Sl.no
                 </Typography>
@@ -123,14 +124,14 @@ function pendingStudent() {
               <TableCell>
                 <Typography
                   variant="h6"
-                  sx={{ fontSize: "15px", color: "black" }}
+                  sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
                 >
                   Reg. no.
                 </Typography>
               </TableCell>
               <TableCell>
                 <Typography
-                  sx={{ fontSize: "15px", color: "black" }}
+                  sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
                   variant="h6"
                 >
                   Full Name
@@ -138,7 +139,7 @@ function pendingStudent() {
               </TableCell>
               <TableCell>
                 <Typography
-                  sx={{ fontSize: "15px", color: "black" }}
+                  sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
                   variant="h6"
                 >
                   DOB
@@ -146,7 +147,7 @@ function pendingStudent() {
               </TableCell>
               <TableCell>
                 <Typography
-                  sx={{ fontSize: "15px", color: "black" }}
+                  sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
                   variant="h6"
                 >
                   Gender
@@ -154,7 +155,7 @@ function pendingStudent() {
               </TableCell>
               <TableCell>
                 <Typography
-                  sx={{ fontSize: "15px", color: "black" }}
+                  sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
                   variant="h6"
                 >
                   Email
@@ -162,7 +163,7 @@ function pendingStudent() {
               </TableCell>
               <TableCell>
                 <Typography
-                  sx={{ fontSize: "15px", color: "black" }}
+                  sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
                   variant="h6"
                 >
                   Phone No.
@@ -171,7 +172,7 @@ function pendingStudent() {
 
               <TableCell>
                 <Typography
-                  sx={{ fontSize: "15px", color: "black" }}
+                  sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
                   variant="h6"
                 >
                   Roll No.
@@ -179,7 +180,7 @@ function pendingStudent() {
               </TableCell>
               <TableCell>
                 <Typography
-                  sx={{ fontSize: "15px", color: "black" }}
+                  sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
                   variant="h6"
                 >
                   Course
@@ -187,7 +188,7 @@ function pendingStudent() {
               </TableCell>
               <TableCell>
                 <Typography
-                  sx={{ fontSize: "15px", color: "black" }}
+                  sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
                   variant="h6"
                 >
                   Department
@@ -195,7 +196,7 @@ function pendingStudent() {
               </TableCell>
               <TableCell>
                 <Typography
-                  sx={{ fontSize: "15px", color: "black" }}
+                  sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
                   variant="h6"
                 >
                   Year
@@ -203,7 +204,7 @@ function pendingStudent() {
               </TableCell>
               <TableCell>
                 <Typography
-                  sx={{ fontSize: "15px", color: "black" }}
+                  sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
                   variant="h6"
                 >
                   Semester

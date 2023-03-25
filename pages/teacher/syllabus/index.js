@@ -45,10 +45,10 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 });
 export default function index() {
   const vertical = "top",
-  horizontal = "center";
+    horizontal = "center";
   const [openAlert, setOpenAlert] = useState(false);
   const [alertMsg, setAlertMsg] = useState('');
-  const [alertSeverity,setAlertSeverity]=useState('');
+  const [alertSeverity, setAlertSeverity] = useState('');
   const [allSubjectOfTeacher, setallSubjectOfTeacher] = useState([]);
   const [open1, setopen1] = useState(false);
   const user = useSelector((store) => store.user);
@@ -70,15 +70,15 @@ export default function index() {
     setCurrentPage(0);
   };
 
-  
+
   const handleFilterTextChange = (event) => {
     setFilterText(event.target.value);
   };
-  
+
   const filteredData = allSubjectOfTeacher.filter((row) =>
-  [row.name].some((value) =>
-  value.toLowerCase().includes(filterText.toLowerCase())
-  )
+    [row.name].some((value) =>
+      value.toLowerCase().includes(filterText.toLowerCase())
+    )
   );
   const displayedData = filteredData.slice(
     currentPage * rowsPerPage,
@@ -204,7 +204,7 @@ export default function index() {
               color="primary"
               onClick={handleFileUpload}
               disabled={uploading ? true : false}
-              startIcon={<FileUpload/>}
+              startIcon={<FileUpload />}
             >
               {uploading ? "Uploading..." : "Upload"}
             </Button>
@@ -218,31 +218,32 @@ export default function index() {
           justifyContent={{ md: 'space-between', xs: 'center' }}
           p={{ lg: 2, md: 2, sm: 0 }}
           gap={2}>
-          <Typography variant="h2" sx={{p:1,flexGrow:1,fontWeight:'bold'}}>
+          <Typography variant="h2" sx={{ p: 1, flexGrow: 1, fontWeight: 'bold' }}>
             Subject and Syllabus
           </Typography>
 
-        <TextField
-         size="small"
-        sx={{p:1,float:'right'}}
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <IconButton>
-                <FeatherIcon icon="filter" />
-              </IconButton>
-            </InputAdornment>
-          ),
-        }}
-        label="Filter table"
-        value={filterText}
-        onChange={handleFilterTextChange}
-      />
-              </Box>
+          <TextField
+            size="small"
+            sx={{ p: 1, float: 'right' }}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <IconButton>
+                    <FeatherIcon icon="filter" />
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+            label="Filter table"
+            value={filterText}
+            onChange={handleFilterTextChange}
+          />
+        </Box>
         <TableContainer
           component={Paper}
-          style={{overflowX: "auto" }}
+          style={{ overflowX: "auto" }}
           className="table_scroll"
+          sx={{ p: 1 }}
         >
           <Table
             aria-label="simple table"
@@ -252,11 +253,11 @@ export default function index() {
             }}
             size="small"
           >
-            <TableHead>
+            <TableHead sx={{ background: '#03c9d7' }}>
               <TableRow>
                 <TableCell>
                   <Typography
-                    sx={{ fontSize: "15px", color: "black" }}
+                    sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
                     variant="h6"
                   >
                     Sl. No.
@@ -264,7 +265,7 @@ export default function index() {
                 </TableCell>
                 <TableCell>
                   <Typography
-                    sx={{ fontSize: "15px", color: "black" }}
+                    sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
                     variant="h6"
                   >
                     Name
@@ -272,7 +273,7 @@ export default function index() {
                 </TableCell>
                 <TableCell>
                   <Typography
-                    sx={{ fontSize: "15px", color: "black" }}
+                    sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
                     variant="h6"
                   >
                     Course
@@ -280,7 +281,7 @@ export default function index() {
                 </TableCell>
                 <TableCell>
                   <Typography
-                    sx={{ fontSize: "15px", color: "black" }}
+                    sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
                     variant="h6"
                   >
                     Department
@@ -288,7 +289,7 @@ export default function index() {
                 </TableCell>
                 <TableCell>
                   <Typography
-                    sx={{ fontSize: "15px", color: "black" }}
+                    sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
                     variant="h6"
                   >
                     Year
@@ -296,7 +297,7 @@ export default function index() {
                 </TableCell>
                 <TableCell>
                   <Typography
-                    sx={{ fontSize: "15px", color: "black" }}
+                    sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
                     variant="h6"
                   >
                     Semester
@@ -305,7 +306,7 @@ export default function index() {
 
                 <TableCell>
                   <Typography
-                    sx={{ fontSize: "15px", color: "black" }}
+                    sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
                     variant="h6"
                   >
                     Assigned Teacher
@@ -313,7 +314,7 @@ export default function index() {
                 </TableCell>
                 <TableCell>
                   <Typography
-                    sx={{ fontSize: "15px", color: "black" }}
+                    sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
                     variant="h6"
                   >
                     Syllabus
@@ -327,7 +328,7 @@ export default function index() {
                   <TableRow key={idx}>
                     <TableCell>
                       <Typography color="textSecondary" variant="h6">
-                        {idx+1}
+                        {idx + 1}
                       </Typography>
                     </TableCell>
                     <TableCell>
@@ -381,27 +382,27 @@ export default function index() {
                           // >
                           //   Upload
                           // </Button>
-                          <Fab color="warning" size="small" onClick={() => {openModal1(subject.id, subject.name);}} title="Upload Syllabus">
+                          <Fab color="warning" size="small" onClick={() => { openModal1(subject.id, subject.name); }} title="Upload Syllabus">
                             <UploadFile />
                             {/* Upload */}
                           </Fab>
                         ) : (
                           <a
-                          style={{
-                            textDecoration: "none",
-                            color: "inherit",
-                          }}
-                          target="_blank"
-                          download
-                          href={`${subject.syllabus?.fileData?.url}`}
-                        >
-                          {/* <Button color="success" variant="contained" size="small" startIcon={<FileDownload/>}>
+                            style={{
+                              textDecoration: "none",
+                              color: "inherit",
+                            }}
+                            target="_blank"
+                            download
+                            href={`${subject.syllabus?.fileData?.url}`}
+                          >
+                            {/* <Button color="success" variant="contained" size="small" startIcon={<FileDownload/>}>
                               Download
                           </Button> */}
-                          <Fab color="success" size="small" title="Download Syllabus">
-                            <FileDownload />
-                            {/* Upload */}
-                          </Fab>
+                            <Fab color="success" size="small" title="Download Syllabus">
+                              <FileDownload />
+                              {/* Upload */}
+                            </Fab>
                           </a>
                         )}
                       </Typography>
@@ -411,14 +412,14 @@ export default function index() {
             </TableBody>
           </Table>
           <TablePagination
-        rowsPerPageOptions={[5, 10, 20, 40]}
-        component="div"
-        count={displayedData.length}
-        rowsPerPage={rowsPerPage}
-        page={currentPage}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
+            rowsPerPageOptions={[5, 10, 20, 40]}
+            component="div"
+            count={displayedData.length}
+            rowsPerPage={rowsPerPage}
+            page={currentPage}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />
         </TableContainer>
       </Box>
     </>

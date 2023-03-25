@@ -17,7 +17,7 @@ import Link from "next/link";
 import Cookies from "js-cookie";
 import axios from "axios";
 import { useSelector } from 'react-redux';
-import { AddCircle, RemoveRedEye } from "@mui/icons-material";
+import { AddCircle, Preview, RemoveRedEye } from "@mui/icons-material";
 
 
 
@@ -63,37 +63,49 @@ function notices({ token }) {
         <Table
           aria-label="simple table"
           sx={{
-            mt: 3,
+            // mt: 3,
             whiteSpace: "nowrap",
           }}
           size="small"
         >
-          <TableHead>
+          <TableHead sx={{ background: '#03c9d7' }}>
             <TableRow>
               <TableCell>
-                <Typography color="textSecondary" variant="h6">
+                <Typography
+                  variant="h6"
+                  sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
+                >
                   Sl. No.
                 </Typography>
               </TableCell>
               <TableCell>
-                <Typography color="textSecondary" variant="h6">
+                <Typography
+                  variant="h6"
+                  sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
+                >
                   Tittle
                 </Typography>
               </TableCell>
               <TableCell>
-                <Typography color="textSecondary" variant="h6">
+                <Typography
+                  variant="h6"
+                  sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
+                >
                   Created at
                 </Typography>
               </TableCell>
               <TableCell>
-                <Typography color="textSecondary" variant="h6">
+                <Typography
+                  variant="h6"
+                  sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
+                >
                   Action
                 </Typography>
               </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {noticeData.map((item,idx) => (
+            {noticeData.map((item, idx) => (
               <TableRow key={item.id}>
                 <TableCell>
                   <Typography
@@ -102,7 +114,7 @@ function notices({ token }) {
                       fontWeight: "500",
                     }}
                   >
-                    {idx+1}
+                    {idx + 1}
                   </Typography>
                 </TableCell>
                 <TableCell>
@@ -151,8 +163,8 @@ function notices({ token }) {
                     <Box>
                       <Link style={{ color: 'inherit', textDecoration: 'none' }} href={"/notices/" + item.id}>
                         {/* <Button variant="contained" color="success" size="small">View</Button> */}
-                        <Fab variant="extended" size="small" color="success" title="view notice"><RemoveRedEye/></Fab>
-                        </Link>
+                        <Fab variant="extended" size="small" color="success" title="view notice"><Preview /></Fab>
+                      </Link>
                     </Box>
                   </Box>
                 </TableCell>

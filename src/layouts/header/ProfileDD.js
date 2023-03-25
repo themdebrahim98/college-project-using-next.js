@@ -67,9 +67,8 @@ const ProfileDD = () => {
               color="textSecondary"
               variant="h5"
               fontWeight="400"
-              sx={{ ml: 1 }}
+              // sx={{ ml: 1 }}
             >
-              Hi,
             </Typography>
             <Typography
               variant="h5"

@@ -467,7 +467,7 @@ function teachers() {
           p={{ lg: 2, md: 2, sm: 0 }}
           gap={2}
         >
-          <Typography variant="h2" sx={{ p: 1, flexGrow: 1,fontWeight:'bold' }}>
+          <Typography variant="h2" sx={{ p: 1, flexGrow: 1, fontWeight: 'bold' }}>
             Teacher List
           </Typography>
           <TextField
@@ -499,64 +499,94 @@ function teachers() {
           component={Paper}
           style={{ overflowX: "auto" }}
           className="table_scroll"
+          sx={{ p: 1 }}
         >
           <Table
             aria-label="simple table"
             sx={{
-              mt: 3,
               whiteSpace: "nowrap",
             }}
             size="small"
           >
-            <TableHead>
+            <TableHead sx={{ background: '#03c9d7', }}>
               <TableRow>
                 <TableCell>
-                  <Typography color="textSecondary" variant="h6">
+                  <Typography
+                    variant="h6"
+                    sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
+                  >
                     Sl. No.
                   </Typography>
                 </TableCell>
                 <TableCell>
-                  <Typography color="textSecondary" variant="h6">
+                  <Typography
+                    variant="h6"
+                    sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
+                  >
                     Teacher Id
                   </Typography>
                 </TableCell>
                 <TableCell>
-                  <Typography color="textSecondary" variant="h6">
+                  <Typography
+                    variant="h6"
+                    sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
+                  >
                     First Name
                   </Typography>
                 </TableCell>
                 <TableCell>
-                  <Typography color="textSecondary" variant="h6">
+                  <Typography
+                    variant="h6"
+                    sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
+                  >
                     last_name
                   </Typography>
                 </TableCell>
                 <TableCell>
-                  <Typography color="textSecondary" variant="h6">
+                  <Typography
+                    variant="h6"
+                    sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
+                  >
                     gender
                   </Typography>
                 </TableCell>
                 <TableCell>
-                  <Typography color="textSecondary" variant="h6">
+                  <Typography
+                    variant="h6"
+                    sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
+                  >
                     Email Address
                   </Typography>
                 </TableCell>
                 <TableCell>
-                  <Typography color="textSecondary" variant="h6">
+                  <Typography
+                    variant="h6"
+                    sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
+                  >
                     Phone Number
                   </Typography>
                 </TableCell>
                 <TableCell>
-                  <Typography color="textSecondary" variant="h6">
+                  <Typography
+                    variant="h6"
+                    sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
+                  >
                     {` Hod(yes/no)`}
                   </Typography>
                 </TableCell>
                 <TableCell>
-                  <Typography color="textSecondary" variant="h6">
+                  <Typography
+                    variant="h6"
+                    sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
+                  >
                     Make Hod
                   </Typography>
                 </TableCell>
                 <TableCell>
-                  <Typography color="textSecondary" variant="h6">
+                  <Typography
+                    variant="h6"
+                    sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
+                  >
                     Preview{" "}
                   </Typography>
                 </TableCell>
@@ -617,17 +647,32 @@ function teachers() {
                   </TableCell>
 
                   <TableCell>
-                    <Typography color="textSecondary" variant="h6">
+                    <Typography
+                      sx={{
+                        fontSize: "15px",
+                        fontWeight: "500",
+                      }}
+                    >
                       {teacher.email_address}
                     </Typography>
                   </TableCell>
                   <TableCell>
-                    <Typography color="textSecondary" variant="h6">
+                    <Typography
+                      sx={{
+                        fontSize: "15px",
+                        fontWeight: "500",
+                      }}
+                    >
                       {teacher.phone_number}
                     </Typography>
                   </TableCell>
                   <TableCell>
-                    <Typography color="textSecondary" variant="h6">
+                    <Typography
+                      sx={{
+                        fontSize: "15px",
+                        fontWeight: "500",
+                      }}
+                    >
                       {teacher.is_hod == 1 ? "Yes" : "No"}
                     </Typography>
                   </TableCell>
@@ -657,8 +702,8 @@ function teachers() {
                     >
                       Previews
                     </Button> */}
-                    <Fab variant="extended" color="warning" size="small" onClick={() => {handleModal2(teacher);}}>
-                    Preview
+                    <Fab variant="extended" color="warning" size="small" onClick={() => { handleModal2(teacher); }}>
+                      Preview
                     </Fab>
                   </TableCell>
                 </TableRow>
@@ -666,14 +711,14 @@ function teachers() {
             </TableBody>
           </Table>
           <TablePagination
-        rowsPerPageOptions={[5, 10, 20, 40]}
-        component="div"
-        count={teacherDatas.length}
-        rowsPerPage={rowsPerPage}
-        page={currentPage}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
+            rowsPerPageOptions={[5, 10, 20, 40]}
+            component="div"
+            count={teacherDatas.length}
+            rowsPerPage={rowsPerPage}
+            page={currentPage}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />
         </TableContainer>
       </Box>
 
