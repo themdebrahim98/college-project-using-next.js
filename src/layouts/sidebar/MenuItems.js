@@ -45,11 +45,11 @@ export const useMenu = (data) => {
         icon:"clipboard",
         href: "/notices",
       });
-      menuItem.push({
-        title: "Subject",
-        icon:"clipboard",
-        href: "/teacher/allSubject",
-      });
+      // menuItem.push({
+      //   title: "Subject",
+      //   icon:"clipboard",
+      //   href: "/teacher/allSubject",
+      // });
     
       menuItem.push({
         title: "Routine",
