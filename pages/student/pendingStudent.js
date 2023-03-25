@@ -303,8 +303,9 @@ function pendingStudent() {
                         : { bgcolor: "crimson" }
                     }
                     variant="contained"
+                    size="small"
                   >
-                    {loading && currStudentTobeDeleted.student_id == student.student_id ? "Approving..." : ' Make Approved'}
+                    {loading && currStudentTobeDeleted.student_id == student.student_id ? "Approving..." : 'Approve'}
 
                   </Button>
                 </TableCell>
@@ -350,7 +351,7 @@ function pendingStudent() {
                 </TableCell>
                 <TableCell>
                   <Typography color="textSecondary" variant="h6">
-                    {student.dob}
+                    {new Date(student.dob).toLocaleDateString()}
                   </Typography>
                 </TableCell>
                 <TableCell>

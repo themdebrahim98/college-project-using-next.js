@@ -26,7 +26,8 @@
     "react-cookie": "^4.1.1",
     "react-dom": "18.0.0",
     "react-redux": "^8.0.5",
-    "redux-persist": "^6.0.0"
+    "redux-persist": "^6.0.0",
+    "sweetalert2": "^11.7.3"
   },
   "scripts": {
     "dev": "next",

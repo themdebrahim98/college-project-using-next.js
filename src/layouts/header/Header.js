@@ -1,12 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import FeatherIcon from "feather-icons-react";
-import { AppBar, Box, IconButton, Toolbar } from "@mui/material";
+import { AppBar, Box, IconButton, Toolbar, Typography, Button } from "@mui/material";
 import PropTypes from "prop-types";
 // Dropdown Component
 import SearchDD from "./SearchDD";
 import ProfileDD from "./ProfileDD";
+import { EmojiFoodBeverage, WbSunny } from "@mui/icons-material";
 
 const Header = ({ sx, customClass, toggleMobileSidebar, position }) => {
+  // const [timeState,setTimeState]=useState();
+  var today = new Date()
+  var currentHr = today.getHours()
+
   return (
     <AppBar sx={sx} position={position} elevation={0} className={customClass}>
       <Toolbar>
@@ -29,7 +34,20 @@ const Header = ({ sx, customClass, toggleMobileSidebar, position }) => {
         {/* ------------------------------------------- */}
         {/* <SearchDD /> */}
         {/* ------------ End Menu icon ------------- */}
-
+        <Button variant="text" startIcon={currentHr>0 && currentHr<12?<EmojiFoodBeverage />:currentHr>12 && currentHr<18?<WbSunny/>:<NightsStay/>} sx={{ color: 'black', fontWeight: 'bold' }}>
+          <Typography sx={{
+            fontWeight: '700', fontSize: {
+              lg: '25px',
+              xs: '20px'
+            }
+          }} >
+           {currentHr>0 && currentHr<12?'Good morning':currentHr>12 && currentHr<18?'Good afternoon':'Good evening'}
+          </Typography>
+        </Button>
+        {/* <Typography variant="h3">
+          <EmojiFoodBeverage ml={1} />
+          Good morning
+        </Typography> */}
         <Box flexGrow={1} />
 
         <ProfileDD />

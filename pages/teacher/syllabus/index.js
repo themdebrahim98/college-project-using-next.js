@@ -248,7 +248,7 @@ export default function index() {
           <Table
             aria-label="simple table"
             sx={{
-              mt: 3,
+              // mt: 3,
               whiteSpace: "nowrap",
             }}
             size="small"

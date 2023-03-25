@@ -22,16 +22,16 @@ function adminDashboard() {
   return (
     <Grid container spacing={0}>
       <Grid item xs={12} lg={3}>
-        <DataCount title="Total Teachers" data="70" color="#e040fb" />
+        <DataCount title="Total Teachers" data="0" color="#e040fb" />
       </Grid>
       <Grid item xs={12} lg={3}>
-        <DataCount title="Total Students" data="70" color="#ffee58" />
+        <DataCount title="Total Students" data="0" color="#ffee58" />
       </Grid>
       <Grid item xs={12} lg={3}>
-        <DataCount title="Pending Present" data="70" color="#66bb6a" />
+        <DataCount title="Pending Present" data="0" color="#66bb6a" />
       </Grid>
       <Grid item xs={12} lg={3}>
-        <DataCount title="Passout Student" data="20" color="#ef5350" />
+        <DataCount title="Passout Student" data="0" color="#ef5350" />
       </Grid>
       <Grid item xs={12} lg={12}>
         <Notices />

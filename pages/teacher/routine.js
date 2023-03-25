@@ -401,7 +401,7 @@ export default function Routine() {
           {/* <Button size="medium" variant="contained" onClick={openModal1}>
             Add Routine
           </Button> */}
-          <Fab variant="extended" size="small" color="primary">
+          <Fab variant="extended" size="small" color="primary" onClick={openModal1}>
             Add Routine
           </Fab>
         </Box>

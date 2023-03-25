@@ -123,14 +123,6 @@ function pendingStudent() {
               </TableCell>
               <TableCell>
                 <Typography
-                  variant="h6"
-                  sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
-                >
-                  Reg. no.
-                </Typography>
-              </TableCell>
-              <TableCell>
-                <Typography
                   sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
                   variant="h6"
                 >
@@ -139,37 +131,12 @@ function pendingStudent() {
               </TableCell>
               <TableCell>
                 <Typography
-                  sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
                   variant="h6"
+                  sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
                 >
-                  DOB
+                  Reg. no.
                 </Typography>
               </TableCell>
-              <TableCell>
-                <Typography
-                  sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
-                  variant="h6"
-                >
-                  Gender
-                </Typography>
-              </TableCell>
-              <TableCell>
-                <Typography
-                  sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
-                  variant="h6"
-                >
-                  Email
-                </Typography>
-              </TableCell>
-              <TableCell>
-                <Typography
-                  sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
-                  variant="h6"
-                >
-                  Phone No.
-                </Typography>
-              </TableCell>
-
               <TableCell>
                 <Typography
                   sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
@@ -210,6 +177,38 @@ function pendingStudent() {
                   Semester
                 </Typography>
               </TableCell>
+              <TableCell>
+                <Typography
+                  sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
+                  variant="h6"
+                >
+                  DOB
+                </Typography>
+              </TableCell>
+              <TableCell>
+                <Typography
+                  sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
+                  variant="h6"
+                >
+                  Gender
+                </Typography>
+              </TableCell>
+              <TableCell>
+                <Typography
+                  sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
+                  variant="h6"
+                >
+                  Email
+                </Typography>
+              </TableCell>
+              <TableCell>
+                <Typography
+                  sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
+                  variant="h6"
+                >
+                  Phone No.
+                </Typography>
+              </TableCell>
             </TableRow>
           </TableHead>
 
@@ -218,15 +217,9 @@ function pendingStudent() {
               <TableRow key={idx}>
                 <TableCell>
                   <Typography color="textSecondary" variant="h6">
-                    {student.id}
+                    {idx+1}
                   </Typography>
                 </TableCell>
-                <TableCell>
-                  <Typography color="textSecondary" variant="h6">
-                    {student.student_id}
-                  </Typography>
-                </TableCell>
-
                 <TableCell>
                   <Typography color="textSecondary" variant="h6">
                     {student.first_name + " " + student.last_name}
@@ -234,27 +227,9 @@ function pendingStudent() {
                 </TableCell>
                 <TableCell>
                   <Typography color="textSecondary" variant="h6">
-                    {student.dob}
-                    {/* {new Date(student.dob)} */}
+                    {student.student_id}
                   </Typography>
                 </TableCell>
-                <TableCell>
-                  <Typography color="textSecondary" variant="h6">
-                    {student.gender}
-                  </Typography>
-                </TableCell>
-
-                <TableCell>
-                  <Typography color="textSecondary" variant="h6">
-                    {student.email_address}
-                  </Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography color="textSecondary" variant="h6">
-                    {student.phone_number}
-                  </Typography>
-                </TableCell>
-
                 <TableCell>
                   <Typography color="textSecondary" variant="h6">
                     {student.roll_number}
@@ -278,6 +253,28 @@ function pendingStudent() {
                 <TableCell>
                   <Typography color="textSecondary" variant="h6">
                     {student.semester}
+                  </Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography color="textSecondary" variant="h6">
+                    {student.dob}
+                    {/* {new Date(student.dob)} */}
+                  </Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography color="textSecondary" variant="h6">
+                    {student.gender}
+                  </Typography>
+                </TableCell>
+
+                <TableCell>
+                  <Typography color="textSecondary" variant="h6">
+                    {student.email_address}
+                  </Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography color="textSecondary" variant="h6">
+                    {student.phone_number}
                   </Typography>
                 </TableCell>
               </TableRow>
