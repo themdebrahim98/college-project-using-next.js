@@ -11,7 +11,7 @@ export default class MyDocument extends Document {
         <Head>
           <link href="https://upload.wikimedia.org/wikipedia/en/thumb/3/37/Maulana_Abul_Kalam_Azad_University_of_Technology_Logo.svg/1200px-Maulana_Abul_Kalam_Azad_University_of_Technology_Logo.svg.png" rel="shortcut icon"/>
           {/* PWA primary color */}
-          <meta name="theme-color" content="#fff" />
+          <meta name="theme-color" content="#03c9d7" />
           <link
             rel="stylesheet"
             href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
