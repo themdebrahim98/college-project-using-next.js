@@ -1,5 +1,8 @@
 <img src="https://test.diptodiagnostic.com/MSIP.png" />
-# Makaut Student Information Portal
+
+<h1>
+  Makaut Student Information Portal
+</h1>
 
 It is a web-based application designed to serve as a centralized platform for students, faculty, and staff to access and manage academic and administrative information. The software is typically built on a robust database system that stores and manages various types of data such as student records, course schedules, grades, transcripts, financial aid information, and more.
 
