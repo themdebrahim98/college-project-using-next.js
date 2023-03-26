@@ -6,8 +6,6 @@ import {
   Typography,
   Box,
 } from "@mui/material";
-
-
 import React, { useState } from "react";
 import BaseCard from "../../src/components/baseCard/BaseCard";
 import { loginUser } from "../../redux/slices/userSlice";
@@ -77,10 +75,8 @@ function index() {
           showConfirmButton: false,
           timer: 1500
         })
-      } else {
-        setcookie("access_key", res.data.data.access_key);
-
-        if (res.data.data.status.status == 1) {
+      } else if (res.data.data.status.status == 1) {
+          setcookie("access_key", res.data.data.access_key);
           const token = res.data.data.access_key;
 
           const res2 = await axios.post(
@@ -106,9 +102,8 @@ function index() {
           setTimeout(() => {
             router.replace("/");
           }, 1500)
-          
+
         }
-      }
     }
 
   };
