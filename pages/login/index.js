@@ -94,6 +94,8 @@ function index() {
           const userData = {
             user_data: { ...res2.data.data.user_data, type: res2.data.data.type },
           };
+          setLoading(false);
+          dispatch(loginUser(userData));
           Swal.fire({
             position: 'top-end',
             text: 'Login successful',
@@ -101,8 +103,6 @@ function index() {
             showConfirmButton: false,
             timer: 1000
           })
-          setLoading(false);
-          dispatch(loginUser(userData));
           setTimeout(() => {
             router.replace("/");
           }, 1500)
