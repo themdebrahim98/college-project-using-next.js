@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 // Dropdown Component
 import SearchDD from "./SearchDD";
 import ProfileDD from "./ProfileDD";
-import { EmojiFoodBeverage, WbSunny } from "@mui/icons-material";
+import { EmojiFoodBeverage, NightsStay, WbSunny } from "@mui/icons-material";
 
 const Header = ({ sx, customClass, toggleMobileSidebar, position }) => {
   // const [timeState,setTimeState]=useState();
@@ -15,6 +15,7 @@ const Header = ({ sx, customClass, toggleMobileSidebar, position }) => {
   return (
     <AppBar sx={sx} position={position} elevation={0} className={customClass}>
       <Toolbar>
+        {console.log(currentHr)}
         <IconButton
           size="large"
           color="inherit"
@@ -34,14 +35,15 @@ const Header = ({ sx, customClass, toggleMobileSidebar, position }) => {
         {/* ------------------------------------------- */}
         {/* <SearchDD /> */}
         {/* ------------ End Menu icon ------------- */}
-        <Button variant="text" startIcon={currentHr>0 && currentHr<12?<EmojiFoodBeverage />:currentHr>12 && currentHr<18?<WbSunny/>:<NightsStay/>} sx={{ color: 'black', fontWeight: 'bold' }}>
+        <Button variant="text" startIcon={currentHr>=0 && currentHr<12?<EmojiFoodBeverage />:currentHr>=12 && currentHr<18?<WbSunny/>:currentHr>=18?<NightsStay/>:""} sx={{ color: 'black', fontWeight: 'bold' }}>
           <Typography sx={{
             fontWeight: '700', fontSize: {
               lg: '25px',
               xs: '20px'
             }
           }} >
-           {currentHr>0 && currentHr<12?'Good morning':currentHr>12 && currentHr<18?'Good afternoon':'Good evening'}
+            
+           {currentHr>=0 && currentHr<12?'Good morning':currentHr>=12 && currentHr<18?'Good afternoon':currentHr>=18?<NightsStay/>:""}
           </Typography>
         </Button>
         {/* <Typography variant="h3">
