@@ -16,6 +16,11 @@ export const useMenu = (data) => {
       icon:"clipboard",
       href: "/subject",
     });
+    menuItem.push({
+      title: "Subjects",
+      icon:"clipboard",
+      href: "/",
+    });
   } else if(data?.type == "teacher"){
     menuItem.push({
       title: "Dashbaord",
