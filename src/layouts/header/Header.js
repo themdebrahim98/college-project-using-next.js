@@ -43,7 +43,7 @@ const Header = ({ sx, customClass, toggleMobileSidebar, position }) => {
             }
           }} >
             
-           {currentHr>=0 && currentHr<12?'Good morning':currentHr>=12 && currentHr<18?'Good afternoon':currentHr>=18?<NightsStay/>:""}
+           {currentHr>=0 && currentHr<12?'Good morning':currentHr>=12 && currentHr<18?'Good afternoon':currentHr>=18?'Good evening':""}
           </Typography>
         </Button>
         {/* <Typography variant="h3">
