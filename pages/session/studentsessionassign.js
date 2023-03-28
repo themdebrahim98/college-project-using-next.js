@@ -118,9 +118,9 @@ function pendingStudent() {
   //     return newData
 
   //   }
-  const handleCheckboxChange = (event, id) => {
+    const handleCheckboxChange = (event, id) => {
     const newData = allApprovedStudents.map((row) => {
-      if (row.id === id) {
+      if (row.student_id === id) {
         const index = checked.indexOf(id);
         if (index == -1) {
           setChecked([...checked, id]);
@@ -139,14 +139,15 @@ function pendingStudent() {
   };
 
   const handleSave = async()=>{
+    const token = Cookies.get("access_key");
     const res = await axios.post(
         `${process.env.NEXT_PUBLIC_BASE_URL}student_session_registration`,
-        { session_id:currSessionID,  student_id_arr: checkedStudentTobeUpload },
+        { session_id:currSessionID,  student_ids: checkedStudentTobeUpload },
         {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-    console.log(checkedStudentTobeUpload)
+    console.log(res)
   }
   return (
     <>
@@ -407,15 +408,16 @@ function pendingStudent() {
 
               <TableBody>
                 {displayedData.map((student, idx) => (
+                  // currSessionID==student.current_session_id?"":
                   <TableRow key={idx}>
                     <TableCell>
                       <Checkbox
-                        //   disabled={student.current_session_id != null ? true : false}
+                        // disabled={currSessionID==student.current_session_id?false:true}
                         checked={
                           student.current_session_id != null ? true : false
                         }
                         onChange={(event) =>
-                          handleCheckboxChange(event, student.id)
+                          handleCheckboxChange(event, student.student_id)
                         }
                       />
                     </TableCell>
