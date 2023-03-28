@@ -64,11 +64,11 @@ export const useMenu = (data) => {
         icon:"clipboard",
         href: "/teacher/routine",
       });
-      menuItem.push({
-        title: "Student Session Assign",
-        icon:"clipboard",
-        href: "/session/studentsessionassign",
-      });
+      // menuItem.push({
+      //   title: "Student Session Assign",
+      //   icon:"clipboard",
+      //   href: "/session/studentsessionassign",
+      // });
     
     }
   }else if(data?.type == "student"){
