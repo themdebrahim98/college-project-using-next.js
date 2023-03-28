@@ -13,12 +13,17 @@ import {
   InputAdornment,
   IconButton,
   TablePagination,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  Button,
 } from "@mui/material";
 import FeatherIcon from "feather-icons-react";
 import Cookies from "js-cookie";
 import axios from "axios";
 import { useSelector } from "react-redux";
-import { CheckBox } from "@mui/icons-material";
+import { CheckBox, Save } from "@mui/icons-material";
 
 function pendingStudent() {
   const [allApprovedStudents, setallApprovedStudents] = useState([]);
@@ -77,234 +82,277 @@ function pendingStudent() {
     setRows(newRows);
   };
   return (
-    <Box component={Paper}>
-      <Box display="flex"
-        alignItems="center"
-        flexDirection={{ md: 'row', xs: 'column' }}
-        justifyContent={{ md: 'space-between', xs: 'center' }}
-        px={{ lg: 2, md: 2, sm: 0 }}
-        py={2}
-        gap={2}>
-        <Typography variant="h2" sx={{ ml: 1, fontWeight: 'bold' }}>Student List</Typography>
-
-        <TextField
-          size="small"
-          sx={{ p: 1, float: "right" }}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <IconButton>
-                  <FeatherIcon icon="filter" />
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
-          label="Filter table"
-          value={filterText}
-          onChange={handleFilterTextChange}
-        />
-      </Box>
-      <TableContainer
-        component={Paper}
-        style={{ overflowX: "auto" }}
-        className="table_scroll"
-        sx={{ p: 1 }}
-      >
-        <Table
-          aria-label="simple table"
-          sx={{
-            // p: 2,
-            whiteSpace: "nowrap",
-          }}
-          size="small"
+    <>
+      <Box component={Paper}>
+        <Box display="flex"
+          alignItems="center"
+          flexDirection={{ md: 'row'}}
+          justifyContent={{ md: 'space-between'}}
+          px={{ lg: 2, md: 2, sm: 0 }}
+          gap={2}
+          sx={{ mb: 2 }}
         >
-          <TableHead sx={{ fontWeight: "bold", background: '#03c9d7', }}>
-            <TableRow>
-            <TableCell>
-              <CheckBox/>
-              </TableCell>
-              <TableCell>
-                <Typography
-                  variant="h6"
-                  sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
-                >
-                  Sl.no
-                </Typography>
-              </TableCell>
-              <TableCell>
-                <Typography
-                  sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
-                  variant="h6"
-                >
-                  Full Name
-                </Typography>
-              </TableCell>
-              <TableCell>
-                <Typography
-                  variant="h6"
-                  sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
-                >
-                  Reg. no.
-                </Typography>
-              </TableCell>
-              <TableCell>
-                <Typography
-                  sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
-                  variant="h6"
-                >
-                  Roll No.
-                </Typography>
-              </TableCell>
-              <TableCell>
-                <Typography
-                  sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
-                  variant="h6"
-                >
-                  Course
-                </Typography>
-              </TableCell>
-              <TableCell>
-                <Typography
-                  sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
-                  variant="h6"
-                >
-                  Department
-                </Typography>
-              </TableCell>
-              <TableCell>
-                <Typography
-                  sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
-                  variant="h6"
-                >
-                  Year
-                </Typography>
-              </TableCell>
-              <TableCell>
-                <Typography
-                  sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
-                  variant="h6"
-                >
-                  Semester
-                </Typography>
-              </TableCell>
-              <TableCell>
-                <Typography
-                  sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
-                  variant="h6"
-                >
-                  DOB
-                </Typography>
-              </TableCell>
-              <TableCell>
-                <Typography
-                  sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
-                  variant="h6"
-                >
-                  Gender
-                </Typography>
-              </TableCell>
-              <TableCell>
-                <Typography
-                  sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
-                  variant="h6"
-                >
-                  Email
-                </Typography>
-              </TableCell>
-              <TableCell>
-                <Typography
-                  sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
-                  variant="h6"
-                >
-                  Phone No.
-                </Typography>
-              </TableCell>
-            </TableRow>
-          </TableHead>
+          <FormControl fullWidth>
+              <InputLabel id="selectsession" sx={{m:2}}>session</InputLabel>
+              <Select
+                labelId="selectsession"
+                id="selectsession"
+                label="Sessions"
+                name="session"
+                sx={{m:2}}
+                // onChange={getInput}
+                // value={studentDetails.gender}
+              >
+                <MenuItem>dsfdf</MenuItem>
+              </Select>
+            </FormControl>
+            <FormControl>
+              <Button variant="contained" sx={{mr:2}} startIcon={<Save/>} color='success'>Save</Button>
+            </FormControl>
+        </Box>
+      </Box>
+      <Box component={Paper}>
+        <Box display="flex"
+          alignItems="center"
+          flexDirection={{ md: 'row', xs: 'column' }}
+          justifyContent={{ md: 'space-between', xs: 'center' }}
+          px={{ lg: 2, md: 2, sm: 0 }}
+          py={2}
+          gap={2}>
+          <Typography variant="h2" sx={{ ml: 1, fontWeight: 'bold' }}>Student List</Typography>
 
-          <TableBody>
-            {displayedData.map((student, idx) => (
-              <TableRow key={idx}>
-                 <TableCell>
-                  <CheckBox checked={false} onChange={(event) => handleCheckboxChange(event, row.id)} />
+          <TextField
+            size="small"
+            sx={{ p: 1, float: "right" }}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <IconButton>
+                    <FeatherIcon icon="filter" />
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+            label="Filter table"
+            value={filterText}
+            onChange={handleFilterTextChange}
+          />
+        </Box>
+        <TableContainer
+          component={Paper}
+          style={{ overflowX: "auto" }}
+          className="table_scroll"
+          sx={{ p: 1 }}
+        >
+          <Table
+            aria-label="simple table"
+            sx={{
+              // p: 2,
+              whiteSpace: "nowrap",
+            }}
+            size="small"
+          >
+            <TableHead sx={{ fontWeight: "bold", background: '#03c9d7', }}>
+              <TableRow>
+                <TableCell>
+                  <CheckBox />
                 </TableCell>
                 <TableCell>
-                  <Typography color="textSecondary" variant="h6">
-                    {idx+1}
+                  <Typography
+                    variant="h6"
+                    sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
+                  >
+                    Sl.no
                   </Typography>
                 </TableCell>
                 <TableCell>
-                  <Typography color="textSecondary" variant="h6">
-                    {student.first_name + " " + student.last_name}
+                  <Typography
+                    sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
+                    variant="h6"
+                  >
+                    Full Name
                   </Typography>
                 </TableCell>
                 <TableCell>
-                  <Typography color="textSecondary" variant="h6">
-                    {student.student_id}
+                  <Typography
+                    sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
+                    variant="h6"
+                  >
+                    Session
                   </Typography>
                 </TableCell>
                 <TableCell>
-                  <Typography color="textSecondary" variant="h6">
-                    {student.roll_number}
+                  <Typography
+                    variant="h6"
+                    sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
+                  >
+                    Reg. no.
                   </Typography>
                 </TableCell>
                 <TableCell>
-                  <Typography color="textSecondary" variant="h6">
-                    {student.course_name}
+                  <Typography
+                    sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
+                    variant="h6"
+                  >
+                    Roll No.
                   </Typography>
                 </TableCell>
                 <TableCell>
-                  <Typography color="textSecondary" variant="h6">
-                    {student.department_name}
+                  <Typography
+                    sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
+                    variant="h6"
+                  >
+                    Course
                   </Typography>
                 </TableCell>
                 <TableCell>
-                  <Typography color="textSecondary" variant="h6">
-                    {student.year}
+                  <Typography
+                    sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
+                    variant="h6"
+                  >
+                    Department
                   </Typography>
                 </TableCell>
                 <TableCell>
-                  <Typography color="textSecondary" variant="h6">
-                    {student.semester}
+                  <Typography
+                    sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
+                    variant="h6"
+                  >
+                    Year
                   </Typography>
                 </TableCell>
                 <TableCell>
-                  <Typography color="textSecondary" variant="h6">
-                    {student.dob}
-                    {/* {new Date(student.dob)} */}
+                  <Typography
+                    sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
+                    variant="h6"
+                  >
+                    Semester
                   </Typography>
                 </TableCell>
                 <TableCell>
-                  <Typography color="textSecondary" variant="h6">
-                    {student.gender}
-                  </Typography>
-                </TableCell>
-
-                <TableCell>
-                  <Typography color="textSecondary" variant="h6">
-                    {student.email_address}
+                  <Typography
+                    sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
+                    variant="h6"
+                  >
+                    DOB
                   </Typography>
                 </TableCell>
                 <TableCell>
-                  <Typography color="textSecondary" variant="h6">
-                    {student.phone_number}
+                  <Typography
+                    sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
+                    variant="h6"
+                  >
+                    Gender
+                  </Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography
+                    sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
+                    variant="h6"
+                  >
+                    Email
+                  </Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography
+                    sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
+                    variant="h6"
+                  >
+                    Phone No.
                   </Typography>
                 </TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 20, 40]}
-          component="div"
-          count={filteredData.length}
-          rowsPerPage={rowsPerPage}
-          page={currentPage}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
-      </TableContainer>
-    </Box>
+            </TableHead>
+
+            <TableBody>
+              {displayedData.map((student, idx) => (
+                <TableRow key={idx}>
+                  <TableCell>
+                    <CheckBox checked={false} onChange={(event) => handleCheckboxChange(event, row.id)} />
+                  </TableCell>
+                  <TableCell>
+                    <Typography color="textSecondary" variant="h6">
+                      {idx + 1}
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography color="textSecondary" variant="h6">
+                      {student.first_name + " " + student.last_name}
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography color="textSecondary" variant="h6">
+                      {student.current_session_id}
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography color="textSecondary" variant="h6">
+                      {student.student_id}
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography color="textSecondary" variant="h6">
+                      {student.roll_number}
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography color="textSecondary" variant="h6">
+                      {student.course_name}
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography color="textSecondary" variant="h6">
+                      {student.department_name}
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography color="textSecondary" variant="h6">
+                      {student.year}
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography color="textSecondary" variant="h6">
+                      {student.semester}
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography color="textSecondary" variant="h6">
+                      {student.dob}
+                      {/* {new Date(student.dob)} */}
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography color="textSecondary" variant="h6">
+                      {student.gender}
+                    </Typography>
+                  </TableCell>
+
+                  <TableCell>
+                    <Typography color="textSecondary" variant="h6">
+                      {student.email_address}
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography color="textSecondary" variant="h6">
+                      {student.phone_number}
+                    </Typography>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+          <TablePagination
+            rowsPerPageOptions={[5, 10, 20, 40]}
+            component="div"
+            count={filteredData.length}
+            rowsPerPage={rowsPerPage}
+            page={currentPage}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />
+        </TableContainer>
+      </Box>
+    </>
   );
 }
 
