@@ -16,11 +16,14 @@ export const useMenu = (data) => {
       icon:"clipboard",
       href: "/subject",
     });
+    
     menuItem.push({
-      title: "Subjects",
+      title: "Session",
       icon:"clipboard",
-      href: "/",
+      href: "/session",
     });
+      
+   
   } else if(data?.type == "teacher"){
     menuItem.push({
       title: "Dashbaord",
@@ -32,6 +35,12 @@ export const useMenu = (data) => {
       icon:'users',
       href: "/student",
     });
+     menuItem.push({
+        title: "Syllabus",
+        icon:"clipboard",
+        href: "/teacher/syllabus",
+      });
+      
     if (data?.is_hod == 1) {
       menuItem.push({
         title: "Pending Students",
@@ -48,17 +57,19 @@ export const useMenu = (data) => {
       //   icon:"clipboard",
       //   href: "/teacher/allSubject",
       // });
-      menuItem.push({
-        title: "Syllabus",
-        icon:"clipboard",
-        href: "/teacher/syllabus",
-      });
+     
   
       menuItem.push({
         title: "Routine",
         icon:"clipboard",
         href: "/teacher/routine",
       });
+      menuItem.push({
+        title: "Student Session Assign",
+        icon:"clipboard",
+        href: "/session/studentsessionassign",
+      });
+    
     }
   }else if(data?.type == "student"){
     menuItem.push({
