@@ -35,21 +35,23 @@ import Snackbar from "@mui/material/Snackbar";
 import FeatherIcon from "feather-icons-react";
 import { FileDownload, FileUpload, UploadFile } from "@mui/icons-material";
 function Routine() {
-  // const [allRoutine, setAllRoutine] = useState([]);
-  // useEffect(() => {
-  //   const getAllRoutines = async () => {
-  //     const res = await axios.post(
-  //       `${process.env.NEXT_PUBLIC_BASE_URL}get_all_routine`,
-  //       { teacher_id: user.userData.user_data.teacher_id },
-  //       { headers: { Authorization: `Bearer ${Cookies.get("access_key")}` } }
-  //     );
-  //     setAllRoutine(res.data.data.routine);
-  //     console.log(res.data);
-  //   };
-  //   getAllRoutines();
-  // }, []);
+  const [allRoutine, setAllRoutine] = useState([]);
+  useEffect(() => {
+    const getAllRoutines = async () => {
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_BASE_URL}get_all_routine`,
+        null,
+        { headers: { Authorization: `Bearer ${Cookies.get("access_key")}` } }
+      );
+      setAllRoutine(res.data.data.routine);
+      console.log(res.data);
+    };
+    getAllRoutines();
+  }, []);
   return (
     <Grid container>
+      {allRoutine.length > 0 &&
+                allRoutine.map((routine, idx) => (
       <Grid item lg={3} xs={12}>
         <Card sx={{
           borderRadius: '10px',
@@ -58,7 +60,7 @@ function Routine() {
         }}>
           <CardContent>
             <Typography gutterBottom variant="h2" component="div">
-              [Title]
+              {routine.course_name+' '+routine.department_name+' Rotuine'}
             </Typography>
             <Box display="flex"
               sx={{ mt:4,flexWrap: 'wrap' }}
@@ -66,15 +68,16 @@ function Routine() {
               flexDirection='row'
               justifyContent='center'
               gap={2}>
-              <Chip  size="small" label="primary" color="primary" />
-              <Chip  size="small" label="primary" color="primary" />
+              <Chip  size="small" label={routine.year + (routine.year > 0 ? ['th', 'st', 'nd', 'rd'][(routine.year > 3 && routine.year < 21) || routine.year % 10 > 3 ? 0 : routine.year % 10] : '')+' Year'} color="primary" />
+              <Chip  size="small" label={routine.semester + (routine.semester > 0 ? ['th', 'st', 'nd', 'rd'][(routine.semester > 3 && routine.semester < 21) || routine.semester % 10 > 3 ? 0 : routine.semester % 10] : '')+' Semester'} color="primary" />
             </Box>
           </CardContent>
           <CardActions >
-            <Button variant="contained" color="success" startIcon={<FileDownload />} sx={{ mx: 'auto', borderRadius: '20px' }}>Download</Button>
+            <Button onClick={()=>(window.open(routine.routine_url, "_blank"))} variant="contained" color="success" startIcon={<FileDownload />} sx={{ mx: 'auto', borderRadius: '20px' }}>Download</Button>
           </CardActions>
         </Card>
       </Grid>
+                ))}
     </Grid>
   )
 }
