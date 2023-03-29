@@ -123,8 +123,7 @@ const ProfileDD = () => {
               >
                 <ListItemAvatar>
                   <Avatar
-                    // alt={`Avatar n°${value + 1}`}
-                    src='static/images/users/user_avtar.png'
+                    src='/static/images/users/user_avtar.png'
                   />
                 </ListItemAvatar>
                 {user &&

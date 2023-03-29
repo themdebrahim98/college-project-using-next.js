@@ -13,18 +13,18 @@ export const useMenu = (data) => {
     });
     menuItem.push({
       title: "Subjects",
-      icon:"clipboard",
+      icon: "clipboard",
       href: "/subject",
     });
-    
+
     menuItem.push({
       title: "Session",
-      icon:"clipboard",
+      icon: "clipboard",
       href: "/session",
     });
-      
-   
-  } else if(data?.type == "teacher"){
+
+
+  } else if (data?.type == "teacher") {
     menuItem.push({
       title: "Dashbaord",
       icon: "home",
@@ -32,24 +32,24 @@ export const useMenu = (data) => {
     });
     menuItem.push({
       title: "Students",
-      icon:'users',
+      icon: 'users',
       href: "/student",
     });
-     menuItem.push({
-        title: "Syllabus",
-        icon:"clipboard",
-        href: "/teacher/syllabus",
-      });
-      
+    menuItem.push({
+      title: "Syllabus",
+      icon: "clipboard",
+      href: "/teacher/syllabus",
+    });
+
     if (data?.is_hod == 1) {
       menuItem.push({
         title: "Pending Students",
-        icon:"clock",
+        icon: "clock",
         href: "/student/pendingStudent",
       });
       menuItem.push({
         title: "Notices",
-        icon:"clipboard",
+        icon: "clipboard",
         href: "/notices",
       });
       // menuItem.push({
@@ -57,11 +57,11 @@ export const useMenu = (data) => {
       //   icon:"clipboard",
       //   href: "/teacher/allSubject",
       // });
-     
-  
+
+
       menuItem.push({
         title: "Routine",
-        icon:"clipboard",
+        icon: "clipboard",
         href: "/teacher/routine",
       });
       // menuItem.push({
@@ -69,24 +69,34 @@ export const useMenu = (data) => {
       //   icon:"clipboard",
       //   href: "/session/studentsessionassign",
       // });
-    
+
     }
-  }else if(data?.type == "student"){
+  } else if (data?.type == "student") {
     menuItem.push({
       title: "Dashbaord",
       icon: "home",
       href: "/",
     });
     menuItem.push({
-        title: "Notices",
-        icon:"clipboard",
-        href: "/notices",
+      title: "Class",
+      icon: "clipboard",
+      href: "/user/student/studentClass",
     });
-    // menuItem.push({
-    //     title: "Subjects",
-    //     icon:"clipboard",
-    //     href: "/student/subject",
-    //   });
+    menuItem.push({
+      title: "Notices",
+      icon: "clipboard",
+      href: "/notices",
+    });
+    menuItem.push({
+      title: "Syllabus",
+      icon: "clipboard",
+      href: "/user/student/syllabus",
+    });
+    menuItem.push({
+      title: "Routine",
+      icon: "clipboard",
+      href: "/user/student/routine",
+    });
   }
 
   return menuItem;
