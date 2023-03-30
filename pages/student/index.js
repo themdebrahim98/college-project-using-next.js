@@ -16,6 +16,8 @@ import {
   Button,
   FormControl,
 } from "@mui/material";
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 import FeatherIcon from "feather-icons-react";
 import Cookies from "js-cookie";
 import axios from "axios";
@@ -27,6 +29,14 @@ function pendingStudent() {
   const [filterText, setFilterText] = useState("");
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [currentPage, setCurrentPage] = React.useState(0);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
   const data = useSelector((store) => store.user.userData.user_data.hod_data[0])
   const handleChangePage = (event, newPage) => {
     setCurrentPage(newPage);
@@ -82,11 +92,43 @@ function pendingStudent() {
           gap={1}
           sx={{ mb: 2, flexWrap: 'wrap' }}
         >
-          <NextLink style={{ color: "inherit", textDecoration: 'none',padding: '10px'}} href="/session/studentsessionassign">
+          <div>
+      <Button
+      color="primary"
+      variant="contained"
+      size="large"
+        id="basic-button"
+        aria-controls={open ? 'basic-menu' : undefined}
+        aria-haspopup="true"
+        aria-expanded={open ? 'true' : undefined}
+        onClick={handleClick}
+      >
+         Session 
+      </Button>
+      <Menu
+        id="basic-menu"
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+        MenuListProps={{
+          'aria-labelledby': 'basic-button',
+        }}
+      >
+         <NextLink style={{ color: "inherit", textDecoration: 'none',padding: '10px'}} href="/session/studentsessionassign">
+         <MenuItem onClick={handleClose}>New Session Assign</MenuItem>
+          </NextLink>
+          <NextLink style={{ color: "inherit", textDecoration: 'none',padding: '10px'}} href="/session/updatesessionstudents">
+        <MenuItem onClick={handleClose}>Update Session</MenuItem>
+
+          </NextLink>
+        
+      </Menu>
+    </div>
+          {/* <NextLink style={{ color: "inherit", textDecoration: 'none',padding: '10px'}} href="/session/studentsessionassign">
             <Button variant="contained" color="warning">
               Senssion Registration
             </Button>
-          </NextLink>
+          </NextLink> */}
           <NextLink style={{ color: "inherit", textDecoration: 'none',padding: '10px'}} href="#">
             <Button variant="contained" color="success">
               Subject Registration
