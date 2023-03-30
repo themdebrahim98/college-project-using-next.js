@@ -26,6 +26,7 @@ import Cookies from "js-cookie";
 
 import Snackbar from "@mui/material/Snackbar";
 import FeatherIcon from "feather-icons-react";
+import {getOrdinals} from '../../../src/Helper/functions'
 
 const style = {
   position: "absolute",
@@ -348,12 +349,12 @@ export default function index() {
                     </TableCell>
                     <TableCell>
                       <Typography color="textSecondary" variant="h6">
-                        {subject.year}
+                        {getOrdinals(subject.year)}
                       </Typography>
                     </TableCell>
                     <TableCell>
                       <Typography color="textSecondary" variant="h6">
-                        {subject.semester}
+                        {getOrdinals(subject.semester)}
                       </Typography>
                     </TableCell>
 

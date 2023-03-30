@@ -531,7 +531,7 @@ function teachers() {
                     variant="h6"
                     sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
                   >
-                    First Name
+                    Full Name
                   </Typography>
                 </TableCell>
                 <TableCell>
@@ -539,7 +539,7 @@ function teachers() {
                     variant="h6"
                     sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
                   >
-                    last_name
+                    Gender
                   </Typography>
                 </TableCell>
                 <TableCell>
@@ -547,7 +547,7 @@ function teachers() {
                     variant="h6"
                     sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
                   >
-                    gender
+                    Email
                   </Typography>
                 </TableCell>
                 <TableCell>
@@ -555,15 +555,7 @@ function teachers() {
                     variant="h6"
                     sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
                   >
-                    Email Address
-                  </Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography
-                    variant="h6"
-                    sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
-                  >
-                    Phone Number
+                    Phone No.
                   </Typography>
                 </TableCell>
                 <TableCell>
@@ -622,17 +614,7 @@ function teachers() {
                         fontWeight: "500",
                       }}
                     >
-                      {teacher.first_name}
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography
-                      sx={{
-                        fontSize: "15px",
-                        fontWeight: "500",
-                      }}
-                    >
-                      {teacher.last_name}
+                      {teacher.first_name+' '+teacher.last_name}
                     </Typography>
                   </TableCell>
                   <TableCell>

@@ -29,6 +29,7 @@ import Link from "next/link";
 import Cookies from "js-cookie";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import {getOrdinals} from '../../src/Helper/functions'
 const style = {
   position: "absolute",
   top: "50%",
@@ -370,7 +371,7 @@ function subjectIndex() {
                             fontSize: "13px",
                           }}
                         >
-                          {item.year}
+                          {getOrdinals(item.year)}
                         </Typography>
                       </Box>
                     </Box>
@@ -388,7 +389,7 @@ function subjectIndex() {
                             fontSize: "13px",
                           }}
                         >
-                          {item.semester}
+                          {getOrdinals(item.semester)}
                         </Typography>
                       </Box>
                     </Box>

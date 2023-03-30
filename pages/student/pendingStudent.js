@@ -28,6 +28,7 @@ import BaseCard from "../../src/components/baseCard/BaseCard";
 import Cookies from "js-cookie";
 import axios from "axios";
 import FeatherIcon from "feather-icons-react";
+import { getOrdinals } from "../../src/Helper/functions";
 function pendingStudent() {
   const [allPendingStudents, setallPendingStudents] = useState([]);
   const [open, setopen] = useState(false);
@@ -336,12 +337,12 @@ function pendingStudent() {
                 </TableCell>
                 <TableCell>
                   <Typography color="textSecondary" variant="h6">
-                    {student.year}
+                    {getOrdinals(student.year)}
                   </Typography>
                 </TableCell>
                 <TableCell>
                   <Typography color="textSecondary" variant="h6">
-                    {student.semester}
+                    {getOrdinals(student.semester)}
                   </Typography>
                 </TableCell>
                 <TableCell>

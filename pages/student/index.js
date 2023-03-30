@@ -23,6 +23,7 @@ import Cookies from "js-cookie";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import NextLink from "next/link";
+import {getOrdinals} from '../../src/Helper/functions';
 
 function pendingStudent() {
   const [allApprovedStudents, setallApprovedStudents] = useState([]);
@@ -92,44 +93,70 @@ function pendingStudent() {
           gap={1}
           sx={{ mb: 2, flexWrap: 'wrap' }}
         >
-          <div>
-      <Button
-      color="primary"
-      variant="contained"
-      size="large"
-        id="basic-button"
-        aria-controls={open ? 'basic-menu' : undefined}
-        aria-haspopup="true"
-        aria-expanded={open ? 'true' : undefined}
-        onClick={handleClick}
-      >
-         Session 
-      </Button>
-      <Menu
-        id="basic-menu"
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-        MenuListProps={{
-          'aria-labelledby': 'basic-button',
-        }}
-      >
-         <NextLink style={{ color: "inherit", textDecoration: 'none',padding: '10px'}} href="/session/studentsessionassign">
-         <MenuItem onClick={handleClose}>New Session Assign</MenuItem>
-          </NextLink>
-          <NextLink style={{ color: "inherit", textDecoration: 'none',padding: '10px'}} href="/session/updatesessionstudents">
-        <MenuItem onClick={handleClose}>Update Session</MenuItem>
+            <Button
+              variant="contained" color="warning"
+              id="basic-button"
+              aria-controls={open ? 'basic-menu' : undefined}
+              aria-haspopup="true"
+              aria-expanded={open ? 'true' : undefined}
+              onClick={handleClick}
+              sx={{ m: 1 }}
+            >
+              Session Registration
+            </Button>
+            <Menu
+              id="basic-menu"
+              anchorEl={anchorEl}
+              open={open}
+              onClose={handleClose}
+              MenuListProps={{
+                'aria-labelledby': 'basic-button',
+              }}
+              size='small'
+              PaperProps={{
+                elevation: 0,
+                sx: {
+                  overflow: 'visible',
+                  filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+                  mt: 1.5,
+                  '& .MuiAvatar-root': {
+                    width: 32,
+                    height: 32,
+                    ml: -0.5,
+                    mr: 1,
+                  },
+                  '&:before': {
+                    content: '""',
+                    display: 'block',
+                    position: 'absolute',
+                    top: 0,
+                    right: 14,
+                    width: 10,
+                    height: 10,
+                    bgcolor: 'background.paper',
+                    transform: 'translateY(-50%) rotate(45deg)',
+                    zIndex: 0,
+                  },
+                },
+              }}
+              transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+              anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+            >
+              <NextLink style={{ color: "inherit", textDecoration: 'none', p:1}} href="/session/studentsessionassign">
+                <MenuItem onClick={handleClose}>New Session Assign</MenuItem>
+              </NextLink>
+              <NextLink style={{ color: "inherit", textDecoration: 'none',p:1}} href="/session/updatesessionstudents">
+                <MenuItem onClick={handleClose}>Update Session</MenuItem>
 
-          </NextLink>
-        
-      </Menu>
-    </div>
+              </NextLink>
+
+            </Menu>
           {/* <NextLink style={{ color: "inherit", textDecoration: 'none',padding: '10px'}} href="/session/studentsessionassign">
             <Button variant="contained" color="warning">
               Senssion Registration
             </Button>
           </NextLink> */}
-          <NextLink style={{ color: "inherit", textDecoration: 'none',padding: '10px'}} href="#">
+          <NextLink style={{ color: "inherit", textDecoration: 'none', padding: '10px' }} href="/subject/studentSubjectRegistration">
             <Button variant="contained" color="success">
               Subject Registration
             </Button>
@@ -313,12 +340,12 @@ function pendingStudent() {
                   </TableCell>
                   <TableCell>
                     <Typography color="textSecondary" variant="h6">
-                      {student.year}
+                      {getOrdinals(student.year)}
                     </Typography>
                   </TableCell>
                   <TableCell>
                     <Typography color="textSecondary" variant="h6">
-                      {student.semester}
+                      {getOrdinals(student.semester)}
                     </Typography>
                   </TableCell>
                   <TableCell>

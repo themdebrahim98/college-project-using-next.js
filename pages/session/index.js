@@ -509,7 +509,7 @@ function Session() {
                       fontWeight: "bold",
                     }}
                   >
-                    Id
+                    Name
                   </Typography>
                 </TableCell>
                 <TableCell>
@@ -521,19 +521,7 @@ function Session() {
                       fontWeight: "bold",
                     }}
                   >
-                    name
-                  </Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography
-                    variant="h6"
-                    sx={{
-                      fontSize: "15px",
-                      color: "black",
-                      fontWeight: "bold",
-                    }}
-                  >
-                    description
+                    Description
                   </Typography>
                 </TableCell>
                 <TableCell>
@@ -569,18 +557,6 @@ function Session() {
                       fontWeight: "bold",
                     }}
                   >
-                    Created At
-                  </Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography
-                    variant="h6"
-                    sx={{
-                      fontSize: "15px",
-                      color: "black",
-                      fontWeight: "bold",
-                    }}
-                  >
                     Updated At
                   </Typography>
                 </TableCell>
@@ -603,17 +579,6 @@ function Session() {
                       }}
                     >
                       {idx + 1}
-                    </Typography>
-                  </TableCell>
-                 
-                  <TableCell>
-                    <Typography
-                      sx={{
-                        fontSize: "15px",
-                        fontWeight: "500",
-                      }}
-                    >
-                      {elm.id}
                     </Typography>
                   </TableCell>
                   <TableCell>
@@ -664,17 +629,7 @@ function Session() {
                         fontWeight: "500",
                       }}
                     >
-                      {elm.created_at}
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography
-                      sx={{
-                        fontSize: "15px",
-                        fontWeight: "500",
-                      }}
-                    >
-                      {elm.updated_at}
+                      {new Date(elm.updated_at).toLocaleString()}
                     </Typography>
                   </TableCell>
                 </TableRow>

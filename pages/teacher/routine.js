@@ -40,6 +40,8 @@ import FeatherIcon from "feather-icons-react";
 import BrowserUpdatedIcon from "@mui/icons-material/BrowserUpdated";
 import MuiAlert from "@mui/material/Alert";
 import { CloudDownload, FileDownload, FileUpload, UploadFile } from "@mui/icons-material";
+import TeacherRoutine from '../user/Components/routine'
+import { getOrdinals } from "../../src/Helper/functions";
 
 const style = {
   position: "absolute",
@@ -100,7 +102,7 @@ export default function Routine() {
   const handleModa2Close = () => setopen2(false);
 
   const data = useSelector(
-    (store) => store.user.userData.user_data.hod_data[0]
+    (store) => store.user.userData.user_data?.hod_data[0]
   );
   const handleChangePage = (event, newPage) => {
     setCurrentPage(newPage);
@@ -227,6 +229,9 @@ export default function Routine() {
 
   return (
     <>
+    {user.userData.user_data?.is_hod==1?
+    <>
+    {/* {console.log(user.userData.user_data.is_hod)} */}
       <Modal
         open={open2}
         onClose={handleModa2Close}
@@ -464,7 +469,7 @@ export default function Routine() {
                     variant="h6"
                     sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
                   >
-                    Date
+                    Update on
                   </Typography>
                 </TableCell>
 
@@ -499,12 +504,12 @@ export default function Routine() {
                     </TableCell>
                     <TableCell>
                       <Typography color="textSecondary" variant="h6">
-                        {routine.year}
+                        {getOrdinals(routine.year)}
                       </Typography>
                     </TableCell>
                     <TableCell>
                       <Typography color="textSecondary" variant="h6">
-                        {routine.semester}
+                        {getOrdinals(routine.semester)}
                       </Typography>
                     </TableCell>
 
@@ -570,6 +575,8 @@ export default function Routine() {
           />
         </TableContainer>
       </Box>
+    </>
+    :<TeacherRoutine/>}
     </>
   );
 }
