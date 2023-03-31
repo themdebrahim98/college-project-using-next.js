@@ -231,8 +231,7 @@ function studentSubjectAssign() {
         }
       );
 
-      if (res.data.data.status == 1) {
-		
+      if (res.data.data.status.status == 1) {
         Swal.fire({
           icon: "success",
           title: "Owoo...",
