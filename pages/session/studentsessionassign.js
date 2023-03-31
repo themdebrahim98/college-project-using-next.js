@@ -97,7 +97,7 @@ function pendingStudent() {
             headers: { Authorization: `Bearer ${token}` },
           }
         );
-       
+
         // setChecked(
         //   res.data.data.students.filter((elm) => elm.current_session_id != null)
         // );
@@ -175,6 +175,8 @@ function pendingStudent() {
         headers: { Authorization: `Bearer ${token}` },
       }
     );
+
+    
   };
   return (
     <>
@@ -223,7 +225,7 @@ function pendingStudent() {
           </FormControl>
         </Box>
       </Box>
-      
+
       <Box component={Paper}>
         <Box
           display="flex"
@@ -276,7 +278,7 @@ function pendingStudent() {
                     <Checkbox
                       onChange={handleAllChecked}
                       checked={allChecked}
-                      color='secondary'
+                      color="secondary"
                     />
                   </TableCell>
                   <TableCell>

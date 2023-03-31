@@ -20,12 +20,19 @@ import {
   Button,
   Checkbox,
 } from "@mui/material";
+import Swal from "sweetalert2";
 import FeatherIcon from "feather-icons-react";
 import Cookies from "js-cookie";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { Save } from "@mui/icons-material";
-
+import {
+  fetchAllSession,
+  fetchSessionSuccess,
+  fetchStart,
+  fetchStudentSuccess,
+} from "../../redux/slices/sessionSlice";
+import { useDispatch } from "react-redux";
 function pendingStudent() {
   const [allApprovedStudents, setallApprovedStudents] = useState([]);
   const [filterText, setFilterText] = useState("");
@@ -38,10 +45,12 @@ function pendingStudent() {
   const [checked, setChecked] = useState([]);
   const [updateSesiionId, setupdateSesiionId] = useState("");
   const [allChecked, setallChecked] = useState(false);
-
+  const [isSuccessfullySubmit, setisSuccessfullySubmit] = useState(false);
+  const dispatch = useDispatch();
+  const sessionSliceData = useSelector((store) => store.session);
   const handleAllChecked = () => {
     if (allChecked == false) {
-      const allId = allApprovedStudents.map((elm, idx) => {
+      const allId = sessionSliceData.students.map((elm, idx) => {
         return elm.student_id;
       });
       setChecked(allId);
@@ -74,7 +83,7 @@ function pendingStudent() {
     setFilterText(event.target.value);
   };
 
-  const filteredData = allApprovedStudents?.filter((row) =>
+  const filteredData = sessionSliceData.students?.filter((row) =>
     [row.first_name, row.last_name].some((value) =>
       value?.toLowerCase().includes(filterText.toLowerCase())
     )
@@ -89,24 +98,28 @@ function pendingStudent() {
     setChecked([]);
     setallChecked(false);
     const token = Cookies.get("access_key");
-    const getAllSession = async () => {
-      const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_BASE_URL}get_all_session`,
-        null,
-        {
-          headers: { Authorization: `Bearer ${token}` },
+    try {
+      const getAllSession = async () => {
+        dispatch(fetchStart());
+        const res = await axios.post(
+          `${process.env.NEXT_PUBLIC_BASE_URL}get_all_session`,
+          null,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        console.log(res.data)
+        if (res.data.data.status.status == 1) {
+          const sessions = res.data.data.sessions;
+          dispatch(fetchSessionSuccess(sessions));
         }
-      );
+      };
+      getAllSession();
+    } catch (err) {}
 
-      const sessions = res.data.data.sessions;
-      setallSession(sessions);
-      console.log(sessions, "op");
-      // console.log(allSession, "allkjdscnkvn");
-      // setteacherDatas(allTeachers);
-    };
-    getAllSession();
-    const fetchAllAssignStudents = async () => {
-      try {
+    try {
+      const fetchAllAssignStudents = async () => {
+        dispatch(fetchStart());
         const res = await axios.post(
           `${process.env.NEXT_PUBLIC_BASE_URL}get_all_students`,
           { department_id: data.department_id, course_id: data.course_id },
@@ -114,33 +127,20 @@ function pendingStudent() {
             headers: { Authorization: `Bearer ${token}` },
           }
         );
-        console.log(res.data.data.students);
-
-        const assignStudents = res.data.data?.students.filter((elm) => {
-          return elm.current_session_id === currSessionID;
-        });
-        setallApprovedStudents(assignStudents);
-      } catch (error) {
-        alert(error);
-      }
-    };
-
-    fetchAllAssignStudents();
-  }, [currSessionID]);
-
-  // useEffect(() => {
-  //   const data = allApprovedStudents.filter((elm)=>elm.current_session_id!=null)
-  //   setChecked(data.map((elm=>elm.id)))
-  //  }, [allApprovedStudents])
-
-  //   const modifyStudentData = ()=>{
-  //     const newData = displayedData.map((row) =>({...row, checked:false}))
-  //     return newData
-
-  //   }
+        if (res.data.data.status.status == 1) {
+          const students = res.data.data.students;
+          const assignStudents = students?.filter((elm) => {
+            return elm.current_session_id === currSessionID;
+          });
+          dispatch(fetchStudentSuccess(assignStudents));
+        }
+      };
+      fetchAllAssignStudents();
+    } catch (err) {}
+  }, [currSessionID, isSuccessfullySubmit]);
 
   const handleCheckboxChange = (event, id) => {
-    const newData = allApprovedStudents.map((row) => {
+    const newData = sessionSliceData.students.map((row) => {
       if (row.student_id === id) {
         const index = checked.indexOf(id);
         if (index == -1) {
@@ -158,29 +158,76 @@ function pendingStudent() {
         return row;
       }
     });
-    setallApprovedStudents(newData);
+    dispatch(fetchStudentSuccess(newData));
   };
 
   const handleSave = async () => {
     console.log(checkedStudentTobeUpload);
 
     const token = Cookies.get("access_key");
-    // const res = await axios.post(
-    //   `${process.env.NEXT_PUBLIC_BASE_URL}student_session_registration`,
-    //   { session_id: updateSesiionId, student_ids: checkedStudentTobeUpload },
-    //   {
-    //     headers: { Authorization: `Bearer ${token}` },
-    //   }
-    // );
+    try {
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_BASE_URL}student_session_registration`,
+        { session_id: updateSesiionId, student_ids: checkedStudentTobeUpload },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      if (res.data.data.status == 1) {
+        try {
+          const fetchAllAssignStudents = async () => {
+            dispatch(fetchStart());
+            const res = await axios.post(
+              `${process.env.NEXT_PUBLIC_BASE_URL}get_all_students`,
+              { department_id: data.department_id, course_id: data.course_id },
+              {
+                headers: { Authorization: `Bearer ${token}` },
+              }
+            );
+            if (res.data.data.status.status == 1) {
+              const students = res.data.data.students;
+              const assignStudents = students?.filter((elm) => {
+                return elm.current_session_id === currSessionID;
+              });
+              dispatch(fetchStudentSuccess(assignStudents));
+              console.log(res.data.data);
+              dispatch(fetchStudentSuccess(assignStudents));
+            }
+          };
+          fetchAllAssignStudents();
+        } catch (err) {}
+        setisSuccessfullySubmit(true);
+        setChecked([]);
+        setcheckedStudentTobeUpload([]);
+        Swal.fire({
+          icon: "success",
+          title: "Owoo...",
+          text: "Successfully assigned",
+        });
+      } else {
+        Swal.fire({
+          icon: "warning",
+          title: "OOps...",
+          text: "Something went wrong",
+        });
+      }
+    } catch (err) {
+      Swal.fire({
+        icon: "error",
+        title: "OOps...",
+        text: "Something went wrong",
+      });
+    }
   };
   return (
     <>
-      {console.log(checked, "checked")}
+      {console.log(checkedStudentTobeUpload, "tobe upload")}
       <Box component={Paper}>
         <Box
           display="flex"
           alignItems="center"
-          flexDirection={{ lg:"row", md:'row',  sm: 'column',xs: 'column' }}
+          flexDirection={{ lg: "row", md: "row", sm: "column", xs: "column" }}
           justifyContent={{ md: "space-between" }}
           p={5}
           gap={2}
@@ -202,7 +249,7 @@ function pendingStudent() {
               // onChange={getInput}
               // value={studentDetails.gender}
             >
-              {allSession.map((elm, idx) => {
+              {sessionSliceData.session.map((elm, idx) => {
                 return <MenuItem value={elm.id}>{elm.name}</MenuItem>;
               })}
             </Select>
@@ -222,7 +269,7 @@ function pendingStudent() {
               // onChange={getInput}
               // value={studentDetails.gender}
             >
-              {allSession.map((elm, idx) => {
+              {sessionSliceData.session.map((elm, idx) => {
                 return <MenuItem value={elm.id}>{elm.name}</MenuItem>;
               })}
             </Select>
