@@ -212,42 +212,42 @@ function studentSubjectAssign() {
 
 	const handleSave = async () => {
 		console.log(checkedStudentTobeUpload);
-	
-		try{
+
+		try {
 			const token = Cookies.get("access_key");
-			console.log(	{ session_id: currSessionID, student_ids: checkedStudentTobeUpload, currSubject_id:currSubjectId  })
+			console.log({ session_id: currSessionID, student_ids: checkedStudentTobeUpload, currSubject_id: currSubjectId })
 			const res = await axios.post(
 				`${process.env.NEXT_PUBLIC_BASE_URL}student_session_registration`,
-				{ session_id: currSessionID, student_ids: checkedStudentTobeUpload, currSubject_id:currSubjectId  },
+				{ session_id: currSessionID, student_ids: checkedStudentTobeUpload, currSubject_id: currSubjectId },
 				{
 					headers: { Authorization: `Bearer ${token}` },
 				}
 			);
-	
-			if(res.data.data.status.status == 1){
+
+			if (res.data.data.status.status == 1) {
 				Swal.fire({
 					icon: 'success',
 					title: 'Owoo...',
 					text: 'Successfully assigned',
-					
+
 				})
-			}else{
+			} else {
 				Swal.fire({
 					icon: 'warning',
 					title: 'OOps...',
 					text: 'Something went wrong',
-					
+
 				})
 			}
-		}catch(err){
+		} catch (err) {
 			Swal.fire({
 				icon: 'error',
 				title: 'OOps...',
 				text: 'Something went wrong',
-				
+
 			})
 		}
-		
+
 	};
 	useEffect(() => {
 		const token = Cookies.get('access_key')
@@ -260,18 +260,27 @@ function studentSubjectAssign() {
 
 
 	return (
-		<Box>
-
-			<Grid container spacing={5}>
-				<Grid item xs={12} lg={4}>
+		<>
+			<Box component={Paper}>
+				<Box
+					display="flex"
+					alignItems="center"
+					flexDirection={{ md: "row",xs:'column'}}
+					justifyContent={{ md: "space-between" }}
+					px={{ lg: 1, md: 1, sm: 0 }}
+					gap={1}
+					sx={{ mb: 2 }}
+				>
 					<FormControl fullWidth>
-						<InputLabel >Session</InputLabel>
+						<InputLabel sx={{ m: 2 }} size='small'>Select Session</InputLabel>
 						<Select
 							labelId="demo-simple-select-label"
-							
+
 							label="session"
 							value={currSessionID}
-							onChange={(e)=>setcurrSessionID(e.target.value)}
+							onChange={(e) => setcurrSessionID(e.target.value)}
+							sx={{ m: 2 }}
+							size='small'
 						>
 							{
 								allSession.map((elm) => <MenuItem value={elm.id}>{elm.name}</MenuItem>)
@@ -280,16 +289,16 @@ function studentSubjectAssign() {
 
 						</Select>
 					</FormControl>
-				</Grid>
-				<Grid item xs={12} lg={4}>
 					<FormControl fullWidth>
-						<InputLabel >Subjects</InputLabel>
+						<InputLabel sx={{ m: 2 }} size='small'>Select Subjects</InputLabel>
 						<Select
-							
+
 							id="demo-simple-select"
 							value={currSubjectId}
 							label="session"
-							onChange={(e)=>setcurrSubjectId(e.target.value)}
+							onChange={(e) => setcurrSubjectId(e.target.value)}
+							sx={{ m: 2 }}
+							size='small'
 						>
 
 							{
@@ -297,13 +306,10 @@ function studentSubjectAssign() {
 							}
 
 						</Select>
-					</FormControl>
-				</Grid>
-
-				<Grid item xs={12} lg={4}>
-					<Button color='primary' size='large' variant='contained' onClick={handleSave}>Assign</Button>
-				</Grid>
-			</Grid>
+					</FormControl >
+					<Button  color='warning' startIcon={<Save/>} size='medium' variant='contained' onClick={handleSave} sx={{m:2,minWidth:'100px'}}>Assign</Button>
+				</Box>
+			</Box>
 
 			<Box component={Paper}>
 				<Box
@@ -360,7 +366,7 @@ function studentSubjectAssign() {
 											color='secondary'
 										/>
 									</TableCell>
-									<TableCell>
+									{/* <TableCell>
 										<Typography
 											variant="h6"
 											sx={{
@@ -371,7 +377,7 @@ function studentSubjectAssign() {
 										>
 											Sl.no
 										</Typography>
-									</TableCell>
+									</TableCell> */}
 									<TableCell>
 										<Typography
 											sx={{
@@ -468,7 +474,7 @@ function studentSubjectAssign() {
 											Semester
 										</Typography>
 									</TableCell>
-									<TableCell>
+									{/* <TableCell>
 										<Typography
 											sx={{
 												fontSize: "15px",
@@ -515,7 +521,7 @@ function studentSubjectAssign() {
 										>
 											Phone No.
 										</Typography>
-									</TableCell>
+									</TableCell> */}
 								</TableRow>
 							</TableHead>
 
@@ -531,11 +537,11 @@ function studentSubjectAssign() {
 												}
 											/>
 										</TableCell>
-										<TableCell>
+										{/* <TableCell>
 											<Typography color="textSecondary" variant="h6">
 												{idx + 1}
 											</Typography>
-										</TableCell>
+										</TableCell> */}
 										<TableCell>
 											<Typography color="textSecondary" variant="h6">
 												{student.first_name + " " + student.last_name}
@@ -543,7 +549,7 @@ function studentSubjectAssign() {
 										</TableCell>
 										<TableCell>
 											<Typography color="textSecondary" variant="h6">
-												{student.current_session_id}
+												{student.current_session_name}
 											</Typography>
 										</TableCell>
 										<TableCell>
@@ -568,18 +574,17 @@ function studentSubjectAssign() {
 										</TableCell>
 										<TableCell>
 											<Typography color="textSecondary" variant="h6">
-												{student.year}
+												{getOrdinals(student.year)}
 											</Typography>
 										</TableCell>
 										<TableCell>
 											<Typography color="textSecondary" variant="h6">
-												{student.semester}
+												{getOrdinals(student.semester)}
 											</Typography>
 										</TableCell>
-										<TableCell>
+										{/* <TableCell>
 											<Typography color="textSecondary" variant="h6">
-												{student.dob}
-												{/* {new Date(student.dob)} */}
+												{student.dob}s
 											</Typography>
 										</TableCell>
 										<TableCell>
@@ -597,7 +602,7 @@ function studentSubjectAssign() {
 											<Typography color="textSecondary" variant="h6">
 												{student.phone_number}
 											</Typography>
-										</TableCell>
+										</TableCell> */}
 									</TableRow>
 								))}
 							</TableBody>
@@ -615,7 +620,7 @@ function studentSubjectAssign() {
 				)}
 			</Box>
 
-		</Box>
+		</>
 	)
 }
 
