@@ -37,7 +37,21 @@ function pendingStudent() {
   const [checkedStudentTobeUpload, setcheckedStudentTobeUpload] = useState([]);
   const [checked, setChecked] = useState([]);
   const [updateSesiionId, setupdateSesiionId] = useState("");
+  const [allChecked, setallChecked] = useState(false);
 
+  const handleAllChecked = () => {
+    if (allChecked == false) {
+      const allId = allApprovedStudents.map((elm, idx) => {
+        return elm.student_id;
+      });
+      setChecked(allId);
+      setcheckedStudentTobeUpload(allId);
+      setallChecked(true);
+    } else {
+      setChecked([]);
+      setallChecked(false);
+    }
+  };
 
   const handleChange = (e) => {
     setcurrSessionID(e.target.value);
@@ -71,8 +85,9 @@ function pendingStudent() {
     currentPage * rowsPerPage + rowsPerPage
   );
 
- 
   useEffect(() => {
+    setChecked([]);
+    setallChecked(false);
     const token = Cookies.get("access_key");
     const getAllSession = async () => {
       const res = await axios.post(
@@ -99,10 +114,11 @@ function pendingStudent() {
             headers: { Authorization: `Bearer ${token}` },
           }
         );
+        console.log(res.data.data.students);
+
         const assignStudents = res.data.data?.students.filter((elm) => {
-           return (elm.current_session_id === currSessionID  );
-          });
-          console.log(assignStudents)
+          return elm.current_session_id === currSessionID;
+        });
         setallApprovedStudents(assignStudents);
       } catch (error) {
         alert(error);
@@ -116,50 +132,47 @@ function pendingStudent() {
   //   const data = allApprovedStudents.filter((elm)=>elm.current_session_id!=null)
   //   setChecked(data.map((elm=>elm.id)))
   //  }, [allApprovedStudents])
-   
- 
+
   //   const modifyStudentData = ()=>{
   //     const newData = displayedData.map((row) =>({...row, checked:false}))
   //     return newData
 
   //   }
-  
+
   const handleCheckboxChange = (event, id) => {
     const newData = allApprovedStudents.map((row) => {
       if (row.student_id === id) {
         const index = checked.indexOf(id);
         if (index == -1) {
           setChecked([...checked, id]);
-          setcheckedStudentTobeUpload([...checkedStudentTobeUpload, id])
+          setcheckedStudentTobeUpload([...checkedStudentTobeUpload, id]);
           return { ...row, current_session_id: currSessionID };
         } else {
           setChecked(checked.filter((item) => item !== id));
-          setcheckedStudentTobeUpload(checkedStudentTobeUpload.filter((item) => item !== id));
+          setcheckedStudentTobeUpload(
+            checkedStudentTobeUpload.filter((item) => item !== id)
+          );
           return { ...row, current_session_id: null };
         }
       } else {
         return row;
       }
-    }); 
+    });
     setallApprovedStudents(newData);
   };
 
-
-
-  const handleSave = async()=>{
-    console.log(checkedStudentTobeUpload)
+  const handleSave = async () => {
+    console.log(checkedStudentTobeUpload);
 
     const token = Cookies.get("access_key");
-    const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_BASE_URL}student_session_registration`,
-        { session_id:updateSesiionId,  student_ids: checkedStudentTobeUpload },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-     
-
-  }
+    // const res = await axios.post(
+    //   `${process.env.NEXT_PUBLIC_BASE_URL}student_session_registration`,
+    //   { session_id: updateSesiionId, student_ids: checkedStudentTobeUpload },
+    //   {
+    //     headers: { Authorization: `Bearer ${token}` },
+    //   }
+    // );
+  };
   return (
     <>
       {console.log(checked, "checked")}
@@ -167,13 +180,12 @@ function pendingStudent() {
         <Box
           display="flex"
           alignItems="center"
-          flexDirection={{ md: "row" }}
+          flexDirection={{ lg:"row", md:'row',  sm: 'column',xs: 'column' }}
           justifyContent={{ md: "space-between" }}
-          px={{ lg: 2, md: 2, sm: 0 }}
+          p={5}
           gap={2}
           sx={{ mb: 2 }}
         >
-           
           <FormControl fullWidth>
             <InputLabel id="selectsession" sx={{ m: 2 }}>
               Previous Session
@@ -197,11 +209,10 @@ function pendingStudent() {
           </FormControl>
           <FormControl fullWidth>
             <InputLabel id="selectsession" sx={{ m: 2 }}>
-               Choose New Session 
+              Choose New Session
             </InputLabel>
             <Select
-           
-              onChange={(e)=>setupdateSesiionId(e.target.value)}
+              onChange={(e) => setupdateSesiionId(e.target.value)}
               value={updateSesiionId}
               labelId="selectsession"
               id="selectsession"
@@ -229,6 +240,7 @@ function pendingStudent() {
           </FormControl>
         </Box>
       </Box>
+
       <Box component={Paper}>
         <Box
           display="flex"
@@ -278,7 +290,11 @@ function pendingStudent() {
               <TableHead sx={{ fontWeight: "bold", background: "#03c9d7" }}>
                 <TableRow>
                   <TableCell>
-                    <Checkbox  />
+                    <Checkbox
+                      onChange={handleAllChecked}
+                      checked={allChecked}
+                      color="secondary"
+                    />
                   </TableCell>
                   <TableCell>
                     <Typography
@@ -445,9 +461,7 @@ function pendingStudent() {
                     <TableCell>
                       <Checkbox
                         //   disabled={student.current_session_id != null ? true : false}
-                        checked={
-                          checked.some((id)=> id == student.student_id)
-                        }
+                        checked={checked.some((id) => id == student.student_id)}
                         onChange={(event) =>
                           handleCheckboxChange(event, student.student_id)
                         }

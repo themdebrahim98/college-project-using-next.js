@@ -36,6 +36,7 @@ function pendingStudent() {
   const [isSellectSessionID, setisSellectSessionID] = React.useState(false);
   const [checkedStudentTobeUpload, setcheckedStudentTobeUpload] = useState([]);
   const [checked, setChecked] = useState([]);
+  const [allChecked, setallChecked] = useState(false);
 
   const handleChange = (e) => {
     setcurrSessionID(e.target.value);
@@ -69,7 +70,6 @@ function pendingStudent() {
     currentPage * rowsPerPage + rowsPerPage
   );
 
- 
   useEffect(() => {
     const token = Cookies.get("access_key");
     const getAllSession = async () => {
@@ -87,7 +87,7 @@ function pendingStudent() {
       // console.log(allSession, "allkjdscnkvn");
       // setteacherDatas(allTeachers);
     };
-    getAllSession();
+
     const fetchAllNonAssignStudents = async () => {
       try {
         const res = await axios.post(
@@ -97,19 +97,23 @@ function pendingStudent() {
             headers: { Authorization: `Bearer ${token}` },
           }
         );
-        console.log(res.data);
-        setChecked( res.data.data.students.filter((elm)=>elm.current_session_id!=null))
-  //   setChecked(data.map((elm=>elm.id)))
-        const nonSessionAssignStudents = res.data.data.students.filter((elm) => {
-           return (elm.current_session_id === null);
-          });
-          console.log(nonSessionAssignStudents)
+       
+        // setChecked(
+        //   res.data.data.students.filter((elm) => elm.current_session_id != null)
+        // );
+        //   setChecked(data.map((elm=>elm.id)))
+        const nonSessionAssignStudents = res.data.data.students.filter(
+          (elm) => {
+            return elm.current_session_id === null;
+          }
+        );
+        console.log(nonSessionAssignStudents);
         setallApprovedStudents(nonSessionAssignStudents);
       } catch (error) {
         alert(error);
       }
     };
-
+    getAllSession();
     fetchAllNonAssignStudents();
   }, []);
 
@@ -117,50 +121,61 @@ function pendingStudent() {
   //   const data = allApprovedStudents.filter((elm)=>elm.current_session_id!=null)
   //   setChecked(data.map((elm=>elm.id)))
   //  }, [allApprovedStudents])
-   
- 
+
   //   const modifyStudentData = ()=>{
   //     const newData = displayedData.map((row) =>({...row, checked:false}))
   //     return newData
 
   //   }
-  
+
+  const handleAllChecked = () => {
+    if (allChecked == false) {
+      const allId = allApprovedStudents.map((elm, idx) => {
+        return elm.student_id;
+      });
+      setChecked(allId);
+      setcheckedStudentTobeUpload(allId);
+      setallChecked(true);
+    } else {
+      setChecked([]);
+      setallChecked(false);
+    }
+  };
+
   const handleCheckboxChange = (event, id) => {
     const newData = allApprovedStudents.map((row) => {
       if (row.student_id === id) {
         const index = checked.indexOf(id);
         if (index == -1) {
           setChecked([...checked, id]);
-          setcheckedStudentTobeUpload([...checkedStudentTobeUpload, id])
+          setcheckedStudentTobeUpload([...checkedStudentTobeUpload, id]);
           return { ...row, current_session_id: currSessionID };
         } else {
           setChecked(checked.filter((item) => item !== id));
-          setcheckedStudentTobeUpload(checkedStudentTobeUpload.filter((item) => item !== id));
+          setcheckedStudentTobeUpload(
+            checkedStudentTobeUpload.filter((item) => item !== id)
+          );
           return { ...row, current_session_id: null };
         }
       } else {
         return row;
       }
-    }); 
+    });
     setallApprovedStudents(newData);
   };
 
-
-
-  const handleSave = async()=>{
-    console.log(checkedStudentTobeUpload)
+  const handleSave = async () => {
+    console.log(checkedStudentTobeUpload);
 
     const token = Cookies.get("access_key");
     const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_BASE_URL}student_session_registration`,
-        { session_id:currSessionID,  student_ids: checkedStudentTobeUpload },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-     
-
-  }
+      `${process.env.NEXT_PUBLIC_BASE_URL}student_session_registration`,
+      { session_id: currSessionID, student_ids: checkedStudentTobeUpload },
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+  };
   return (
     <>
       {console.log(checked, "checked")}
@@ -208,6 +223,7 @@ function pendingStudent() {
           </FormControl>
         </Box>
       </Box>
+      
       <Box component={Paper}>
         <Box
           display="flex"
@@ -257,7 +273,11 @@ function pendingStudent() {
               <TableHead sx={{ fontWeight: "bold", background: "#03c9d7" }}>
                 <TableRow>
                   <TableCell>
-                    <Checkbox  />
+                    <Checkbox
+                      onChange={handleAllChecked}
+                      checked={allChecked}
+                      color='secondary'
+                    />
                   </TableCell>
                   <TableCell>
                     <Typography
@@ -424,9 +444,7 @@ function pendingStudent() {
                     <TableCell>
                       <Checkbox
                         //   disabled={student.current_session_id != null ? true : false}
-                        checked={
-                          student.current_session_id != null ? true : false
-                        }
+                        checked={checked.some((id) => id == student.student_id)}
                         onChange={(event) =>
                           handleCheckboxChange(event, student.student_id)
                         }
