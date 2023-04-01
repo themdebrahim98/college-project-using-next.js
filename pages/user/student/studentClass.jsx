@@ -1,7 +1,7 @@
 import { Button, Paper } from '@mui/material'
 import { Box } from '@mui/system'
 import React from 'react'
-import TeacherRoutine from '../Components/routine'
+import Classes  from '../Components/Classes'
 
 function studentClass() {
   return (
@@ -18,7 +18,7 @@ function studentClass() {
         <Button variant='contained' color='success' size='small'>Download Routine</Button>
       </Box>
     </Box>
-    <TeacherRoutine/>
+    <Classes/>
     </>
   )
 }
