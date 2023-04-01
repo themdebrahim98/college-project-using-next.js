@@ -79,6 +79,8 @@ function studentSubjectAssign() {
  );
 
  useEffect(() => {
+  setChecked([])
+  setcheckedStudentTobeUpload([])
   const token = Cookies.get("access_key");
   const fetchAllApprovedStudents = async () => {
    try {
@@ -102,7 +104,7 @@ function studentSubjectAssign() {
    }
   };
   fetchAllApprovedStudents();
- }, [currSessionID]);
+ }, [currSessionID, currSubjectId]);
 
  useEffect(() => {
   const token = Cookies.get("access_key");
@@ -476,7 +478,8 @@ function studentSubjectAssign() {
          <TableRow key={idx}>
           <TableCell>
            {
-            student.subjects.some((subject) => {
+            student.subjects != "" &&
+            student.subjects?.some((subject) => {
              return subject.subject_id == currSubjectId;
             }) ? <Checkbox disabled checked={student.subjects.some((subject) => {
              return subject.subject_id == currSubjectId;
