@@ -19,6 +19,7 @@ import {
   InputLabel,
   Button,
   Checkbox,
+  Autocomplete
 } from "@mui/material";
 import FeatherIcon from "feather-icons-react";
 import Cookies from "js-cookie";
@@ -38,8 +39,8 @@ function pendingStudent() {
   const [checked, setChecked] = useState([]);
   const [allChecked, setallChecked] = useState(false);
 
-  const handleChange = (e) => {
-    setcurrSessionID(e.target.value);
+  const handleChange = (e, option) => {
+    setcurrSessionID(option?.id);
     setisSellectSessionID(true);
   };
 
@@ -82,7 +83,8 @@ function pendingStudent() {
       );
 
       const sessions = res.data.data.sessions;
-      setallSession(sessions);
+      const data = sessions.map((elm)=>({id: elm.id, label: elm.name}))
+      setallSession(data);
       console.log(sessions, "op");
       // console.log(allSession, "allkjdscnkvn");
       // setteacherDatas(allTeachers);
@@ -175,8 +177,6 @@ function pendingStudent() {
         headers: { Authorization: `Bearer ${token}` },
       }
     );
-
-    
   };
   return (
     <>
@@ -192,10 +192,18 @@ function pendingStudent() {
           sx={{ mb: 2 }}
         >
           <FormControl fullWidth>
-            <InputLabel id="selectsession" sx={{ m: 2 }}>
-              session
-            </InputLabel>
-            <Select
+           
+            <Autocomplete
+              // loading
+              onChange={handleChange}
+              id="controllable-states-demo"
+              options={allSession}
+              sx={{ width: 300 }}
+              renderInput={(params) => (
+                <TextField {...params} label="Controllable" />
+              )}
+            />
+            {/* <Select
               disabled={isSellectSessionID}
               onChange={handleChange}
               value={currSessionID}
@@ -210,8 +218,16 @@ function pendingStudent() {
               {allSession.map((elm, idx) => {
                 return <MenuItem value={elm.id}>{elm.name}</MenuItem>;
               })}
-            </Select>
+            </Select> */}
           </FormControl>
+          <Button
+            variant="outlined"
+            sx={{ mr: 2 }}
+            color="success"
+            onClick={() => setisSellectSessionID(false)}
+          >
+            Change
+          </Button>
           <FormControl>
             <Button
               variant="contained"
@@ -540,3 +556,4 @@ function pendingStudent() {
 }
 
 export default pendingStudent;
+

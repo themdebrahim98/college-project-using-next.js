@@ -19,6 +19,7 @@ import {
   InputLabel,
   Button,
   Checkbox,
+  Autocomplete,
 } from "@mui/material";
 import Swal from "sweetalert2";
 import FeatherIcon from "feather-icons-react";
@@ -46,6 +47,7 @@ function pendingStudent() {
   const [updateSesiionId, setupdateSesiionId] = useState("");
   const [allChecked, setallChecked] = useState(false);
   const [isSuccessfullySubmit, setisSuccessfullySubmit] = useState(false);
+  const [inputValue, setInputValue] = React.useState("");
   const dispatch = useDispatch();
   const sessionSliceData = useSelector((store) => store.session);
   const handleAllChecked = () => {
@@ -62,8 +64,16 @@ function pendingStudent() {
     }
   };
 
-  const handleChange = (e) => {
-    setcurrSessionID(e.target.value);
+  const handleChange = (e, option) => {
+    // setcurrSessionID(e.target.value);
+    // setisSellectSessionID(true);
+    setcurrSessionID(option?.id);
+    setisSellectSessionID(true);
+  };
+  const handleChange2 = (e, option) => {
+    // setcurrSessionID(e.target.value);
+    // setisSellectSessionID(true);
+    setupdateSesiionId(option?.id);
     setisSellectSessionID(true);
   };
 
@@ -108,9 +118,15 @@ function pendingStudent() {
             headers: { Authorization: `Bearer ${token}` },
           }
         );
-        console.log(res.data)
+        console.log(res.data);
         if (res.data.data.status.status == 1) {
-          const sessions = res.data.data.sessions;
+          const sessions = res.data.data.sessions.map((elm) => ({
+            label: elm.name,
+            id:elm.id
+          }));
+          // const sessions = res.data.data.sessions;
+          // console.log(sessions, "sessions");
+
           dispatch(fetchSessionSuccess(sessions));
         }
       };
@@ -197,6 +213,7 @@ function pendingStudent() {
           };
           fetchAllAssignStudents();
         } catch (err) {}
+        setallChecked(false);
         setisSuccessfullySubmit(true);
         setChecked([]);
         setcheckedStudentTobeUpload([]);
@@ -222,7 +239,8 @@ function pendingStudent() {
   };
   return (
     <>
-      {console.log(checkedStudentTobeUpload, "tobe upload")}
+
+      {console.log(currSessionID, updateSesiionId)}
       <Box component={Paper}>
         <Box
           display="flex"
@@ -234,31 +252,30 @@ function pendingStudent() {
           sx={{ mb: 2 }}
         >
           <FormControl fullWidth>
-            <InputLabel id="selectsession" sx={{ m: 2 }}>
-              Previous Session
-            </InputLabel>
-            <Select
-              // disabled={isSellectSessionID}
+            <Autocomplete
+              // loading
               onChange={handleChange}
-              value={currSessionID}
-              labelId="selectsession"
-              id="selectsession"
-              label="Sessions"
-              name="session"
-              sx={{ m: 2 }}
-              // onChange={getInput}
-              // value={studentDetails.gender}
-            >
-              {sessionSliceData.session.map((elm, idx) => {
-                return <MenuItem value={elm.id}>{elm.name}</MenuItem>;
-              })}
-            </Select>
+              id="controllable-states-demo"
+              options={sessionSliceData.session}
+              sx={{ width: 300 }}
+              renderInput={(params) => (
+                <TextField {...params} label="Previous Session" />
+              )}
+            />
           </FormControl>
           <FormControl fullWidth>
-            <InputLabel id="selectsession" sx={{ m: 2 }}>
-              Choose New Session
-            </InputLabel>
-            <Select
+           
+            <Autocomplete
+              // loading
+              onChange={handleChange2}
+              id="controllable-states-demo"
+              options={sessionSliceData.session}
+              sx={{ width: 300 }}
+              renderInput={(params) => (
+                <TextField {...params} label="New Session" />
+              )}
+            />
+            {/* <Select
               onChange={(e) => setupdateSesiionId(e.target.value)}
               value={updateSesiionId}
               labelId="selectsession"
@@ -272,7 +289,7 @@ function pendingStudent() {
               {sessionSliceData.session.map((elm, idx) => {
                 return <MenuItem value={elm.id}>{elm.name}</MenuItem>;
               })}
-            </Select>
+            </Select> */}
           </FormControl>
           <FormControl>
             <Button
