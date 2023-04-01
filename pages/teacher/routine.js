@@ -40,8 +40,8 @@ import FeatherIcon from "feather-icons-react";
 import BrowserUpdatedIcon from "@mui/icons-material/BrowserUpdated";
 import MuiAlert from "@mui/material/Alert";
 import { CloudDownload, FileDownload, FileUpload, UploadFile } from "@mui/icons-material";
-import TeacherRoutine from '../user/Components/routine'
 import { getOrdinals } from "../../src/Helper/functions";
+import Classes from "../user/Components/Classes";
 
 const style = {
   position: "absolute",
@@ -576,7 +576,7 @@ export default function Routine() {
         </TableContainer>
       </Box>
     </>
-    :<TeacherRoutine/>}
+    :<Classes/>}
     </>
   );
 }
