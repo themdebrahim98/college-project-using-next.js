@@ -12,8 +12,10 @@ import {
   Typography,
   Container,
   Alert,
-  Snackbar
+  Snackbar,
 } from "@mui/material";
+import styles from "../../styles/alert.module.css";
+import Swal from "sweetalert2";
 import React, { useState, useEffect } from "react";
 import BaseCard from "../../src/components/baseCard/BaseCard";
 import Link from "next/link";
@@ -26,7 +28,7 @@ import NexLink from "next/link";
 import FeatherIcon from "feather-icons-react";
 
 const vertical = "top",
-horizontal = "right";
+  horizontal = "right";
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
   ...theme.typography.body2,
@@ -41,7 +43,7 @@ function addSubject() {
   const [alertMsg, setAlertMsg] = useState("");
   const [openAlert, setOpenAlert] = useState(false);
   const [loading, setLoading] = useState(false);
-  const router = useRouter()
+  const router = useRouter();
 
   const [subjectDetails, setsubjectDetails] = useState({
     name: "",
@@ -71,12 +73,18 @@ function addSubject() {
 
   useEffect(() => {
     const fetchAllDepertment = async () => {
-      const res2 = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}get_departments`, null);
+      const res2 = await axios.post(
+        `${process.env.NEXT_PUBLIC_BASE_URL}get_departments`,
+        null
+      );
       setallDepertments([...res2.data.data.departments]);
     };
 
     const fetchALlCourse = async () => {
-      const res2 = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}get_courses`, null);
+      const res2 = await axios.post(
+        `${process.env.NEXT_PUBLIC_BASE_URL}get_courses`,
+        null
+      );
       setallCourses([...res2.data.data.courses]);
     };
     fetchAllDepertment();
@@ -85,29 +93,57 @@ function addSubject() {
 
   const handleCreateSubject = async () => {
     setLoading(true);
-    if (!subjectDetails.course_id) {
-      setOpenAlert(true);
-      setAlertMsg("Please select course");
-    } else if (!subjectDetails.department_id) {
-      setOpenAlert(true);
-      setAlertMsg("Please select department");
-    } else if (!subjectDetails.semester) {
-      setOpenAlert(true);
-      setAlertMsg("please select semester");
-    } else if (!subjectDetails.year) {
-      setOpenAlert(true);
-      setAlertMsg("please select year");
+    // if (!subjectDetails.course_id) {
+    //   setOpenAlert(true);
+    //   setAlertMsg("Please select course");
+    // } else if (!subjectDetails.department_id) {
+    //   setOpenAlert(true);
+    //   setAlertMsg("Please select department");
+    // } else if (!subjectDetails.semester) {
+    //   setOpenAlert(true);
+    //   setAlertMsg("please select semester");
+    // } else if (!subjectDetails.year) {
+    //   setOpenAlert(true);
+    //   setAlertMsg("please select year");
+    // }
+    const res = await axios.post(
+      `${process.env.NEXT_PUBLIC_BASE_URL}add_subject`,
+      subjectDetails,
+      {
+        headers: { Authorization: `Bearer ${Cookies.get("access_key")}` },
+      }
+    );
+    if (res.data.data.status == 1) {
+      setLoading(false);
+      Swal.fire({
+        position: "top",
+        icon: "success",
+        title: `${res.data.data.message}`,
+        showConfirmButton: false,
+        timer: 1500,
+        customClass: {
+          container: `${styles["my-sweetalert2-container-class"]}`,
+        },
+      });
+      router.back();
+      
+    } else {
+      Swal.fire({
+        position: "top",
+        icon: "warning",
+        title: `${res.data.data.message}`,
+        showConfirmButton: false,
+        timer: 1500,
+        customClass: {
+          container: `${styles["my-sweetalert2-container-class"]}`,
+        },
+      });
     }
-    const res = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}add_subject`,subjectDetails,{
-      headers:{Authorization:`Bearer ${Cookies.get("access_key")}`}
-    });
-    setLoading(false)
-    router.back()
-    
+  
   };
   return (
     <>
-      <Container sx={{ mt: 2 }}>
+      {/* <Container sx={{ mt: 2 }}>
         <Alert
           severity="success"
           sx={{
@@ -129,17 +165,17 @@ function addSubject() {
         <Alert severity="error" sx={{ width: "100%" }}>
           {alertMsg}
         </Alert>
-      </Snackbar>
+      </Snackbar> */}
 
       <Item>
         <Grid container p={1} spacing={2}>
-        <Grid item xs={12} lg={12} sx={{ mb: 2 }} textAlign="start">
-          <Button variant="contained" onClick={() => router.back()}>
-            {" "}
-            <FeatherIcon icon="arrow-left" width="20" height="20" />
-            Back
-          </Button>
-      </Grid>
+          <Grid item xs={12} lg={12} sx={{ mb: 2 }} textAlign="start">
+            <Button variant="contained" onClick={() => router.back()}>
+              {" "}
+              <FeatherIcon icon="arrow-left" width="20" height="20" />
+              Back
+            </Button>
+          </Grid>
           <Grid item xs={12} lg={12} sx={{ mb: 2 }} textAlign="start">
             <Typography variant="h3" textAlign="start" color="">
               <b>Add subject</b>
@@ -245,16 +281,16 @@ function addSubject() {
             </FormControl>
           </Grid>
 
-          {/*  */}
         </Grid>
         <Button
-          sx={{ bgcolor: "primary",ml:1}}
+          sx={{ bgcolor: "primary", ml: 1 }}
           variant="contained"
           onClick={handleCreateSubject}
-          disabled={loading}
+          disabled={Object.values(subjectDetails).slice(0,(Object.values(subjectDetails).length-2)).some(
+            (elm) => elm == null || elm == ""
+          )}
         >
-          {loading?"Creating Subject":" Create Subject"}
-         
+          {loading ? "Creating Subject" : " Create Subject"}
         </Button>
       </Item>
     </>

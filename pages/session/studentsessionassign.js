@@ -19,7 +19,7 @@ import {
   InputLabel,
   Button,
   Checkbox,
-  Autocomplete
+  Autocomplete,
 } from "@mui/material";
 import FeatherIcon from "feather-icons-react";
 import Cookies from "js-cookie";
@@ -83,52 +83,43 @@ function pendingStudent() {
       );
 
       const sessions = res.data.data.sessions;
-      const data = sessions.map((elm)=>({id: elm.id, label: elm.name}))
+      const data = sessions.map((elm) => ({ id: elm.id, label: elm.name }));
       setallSession(data);
       console.log(sessions, "op");
       // console.log(allSession, "allkjdscnkvn");
       // setteacherDatas(allTeachers);
     };
 
-    const fetchAllNonAssignStudents = async () => {
-      try {
-        const res = await axios.post(
-          `${process.env.NEXT_PUBLIC_BASE_URL}get_all_students`,
-          { department_id: data.department_id, course_id: data.course_id },
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
+    console.log(data,"test")
+    if (data != undefined) {
+      const fetchAllNonAssignStudents = async () => {
+        try {
+          const res = await axios.post(
+            `${process.env.NEXT_PUBLIC_BASE_URL}get_all_students`,
+            { department_id: data.department_id, course_id: data.course_id },
+            {
+              headers: { Authorization: `Bearer ${token}` },
+            }
+          );
 
-        // setChecked(
-        //   res.data.data.students.filter((elm) => elm.current_session_id != null)
-        // );
-        //   setChecked(data.map((elm=>elm.id)))
-        const nonSessionAssignStudents = res.data.data.students.filter(
-          (elm) => {
-            return elm.current_session_id === null;
-          }
-        );
-        console.log(nonSessionAssignStudents);
-        setallApprovedStudents(nonSessionAssignStudents);
-      } catch (error) {
-        alert(error);
-      }
-    };
+          const nonSessionAssignStudents = res.data.data.students.filter(
+            (elm) => {
+              return elm.current_session_id === null;
+            }
+          );
+          console.log(nonSessionAssignStudents);
+          setallApprovedStudents(nonSessionAssignStudents);
+        } catch (error) {
+          console.log(error)
+        }
+      };
+      fetchAllNonAssignStudents();
+    }
+
     getAllSession();
-    fetchAllNonAssignStudents();
+    
   }, []);
 
-  // useEffect(() => {
-  //   const data = allApprovedStudents.filter((elm)=>elm.current_session_id!=null)
-  //   setChecked(data.map((elm=>elm.id)))
-  //  }, [allApprovedStudents])
-
-  //   const modifyStudentData = ()=>{
-  //     const newData = displayedData.map((row) =>({...row, checked:false}))
-  //     return newData
-
-  //   }
 
   const handleAllChecked = () => {
     if (allChecked == false) {
@@ -192,7 +183,6 @@ function pendingStudent() {
           sx={{ mb: 2 }}
         >
           <FormControl fullWidth>
-           
             <Autocomplete
               // loading
               onChange={handleChange}
@@ -556,4 +546,3 @@ function pendingStudent() {
 }
 
 export default pendingStudent;
-

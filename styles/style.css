@@ -33,3 +33,7 @@ html,body{
 /* .table_scroll::-webkit-scrollbar-thumb:hover {
   background: #009eb3; 
 } */
+
+/* .my-sweetalert2-container-class{
+  z-index: 10000;
+} */

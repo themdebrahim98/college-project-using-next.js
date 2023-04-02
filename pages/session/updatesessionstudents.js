@@ -122,7 +122,7 @@ function pendingStudent() {
         if (res.data.data.status.status == 1) {
           const sessions = res.data.data.sessions.map((elm) => ({
             label: elm.name,
-            id:elm.id
+            id: elm.id,
           }));
           // const sessions = res.data.data.sessions;
           // console.log(sessions, "sessions");
@@ -133,26 +133,28 @@ function pendingStudent() {
       getAllSession();
     } catch (err) {}
 
-    try {
-      const fetchAllAssignStudents = async () => {
-        dispatch(fetchStart());
-        const res = await axios.post(
-          `${process.env.NEXT_PUBLIC_BASE_URL}get_all_students`,
-          { department_id: data.department_id, course_id: data.course_id },
-          {
-            headers: { Authorization: `Bearer ${token}` },
+    if (data != undefined) {
+      try {
+        const fetchAllAssignStudents = async () => {
+          dispatch(fetchStart());
+          const res = await axios.post(
+            `${process.env.NEXT_PUBLIC_BASE_URL}get_all_students`,
+            { department_id: data.department_id, course_id: data.course_id },
+            {
+              headers: { Authorization: `Bearer ${token}` },
+            }
+          );
+          if (res.data.data.status.status == 1) {
+            const students = res.data.data.students;
+            const assignStudents = students?.filter((elm) => {
+              return elm.current_session_id === currSessionID;
+            });
+            dispatch(fetchStudentSuccess(assignStudents));
           }
-        );
-        if (res.data.data.status.status == 1) {
-          const students = res.data.data.students;
-          const assignStudents = students?.filter((elm) => {
-            return elm.current_session_id === currSessionID;
-          });
-          dispatch(fetchStudentSuccess(assignStudents));
-        }
-      };
-      fetchAllAssignStudents();
-    } catch (err) {}
+        };
+        fetchAllAssignStudents();
+      } catch (err) {console.log(err)}
+    }
   }, [currSessionID, isSuccessfullySubmit]);
 
   const handleCheckboxChange = (event, id) => {
@@ -192,27 +194,32 @@ function pendingStudent() {
 
       if (res.data.data.status == 1) {
         try {
-          const fetchAllAssignStudents = async () => {
-            dispatch(fetchStart());
-            const res = await axios.post(
-              `${process.env.NEXT_PUBLIC_BASE_URL}get_all_students`,
-              { department_id: data.department_id, course_id: data.course_id },
-              {
-                headers: { Authorization: `Bearer ${token}` },
+          if (data != undefined) {
+            const fetchAllAssignStudents = async () => {
+              dispatch(fetchStart());
+              const res = await axios.post(
+                `${process.env.NEXT_PUBLIC_BASE_URL}get_all_students`,
+                {
+                  department_id: data.department_id,
+                  course_id: data.course_id,
+                },
+                {
+                  headers: { Authorization: `Bearer ${token}` },
+                }
+              );
+              if (res.data.data.status.status == 1) {
+                const students = res.data.data.students;
+                const assignStudents = students?.filter((elm) => {
+                  return elm.current_session_id === currSessionID;
+                });
+                dispatch(fetchStudentSuccess(assignStudents));
+                console.log(res.data.data);
+                dispatch(fetchStudentSuccess(assignStudents));
               }
-            );
-            if (res.data.data.status.status == 1) {
-              const students = res.data.data.students;
-              const assignStudents = students?.filter((elm) => {
-                return elm.current_session_id === currSessionID;
-              });
-              dispatch(fetchStudentSuccess(assignStudents));
-              console.log(res.data.data);
-              dispatch(fetchStudentSuccess(assignStudents));
-            }
-          };
-          fetchAllAssignStudents();
-        } catch (err) {}
+            };
+            fetchAllAssignStudents();
+          }
+        } catch (err) {console.log(err)}
         setallChecked(false);
         setisSuccessfullySubmit(true);
         setChecked([]);
@@ -239,7 +246,6 @@ function pendingStudent() {
   };
   return (
     <>
-
       {console.log(currSessionID, updateSesiionId)}
       <Box component={Paper}>
         <Box
@@ -264,7 +270,6 @@ function pendingStudent() {
             />
           </FormControl>
           <FormControl fullWidth>
-           
             <Autocomplete
               // loading
               onChange={handleChange2}
