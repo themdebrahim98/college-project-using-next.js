@@ -9,13 +9,16 @@ import {
   Card,
   CardContent,
   CardActions,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  CardHeader
 
 } from "@mui/material";
-import Accordion from '@mui/material/Accordion';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import AccordionDetails from '@mui/material/AccordionDetails';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import InfoIcon from '@mui/icons-material/Info';
 import axios from "axios";
 import { useSelect } from "@mui/base";
 import { useSelector } from "react-redux";
@@ -23,14 +26,16 @@ import Cookies from "js-cookie";
 
 import Snackbar from "@mui/material/Snackbar";
 import FeatherIcon from "feather-icons-react";
-import { FileDownload, FileUpload, UploadFile } from "@mui/icons-material";
+import { AccessAlarm, CheckCircleOutline, Download, FileDownload, FileUpload, HighlightOff, PostAdd, UploadFile } from "@mui/icons-material";
 import { getOrdinals } from "../../../src/Helper/functions";
+import { styled } from '@mui/material/styles';
+import Collapse from '@mui/material/Collapse';
+import IconButton from '@mui/material/IconButton';
 function Classes() {
   const [allClassess, setallClassess] = useState([]);
   const [expanded, setExpanded] = React.useState(false);
-
-  const handleChange = (panel) => (event, isExpanded) => {
-    setExpanded(isExpanded ? panel : false);
+  const handleExpandClick = () => {
+    setExpanded(!expanded);
   };
   useEffect(() => {
     const getallClassesss = async () => {
@@ -50,48 +55,78 @@ function Classes() {
         allClassess.map((classes, idx) => (
           <Grid item lg={4} xs={12} sm={6}>
             <Card sx={{
-              borderRadius: '10px',
-              textAlign: 'center'
-              // background: '#FFD78A'
+              borderRadius: '6px',
             }}>
+              {/* <CardHeader
+                title={<Typography variant="h3" noWrap maxWidth='300px' sx={{color:'#38b000'}} fontWeight='bold'>
+                OEC-801
+                </Typography>}
+                sx={{ mb: '-5px' }}
+                action={
+                    <IconButton>
+                      <PostAdd />
+                    </IconButton>
+                  }
+              /> */}
               <CardContent>
-                <Typography gutterBottom variant="h2" component="div">
-                  {classes.course_name + ' ' + classes.department_name + ' Rotuine'}
+                <Typography variant="h2"  sx={{textAlign:'center',fontWeight:'bold'}}>
+                Cryptography & Network Security
                 </Typography>
                 <Box display="flex"
-                  sx={{ mt: 4, flexWrap: 'wrap' }}
+                  sx={{ mt: 2, flexWrap: 'wrap' }}
                   alignItems="center"
                   flexDirection='row'
                   justifyContent='center'
                   gap={2}>
-                  <Chip size="small" label={getOrdinals(classes.year) + ' Year'} color="primary" />
-                  <Chip size="small" label={getOrdinals(classes.semester) + ' Semester'} color="primary" />
+                  <Chip size="small" label={getOrdinals(classes.year) + ' Year'} color="info" sx={{ color: '#fff', fontWeight: 'bold' }} />
+                  <Chip size="small" label={getOrdinals(classes.semester) + ' Semester'} sx={{ fontWeight: 'bold' }} color="secondary" />
                 </Box>
               </CardContent>
-              <CardActions sx={{ display: 'flex',flexDirection:'column',gap:'8px' }} >
-                
-                {/* <Link style={{ textDecoration: 'none', color: 'inherit' }} href='/student/classhistory'>
-                  <Button onClick={null} variant="contained" color="success" startIcon={<InfoIcon />} >Info</Button>
-                </Link> */}
-                <Button size="large" onClick={() => (window.open(classes.routine_url, "_blank"))} variant="contained" color="success" startIcon={<FileDownload />}> Syllabus</Button>
-               
+
+              <CardActions disableSpacing>
+                <Button variant="outline" startIcon={<Download />} sx={{ color: '#ff5400', fontWeight: 'bold' }}>Syllabus</Button>
+                <Button variant="outline" expand={expanded}
+                  onClick={handleExpandClick}
+                  aria-expanded={expanded} sx={{ ml: 'auto', color: '#014f86', fontWeight: 'bold' }} startIcon={<AccessAlarm />}>Classes</Button>
               </CardActions>
-              <Accordion sx={{width:"100%"}} expanded={expanded === `panel${idx+1}`} onChange={handleChange(`panel${idx+1}`)}>
-                  <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls="panel1a-content"
-                    id="panel1a-header"
-                  >
-                    <Typography variant="h2" fontWeight={500} textTransform='capitalize'>Info</Typography>
-                   
-                  </AccordionSummary>
-                  <AccordionDetails>
-                    <Typography>
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-                      malesuada lacus ex, sit amet blandit leo lobortis eget.
-                    </Typography>
-                  </AccordionDetails>
-                </Accordion>
+              <Collapse in={expanded} timeout="auto" unmountOnExit>
+                <CardContent>
+                  <TableContainer>
+                    <Table aria-label="simple table" size="small">
+                      <TableHead sx={{ bgcolor: '#bee1e6' }}>
+                        <TableRow>
+                          <TableCell align="center">Topic</TableCell>
+                          <TableCell align="center">status</TableCell>
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>
+                        <TableRow
+                          key={1}
+                          sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                        >
+                          <TableCell align="center">chapter 1</TableCell>
+                          <TableCell align="center">
+                            <IconButton title="Present" size="small">
+                              <CheckCircleOutline color="success" />
+                            </IconButton>
+                          </TableCell>
+                        </TableRow>
+                        <TableRow
+                          key={2}
+                          sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                        >
+                          <TableCell align="center">chapter 2</TableCell>
+                          <TableCell align="center">
+                            <IconButton title="Absent" size="small">
+                              <HighlightOff color="danger" />
+                            </IconButton>
+                          </TableCell>
+                        </TableRow>
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                </CardContent>
+              </Collapse>
             </Card>
           </Grid>
         ))}
