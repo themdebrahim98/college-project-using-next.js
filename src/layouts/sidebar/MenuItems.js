@@ -31,6 +31,11 @@ export const useMenu = (data) => {
       href: "/",
     });
     menuItem.push({
+      title: "Class Room",
+      icon: "clipboard",
+      href: "/teacher/classRoom",
+    });
+    menuItem.push({
       title: "Students",
       icon: 'users',
       href: "/student",
@@ -76,7 +81,7 @@ export const useMenu = (data) => {
       href: "/",
     });
     menuItem.push({
-      title: "Class",
+      title: "Classes",
       icon: "clipboard",
       href: "/user/student/studentClass",
     });
@@ -85,11 +90,11 @@ export const useMenu = (data) => {
       icon: "clipboard",
       href: "/notices",
     });
-    menuItem.push({
-      title: "Syllabus",
-      icon: "clipboard",
-      href: "/user/student/syllabus",
-    });
+    // menuItem.push({
+    //   title: "Syllabus",
+    //   icon: "clipboard",
+    //   href: "/user/student/syllabus",
+    // });
     // menuItem.push({
     //   title: "Routine",
     //   icon: "clipboard",
