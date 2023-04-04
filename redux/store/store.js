@@ -1,7 +1,7 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import userReducer from "../slices/userSlice";
 import studentSlice from "../slices/userSlice";
-
+import timerSlice from "../slices/timerSlice";
 import {
   persistStore,
   persistReducer,
@@ -25,7 +25,8 @@ const persistConfig = {
 const rootReducer = combineReducers({
   user: userReducer,
   students:studentSlice,
-  session:sessionSlice
+  session:sessionSlice,
+  timePicker:timerSlice
 });
 const persistedReducer = persistReducer(persistConfig, rootReducer)
 
