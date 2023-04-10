@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import FilterListIcon from "@mui/icons-material/FilterList";
 import {
   Typography,
   Box,
@@ -19,7 +20,7 @@ import Cookies from "js-cookie";
 import axios from "axios";
 import { useSelector } from "react-redux";
 
-function pendingStudent() {
+function AllStudents() {
   const [allApprovedStudents, setallApprovedStudents] = useState([]);
   const [filterText, setFilterText] = useState("");
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -38,15 +39,36 @@ function pendingStudent() {
     setFilterText(event.target.value);
   };
 
-  const filteredData = allApprovedStudents?.filter((row) =>
-    [row.first_name, row.last_name].some((value) =>
-      value.toLowerCase().includes(filterText.toLowerCase())
-    )
-  );
-  const displayedData = filteredData.slice(
+  const handleClearFilters = () => {
+    setfilters({});
+  };
+
+  // const filteredData = allApprovedStudents?.filter((row) =>
+  //   [row.first_name, row.last_name].some((value) =>
+  //     value.toLowerCase().includes(filterText.toLowerCase())
+  //   )
+  // );
+  const handleFilterChange = (event) => {
+    setfilters((prevFilters) => ({
+      ...prevFilters,
+      [event.target.name]: event.target.value,
+    }));
+  };
+
+  const tempFilteredData = allApprovedStudents.filter((item) => {
+    return Object.entries(filters).every(([key, value]) => {
+      return item[key].toString().toLowerCase().includes(value);
+    });
+  });
+
+  const displayedData = tempFilteredData.slice(
     currentPage * rowsPerPage,
     currentPage * rowsPerPage + rowsPerPage
   );
+  // const displayedData = filteredData.slice(
+  //   currentPage * rowsPerPage,
+  //   currentPage * rowsPerPage + rowsPerPage
+  // );
   useEffect(() => {
     const token = Cookies.get("access_key");
 
@@ -297,4 +319,4 @@ function pendingStudent() {
   );
 }
 
-export default pendingStudent;
+export default AllStudents;

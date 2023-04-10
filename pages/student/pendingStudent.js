@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import FilterListIcon from '@mui/icons-material/FilterList';
 import {
   Typography,
   Box,
@@ -20,7 +21,7 @@ import {
   TablePagination,
   InputAdornment,
   IconButton,
-  TextField
+  TextField,
 } from "@mui/material";
 
 import Link from "next/link";
@@ -32,12 +33,21 @@ function pendingStudent() {
   const [allPendingStudents, setallPendingStudents] = useState([]);
   const [open, setopen] = useState(false);
   const [currStudentTobeDeleted, setcurrStudentTobeDeleted] = useState({});
-  const [loading, setloading] = useState(false)
+  const [loading, setloading] = useState(false);
   const [filterText, setFilterText] = useState("");
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [currentPage, setCurrentPage] = React.useState(0);
-  const data = useSelector((store)=>store.user.userData.user_data.hod_data[0])
+  // const data = useSelector((store)=>store.user.userData.user_data.hod_data[0])
 
+
+
+  const data = useSelector(
+    (store) => store?.user?.userData?.user_data?.hod_data[0]
+  );
+  const [filters, setfilters] = useState({
+    first_name: "",
+  });
+  const [filtered, setFiltered] = useState([]);
 
   const handleChangePage = (event, newPage) => {
     setCurrentPage(newPage);
@@ -48,28 +58,39 @@ function pendingStudent() {
     setCurrentPage(0);
   };
 
-
   const handleFilterTextChange = (event) => {
     setFilterText(event.target.value);
   };
 
-  const filteredData = allPendingStudents.filter((row) =>
-    [row.first_name, row.last_name].some((value) =>
-      value.toLowerCase().includes(filterText.toLowerCase())
-    )
-  );
-  const displayedData = filteredData.slice(
+  const handleFilterChange = (event) => {
+    setfilters((prevFilters) => ({
+      ...prevFilters,
+      [event.target.name]: event.target.value,
+    }));
+  };
+
+  const tempFilteredData = allPendingStudents.filter((item) => {
+    return Object.entries(filters).every(([key, value]) => {
+      return item[key].toString().toLowerCase().includes(value);
+    });
+  });
+
+  const displayedData = tempFilteredData.slice(
     currentPage * rowsPerPage,
     currentPage * rowsPerPage + rowsPerPage
   );
+  const handleClearFilters = () => {
+    setfilters({});
+  };
 
+  
   const selectCurrentStudentData = (student) => {
-    console.log(student)
+    console.log(student);
     setcurrStudentTobeDeleted(student);
-    setopen(true)
+    setopen(true);
   };
   const handleApprove = async (student) => {
-    setloading(true)
+    setloading(true);
     const { student_id, first_name, last_name, email_address } = student;
     const token = Cookies.get("access_key");
     try {
@@ -88,7 +109,7 @@ function pendingStudent() {
       });
       setallPendingStudents(filterPendingStudent);
       console.log(res.data);
-      setloading(false)
+      setloading(false);
       alert("approved succcessfully");
     } catch (error) {
       alert(error);
@@ -122,7 +143,7 @@ function pendingStudent() {
 
   const handleClose = () => {
     setopen(false);
-    alert("cancelleed succsessfully")
+    alert("cancelleed succsessfully");
   };
 
   const handleConfirm = () => {
@@ -134,33 +155,20 @@ function pendingStudent() {
 
   return (
     <Box component={Paper}>
-      <Box display="flex"
+      <Box
+        display="flex"
         alignItems="center"
-        flexDirection={{ md: 'row', xs: 'column' }}
-        justifyContent={{ md: 'space-between', xs: 'center' }}
+        flexDirection={{ md: "row", xs: "column" }}
+        justifyContent={{ md: "space-between", xs: "center" }}
         px={{ lg: 2, md: 2, sm: 0 }}
         py={2}
-        gap={2}>
-        <Typography variant="h2" sx={{ ml: 1, fontWeight: 'bold' }}>
+        gap={2}
+      >
+        <Typography variant="h2" sx={{ ml: 1, fontWeight: "bold" }}>
           Pending students
         </Typography>
 
-        <TextField
-          size="small"
-          sx={{ p: 1, float: 'right' }}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <IconButton>
-                  <FeatherIcon icon="filter" />
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
-          label="Filter table"
-          value={filterText}
-          onChange={handleFilterTextChange}
-        />
+        
       </Box>
       <TableContainer
         component={Paper}
@@ -403,14 +411,13 @@ function pendingStudent() {
         <TablePagination
           rowsPerPageOptions={[5, 10, 20, 40]}
           component="div"
-          count={displayedData.length}
+          count={filtered.length}
           rowsPerPage={rowsPerPage}
           page={currentPage}
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </TableContainer>
-
     </Box>
   );
 }
