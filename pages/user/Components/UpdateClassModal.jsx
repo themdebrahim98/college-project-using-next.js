@@ -21,13 +21,13 @@ import {
   IconButton,
 } from "@mui/material";
 import TimePicker from './TimePicker';
-function ClassScheduleModal({ open1, handleModal1Close1, currSubId, inputData, setinputData, handleInputChange, SubmitScheduleClass }) {
+function UpdateClassModal({ open3, handleModal1Close3, inputData, handleInputChange, updateClass }) {
 
   return (
     <div>
       <Modal
-        open={open1}
-        onClose={handleModal1Close1}
+        open={open3}
+        onClose={handleModal1Close3}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
@@ -43,7 +43,7 @@ function ClassScheduleModal({ open1, handleModal1Close1, currSubId, inputData, s
             sx={{ fontWeight: 500, textAlign: "center" }}
             component="h2"
           >
-            Makes Teacher As A HOD
+           Update Class 
           </Typography>
 
           <Box
@@ -53,31 +53,24 @@ function ClassScheduleModal({ open1, handleModal1Close1, currSubId, inputData, s
             gap={5}
           >
             <TextField
-              name='topic'
-              value={inputData.topic}
+              minRows="2"
+              multiline
+              name='remarks'
+              value={inputData.remarks}
               id="outlined-basic"
               variant="outlined"
-              label="topic"
+              label="remarks"
               onChange={handleInputChange}
             />
-             <TextField
-             type='datetime-local'
-             value={inputData.schudelDate}
-              name='schudelDate'
-              id="outlined-basic"
-              variant="outlined"
-          
-              onChange={handleInputChange}
-            />
+           
 
             <TimePicker
-
 
             />
 
 
             <Button
-              onClick={SubmitScheduleClass}
+              onClick={updateClass}
               type="submit"
               variant="contained"
               sx={{ marginTop: "25px" }}
@@ -92,4 +85,4 @@ function ClassScheduleModal({ open1, handleModal1Close1, currSubId, inputData, s
   )
 }
 
-export default ClassScheduleModal
+export default UpdateClassModal

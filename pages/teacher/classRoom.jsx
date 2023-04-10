@@ -14,23 +14,23 @@ import {
   IconButton,
   TablePagination,
   FormControl,
-
 } from "@mui/material";
 import styles from "../../styles/alert.module.css";
 
-import PropTypes from 'prop-types';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import { Button } from '@mui/material';
-import Classes from '../user/Components/Classes';
-import { Create } from '@mui/icons-material';
-import axios from 'axios';
-import Cookies from 'js-cookie';
-import { useSelector } from 'react-redux';
-import FeatherIcon from 'feather-icons-react'
+import PropTypes from "prop-types";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
+import { Button } from "@mui/material";
+import Classes from "../user/Components/Classes";
+import { Create } from "@mui/icons-material";
+import axios from "axios";
+import Cookies from "js-cookie";
+import { useSelector } from "react-redux";
+import FeatherIcon from "feather-icons-react";
 import ClassScheduleModal from "../user/Components/ClassScheduleModal";
 import Swal from "sweetalert2";
 import CreateClassModal from "../user/Components/CreateClassModal";
+import UpdateClassModal from "../user/Components/UpdateClassModal";
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -60,29 +60,31 @@ TabPanel.propTypes = {
 function a11yProps(index) {
   return {
     id: `simple-tab-${index}`,
-    'aria-controls': `simple-tabpanel-${index}`,
+    "aria-controls": `simple-tabpanel-${index}`,
   };
 }
 
 export default function ClassRoom() {
-
-  const timePicker = useSelector((state) => state.timePicker)
-  const [open1, setopen1] = useState(false)
-  const [open2, setopen2] = useState(false)
-
-  const [value, setvalue] = useState("")
+  const timePicker = useSelector((state) => state.timePicker);
+  const [open1, setopen1] = useState(false);
+  const [open2, setopen2] = useState(false);
+  const [open3, setopen3] = useState(false);
+  const [currClassId, setcurrClassId] = useState("");
+  const [value, setvalue] = useState(0);
   const [allSubject, setallSubject] = useState([]);
   const [allClassess, setallClassess] = useState([]);
   const [filterText, setFilterText] = useState("");
   const [currSubId, setCurrSubId] = useState("");
   const [inputData, setinputData] = useState({
     topic: "",
-    schudelDate: ''
+    schudelDate: "",
+    remarks: "",
+
   });
 
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [currentPage, setCurrentPage] = React.useState(0);
-  const user = useSelector((state) => state.user)
+  const user = useSelector((state) => state.user);
   const handleChange = (event, newValue) => {
     setvalue(newValue);
   };
@@ -100,9 +102,12 @@ export default function ClassRoom() {
   };
 
   const filteredData = allSubject?.filter((sub) =>
-    [sub.department_name, sub.year.toString(), sub.semester.toString(), sub.course_name].some((value) =>
-      value.toLowerCase().includes(filterText.toLowerCase())
-    )
+    [
+      sub.department_name,
+      sub.year.toString(),
+      sub.semester.toString(),
+      sub.course_name,
+    ].some((value) => value.toLowerCase().includes(filterText.toLowerCase()))
   );
   const displayedData = filteredData.slice(
     currentPage * rowsPerPage,
@@ -123,98 +128,136 @@ export default function ClassRoom() {
         }
       );
       const subjects = res.data.data.subjects.filter((sub, idx) => {
-        return (sub.teacher_id == user.userData.user_data.teacher_id);
+        return sub.teacher_id == user.userData.user_data.teacher_id;
       });
-      setallSubject(subjects)
-      console.log(subjects)
+      setallSubject(subjects);
+      console.log(subjects);
     };
 
     const getAllclasses = async () => {
       const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_BASE_URL}get_classes_by_subject_id`,
+        `${process.env.NEXT_PUBLIC_BASE_URL}get_classes_by_teacher_id`,
         {
           session_id: 1,
-          subject_id: 2
-
+          teacher_id: user.userData.user_data.teacher_id,
         },
         {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
 
-      setallClassess(res.data.data.classes)
-      console.log()
+      setallClassess(res.data.data.classes);
+      console.log(res.data.data.classes);
     };
     getAllclasses();
     getALLSubjects();
-
-
-  }, [])
+  }, [value]);
 
   const SubmitScheduleClass = async (e) => {
     e.preventDefault();
-    const res = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}schedule_class`, {
-      subject_id: currSubId, session_id: "1", topic: inputData.topic, scheduled_on: `${inputData.schudelDate} 00:00:00`, duration: `${timePicker.hour}:${timePicker.minuete}`, created_by: user.userData.user_data.teacher_id
-    },
-      { headers: { Authorization: `bearer ${Cookies.get('access_key')}` } }
-
-    )
+    const res = await axios.post(
+      `${process.env.NEXT_PUBLIC_BASE_URL}schedule_class`,
+      {
+        subject_id: currSubId,
+        session_id: "1",
+        topic: inputData.topic,
+        scheduled_on: ` ${inputData.schudelDate}`,
+        duration: `${timePicker.hour}:${timePicker.minuete}`,
+        created_by: user.userData.user_data.teacher_id,
+      },
+      { headers: { Authorization: `bearer ${Cookies.get("access_key")}` } }
+    );
 
     if (res.data.data.status == 1) {
       Swal.fire({
-        position: 'top-end',
-        icon: 'success',
-        title: 'Successfully Scheduled Class',
+        position: "top-end",
+        icon: "success",
+        title: "Successfully Scheduled Class",
         showConfirmButton: false,
         timer: 1500,
         customClass: {
           container: `${styles["my-sweetalert2-container-class"]}`,
         },
-      })
-      setopen1(false)
+      });
+      setopen1(false);
     } else {
       Swal.fire({
-        position: 'top-end',
-        icon: 'warning',
-        title: 'Something Went Wrong',
+        position: "top-end",
+        icon: "warning",
+        title: "Something Went Wrong",
         showConfirmButton: false,
         timer: 1500,
         customClass: {
           container: `${styles["my-sweetalert2-container-class"]}`,
         },
-      })
+      });
     }
+  };
+  const updateClass = async (e) => {
+    e.preventDefault();
+    const res = await axios.post(
+      `${process.env.NEXT_PUBLIC_BASE_URL}update_class_complete_status`,
+      {
+        class_id: currClassId,
+        duration: `${timePicker.hour}:${timePicker.minuete}`,
+        remarks: inputData.remarks
 
-  }
+      },
+      { headers: { Authorization: `bearer ${Cookies.get("access_key")}` } }
+    );
+
+    if (res.data.data.status == 1) {
+      Swal.fire({
+        position: "top-end",
+        icon: "success",
+        title: "Successfully Scheduled Class",
+        showConfirmButton: false,
+        timer: 1500,
+        customClass: {
+          container: `${styles["my-sweetalert2-container-class"]}`,
+        },
+      });
+      setopen3(false);
+    } else {
+      Swal.fire({
+        position: "top-end",
+        icon: "warning",
+        title: "Something Went Wrong",
+        showConfirmButton: false,
+        timer: 1500,
+        customClass: {
+          container: `${styles["my-sweetalert2-container-class"]}`,
+        },
+      });
+    }
+  };
   const handleScheduleChange = (id) => {
-    setopen1(true)
-    setCurrSubId(id)
-  }
+    setopen1(true);
+    setCurrSubId(id);
+  };
 
   const handleModal1Close1 = () => {
-    setopen1(false)
-  }
+    setopen1(false);
+  };
   const handleModal1Close2 = () => {
-    setopen2(false)
-  }
+    setopen2(false);
+  };
+  const handleModal1Close3 = () => {
+    setopen3(false);
+  };
 
   const handleInputChange = (e) => {
-    setinputData((prev) => ({ ...prev, [e.target.name]: e.target.value }))
-  }
+    setinputData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
 
-
-
-  const handleCreateClass = async ()=>{
-    const res = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}create_class`,
-    {subject_id:""
-    }
-    
-    )
-    
-  }
+  const handleCreateClass = async () => {
+    const res = await axios.post(
+      `${process.env.NEXT_PUBLIC_BASE_URL}create_class`,
+      { subject_id: "" }
+    );
+  };
   return (
     <>
-
       <ClassScheduleModal
         handleModal1Close1={handleModal1Close1}
         open1={open1}
@@ -222,9 +265,7 @@ export default function ClassRoom() {
         inputData={inputData}
         setinputData={setinputData}
         handleInputChange={handleInputChange}
-        SubmitScheduleClass={SubmitScheduleClass}
-
-
+        updateClass={SubmitScheduleClass}
       />
       <CreateClassModal
         handleModal1Close2={handleModal1Close2}
@@ -234,12 +275,17 @@ export default function ClassRoom() {
         setinputData={setinputData}
         handleInputChange={handleInputChange}
         handleCreateClass={handleCreateClass}
-        allSubjects = {allSubject}
-
+        allSubjects={allSubject}
+      />
+      <UpdateClassModal
+        handleModal1Close3={handleModal1Close3}
+        open3={open3}
+        inputData={inputData}
+        setinputData={setinputData}
+        handleInputChange={handleInputChange}
+        updateClass={updateClass}
 
       />
-
-
 
       <Box sx={{ mb: 2 }}>
         <Box
@@ -250,12 +296,23 @@ export default function ClassRoom() {
           p={1}
           gap={2}
         >
-          <Button variant='contained' color='success' startIcon={<Create />} onClick={()=>setopen2(true)}>Create New</Button>
+          <Button
+            variant="contained"
+            color="success"
+            startIcon={<Create />}
+            onClick={() => setopen2(true)}
+          >
+            Create New
+          </Button>
         </Box>
       </Box>
-      <Box sx={{ width: '100%' }} component={Paper}>
-        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-          <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+      <Box sx={{ width: "100%" }} component={Paper}>
+        <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+          <Tabs
+            value={value}
+            onChange={handleChange}
+            aria-label="basic tabs example"
+          >
             <Tab label="Recent Classes" {...a11yProps(0)} />
             <Tab label="Shedule a Class" {...a11yProps(1)} />
           </Tabs>
@@ -295,7 +352,6 @@ export default function ClassRoom() {
             >
               <TableHead sx={{ fontWeight: "bold", background: "#03c9d7" }}>
                 <TableRow>
-
                   <TableCell>
                     <Typography
                       variant="h6"
@@ -305,7 +361,7 @@ export default function ClassRoom() {
                         fontWeight: "bold",
                       }}
                     >
-                      Shedule
+                      Update
                     </Typography>
                   </TableCell>
                   <TableCell>
@@ -317,7 +373,7 @@ export default function ClassRoom() {
                       }}
                       variant="h6"
                     >
-                      Course Name
+                      Session Name
                     </Typography>
                   </TableCell>
                   <TableCell>
@@ -329,7 +385,7 @@ export default function ClassRoom() {
                         fontWeight: "bold",
                       }}
                     >
-                      Depart Name
+                      Subject Name
                     </Typography>
                   </TableCell>
                   <TableCell>
@@ -341,7 +397,7 @@ export default function ClassRoom() {
                       }}
                       variant="h6"
                     >
-                      Semester
+                      Topic
                     </Typography>
                   </TableCell>
                   <TableCell>
@@ -353,39 +409,60 @@ export default function ClassRoom() {
                       }}
                       variant="h6"
                     >
-                      Year
+                      Scheduled On
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography
+                      sx={{
+                        fontSize: "15px",
+                        color: "black",
+                        fontWeight: "bold",
+                      }}
+                      variant="h6"
+                    >
+                      Remark
                     </Typography>
                   </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {allClassess.map((sub, idx) => (
+                {allClassess.map((elm, idx) => (
                   <TableRow key={idx}>
+                    <TableCell>
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        size="small"
+                        onClick={() => {
 
-                    <TableCell>
-                      <Button variant="contained" color="primary" size="small" onClick={() => handleScheduleChange(sub.id)}>Schedule</Button>
+                          setopen3(true);
+                          setcurrClassId(elm.id)
+                        }}
+                      >
+                        Update
+                      </Button>
                     </TableCell>
                     <TableCell>
                       <Typography color="textSecondary" variant="h6">
-                        {sub.course_name}
+                        {elm.session_name}
                       </Typography>
                     </TableCell>
                     <TableCell>
                       <Typography color="textSecondary" variant="h6">
-                        {sub.department_name}
+                        {elm.subject_name}
                       </Typography>
                     </TableCell>
                     <TableCell>
                       <Typography color="textSecondary" variant="h6">
-                        {sub.semester}
+                        {elm.topic}
                       </Typography>
                     </TableCell>
                     <TableCell>
                       <Typography color="textSecondary" variant="h6">
-                        {sub.year}
+                        {elm.scheduled_on}
                       </Typography>
                     </TableCell>
-
                   </TableRow>
                 ))}
               </TableBody>
@@ -436,7 +513,6 @@ export default function ClassRoom() {
             >
               <TableHead sx={{ fontWeight: "bold", background: "#03c9d7" }}>
                 <TableRow>
-
                   <TableCell>
                     <Typography
                       variant="h6"
@@ -502,9 +578,15 @@ export default function ClassRoom() {
               <TableBody>
                 {displayedData.map((sub, idx) => (
                   <TableRow key={idx}>
-
                     <TableCell>
-                      <Button variant="contained" color="primary" size="small" onClick={() => handleScheduleChange(sub.id)}>Schedule</Button>
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        size="small"
+                        onClick={() => handleScheduleChange(sub.id)}
+                      >
+                        Schedule
+                      </Button>
                     </TableCell>
                     <TableCell>
                       <Typography color="textSecondary" variant="h6">
@@ -526,7 +608,6 @@ export default function ClassRoom() {
                         {sub.year}
                       </Typography>
                     </TableCell>
-
                   </TableRow>
                 ))}
               </TableBody>

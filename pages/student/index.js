@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import FilterListIcon from "@mui/icons-material/FilterList";
 import {
   Typography,
   Box,
@@ -25,12 +26,18 @@ import { useSelector } from "react-redux";
 import NextLink from "next/link";
 import { getOrdinals } from "../../src/Helper/functions";
 
-function pendingStudent() {
+function AllStudents() {
   const [allApprovedStudents, setallApprovedStudents] = useState([]);
   const [filterText, setFilterText] = useState("");
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [currentPage, setCurrentPage] = React.useState(0);
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [filters, setfilters] = useState({
+    first_name: "",
+  });
+  const [filtered, setFiltered] = useState([]);
+  const [toggleFilter, settoggleFilter] = useState(false);
+
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -54,15 +61,36 @@ function pendingStudent() {
     setFilterText(event.target.value);
   };
 
-  const filteredData = allApprovedStudents?.filter((row) =>
-    [row.first_name, row.last_name].some((value) =>
-      value.toLowerCase().includes(filterText.toLowerCase())
-    )
-  );
-  const displayedData = filteredData.slice(
+  const handleClearFilters = () => {
+    setfilters({});
+  };
+
+  // const filteredData = allApprovedStudents?.filter((row) =>
+  //   [row.first_name, row.last_name].some((value) =>
+  //     value.toLowerCase().includes(filterText.toLowerCase())
+  //   )
+  // );
+  const handleFilterChange = (event) => {
+    setfilters((prevFilters) => ({
+      ...prevFilters,
+      [event.target.name]: event.target.value,
+    }));
+  };
+
+  const tempFilteredData = allApprovedStudents.filter((item) => {
+    return Object.entries(filters).every(([key, value]) => {
+      return item[key].toString().toLowerCase().includes(value);
+    });
+  });
+
+  const displayedData = tempFilteredData.slice(
     currentPage * rowsPerPage,
     currentPage * rowsPerPage + rowsPerPage
   );
+  // const displayedData = filteredData.slice(
+  //   currentPage * rowsPerPage,
+  //   currentPage * rowsPerPage + rowsPerPage
+  // );
   useEffect(() => {
     console.log(data, "data");
     const token = Cookies.get("access_key");
@@ -77,7 +105,12 @@ function pendingStudent() {
             }
           );
           console.log(res.data);
-          setallApprovedStudents(res.data.data.students);
+          const allStudents = res.data.data.students.map((elm) => ({
+            ...elm,
+            dob: new Date(elm.dob).toLocaleDateString(),
+          }));
+          console.log(allStudents);
+          setallApprovedStudents(allStudents);
         } catch (error) {
           console.log(error);
         }
@@ -89,100 +122,99 @@ function pendingStudent() {
 
   return (
     <>
-      {data != undefined &&
-      <Box component={Paper}>
-        <Box
-          display="flex"
-          alignItems="center"
-          flexDirection="row"
-          justifyContent={{ md: "start", xs: "center" }}
-          gap={1}
-          sx={{ mb: 2, flexWrap: "wrap" }}
-        >
-          <Button
-            variant="contained"
-            color="warning"
-            id="basic-button"
-            aria-controls={open ? "basic-menu" : undefined}
-            aria-haspopup="true"
-            aria-expanded={open ? "true" : undefined}
-            onClick={handleClick}
-            sx={{ m: 1 }}
+      {data != undefined && (
+        <Box component={Paper}>
+          <Box
+            display="flex"
+            alignItems="center"
+            flexDirection="row"
+            justifyContent={{ md: "start", xs: "center" }}
+            gap={1}
+            sx={{ mb: 2, flexWrap: "wrap" }}
           >
-            Session Registration
-          </Button>
-          <Menu
-            id="basic-menu"
-            anchorEl={anchorEl}
-            open={open}
-            onClose={handleClose}
-            MenuListProps={{
-              "aria-labelledby": "basic-button",
-            }}
-            size="small"
-            PaperProps={{
-              elevation: 0,
-              sx: {
-                overflow: "visible",
-                filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
-                mt: 1.5,
-                "& .MuiAvatar-root": {
-                  width: 32,
-                  height: 32,
-                  ml: -0.5,
-                  mr: 1,
-                },
-                "&:before": {
-                  content: '""',
-                  display: "block",
-                  position: "absolute",
-                  top: 0,
-                  right: 14,
-                  width: 10,
-                  height: 10,
-                  bgcolor: "background.paper",
-                  transform: "translateY(-50%) rotate(45deg)",
-                  zIndex: 0,
-                },
-              },
-            }}
-            transformOrigin={{ horizontal: "right", vertical: "top" }}
-            anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-          >
-            <NextLink
-              style={{ color: "inherit", textDecoration: "none", p: 1 }}
-              href="/session/studentsessionassign"
+            <Button
+              variant="contained"
+              color="warning"
+              id="basic-button"
+              aria-controls={open ? "basic-menu" : undefined}
+              aria-haspopup="true"
+              aria-expanded={open ? "true" : undefined}
+              onClick={handleClick}
+              sx={{ m: 1 }}
             >
-              <MenuItem onClick={handleClose}>New Session Assign</MenuItem>
-            </NextLink>
-            <NextLink
-              style={{ color: "inherit", textDecoration: "none", p: 1 }}
-              href="/session/updatesessionstudents"
+              Session Registration
+            </Button>
+            <Menu
+              id="basic-menu"
+              anchorEl={anchorEl}
+              open={open}
+              onClose={handleClose}
+              MenuListProps={{
+                "aria-labelledby": "basic-button",
+              }}
+              size="small"
+              PaperProps={{
+                elevation: 0,
+                sx: {
+                  overflow: "visible",
+                  filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+                  mt: 1.5,
+                  "& .MuiAvatar-root": {
+                    width: 32,
+                    height: 32,
+                    ml: -0.5,
+                    mr: 1,
+                  },
+                  "&:before": {
+                    content: '""',
+                    display: "block",
+                    position: "absolute",
+                    top: 0,
+                    right: 14,
+                    width: 10,
+                    height: 10,
+                    bgcolor: "background.paper",
+                    transform: "translateY(-50%) rotate(45deg)",
+                    zIndex: 0,
+                  },
+                },
+              }}
+              transformOrigin={{ horizontal: "right", vertical: "top" }}
+              anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
             >
-              <MenuItem onClick={handleClose}>Update Session</MenuItem>
-            </NextLink>
-          </Menu>
-          {/* <NextLink style={{ color: "inherit", textDecoration: 'none',padding: '10px'}} href="/session/studentsessionassign">
+              <NextLink
+                style={{ color: "inherit", textDecoration: "none", p: 1 }}
+                href="/session/studentsessionassign"
+              >
+                <MenuItem onClick={handleClose}>New Session Assign</MenuItem>
+              </NextLink>
+              <NextLink
+                style={{ color: "inherit", textDecoration: "none", p: 1 }}
+                href="/session/updatesessionstudents"
+              >
+                <MenuItem onClick={handleClose}>Update Session</MenuItem>
+              </NextLink>
+            </Menu>
+            {/* <NextLink style={{ color: "inherit", textDecoration: 'none',padding: '10px'}} href="/session/studentsessionassign">
             <Button variant="contained" color="warning">
               Senssion Registration
             </Button>
           </NextLink> */}
-          <NextLink
-            style={{
-              color: "inherit",
-              textDecoration: "none",
-              padding: "10px",
-            }}
-            href="/subject/studentSubjectRegistration"
-          >
-            <Button variant="contained" color="success">
-              Subject Registration
-            </Button>
-          </NextLink>
+            <NextLink
+              style={{
+                color: "inherit",
+                textDecoration: "none",
+                padding: "10px",
+              }}
+              href="/subject/studentSubjectRegistration"
+            >
+              <Button variant="contained" color="success">
+                Subject Registration
+              </Button>
+            </NextLink>
+          </Box>
         </Box>
-      </Box>
-
-          }
+      )}
       <Box component={Paper}>
         <Box
           display="flex"
@@ -228,152 +260,77 @@ function pendingStudent() {
             }}
             size="small"
           >
+               <IconButton onClick={() => settoggleFilter(!toggleFilter)}>
+              <FilterListIcon />
+            </IconButton>
+            <TableRow>
+              {toggleFilter && (
+                <TableCell size="small">
+                  <Button color="secondary" onClick={handleClearFilters}>
+                    Clear All Filter
+                  </Button>
+                </TableCell>
+              )}
+              {toggleFilter &&
+                [
+                  "first_name",
+                  "last_name",
+                  "student_id",
+                  "roll_number",
+                  "course_name",
+                  "department_name",
+                  "year",
+                  "semester",
+                  "dob",
+                  "gender",
+                  "email_address",
+                  "phone_number",
+                ].map((elm, idx) => {
+                  return (
+                    <TableCell size="small">
+                      <TextField
+                        onChange={handleFilterChange}
+                        name={elm}
+                        value={filters[elm] || ""}
+                        size="small"
+                      />
+                    </TableCell>
+                  );
+                })}
+            </TableRow>
+           
             <TableHead sx={{ fontWeight: "bold", background: "#03c9d7" }}>
               <TableRow>
-                <TableCell>
-                  <Typography
-                    variant="h6"
-                    sx={{
-                      fontSize: "15px",
-                      color: "black",
-                      fontWeight: "bold",
-                    }}
-                  >
-                    Sl.no
-                  </Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography
-                    sx={{
-                      fontSize: "15px",
-                      color: "black",
-                      fontWeight: "bold",
-                    }}
-                    variant="h6"
-                  >
-                    Full Name
-                  </Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography
-                    variant="h6"
-                    sx={{
-                      fontSize: "15px",
-                      color: "black",
-                      fontWeight: "bold",
-                    }}
-                  >
-                    Reg. no.
-                  </Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography
-                    sx={{
-                      fontSize: "15px",
-                      color: "black",
-                      fontWeight: "bold",
-                    }}
-                    variant="h6"
-                  >
-                    Roll No.
-                  </Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography
-                    sx={{
-                      fontSize: "15px",
-                      color: "black",
-                      fontWeight: "bold",
-                    }}
-                    variant="h6"
-                  >
-                    Course
-                  </Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography
-                    sx={{
-                      fontSize: "15px",
-                      color: "black",
-                      fontWeight: "bold",
-                    }}
-                    variant="h6"
-                  >
-                    Department
-                  </Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography
-                    sx={{
-                      fontSize: "15px",
-                      color: "black",
-                      fontWeight: "bold",
-                    }}
-                    variant="h6"
-                  >
-                    Year
-                  </Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography
-                    sx={{
-                      fontSize: "15px",
-                      color: "black",
-                      fontWeight: "bold",
-                    }}
-                    variant="h6"
-                  >
-                    Semester
-                  </Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography
-                    sx={{
-                      fontSize: "15px",
-                      color: "black",
-                      fontWeight: "bold",
-                    }}
-                    variant="h6"
-                  >
-                    DOB
-                  </Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography
-                    sx={{
-                      fontSize: "15px",
-                      color: "black",
-                      fontWeight: "bold",
-                    }}
-                    variant="h6"
-                  >
-                    Gender
-                  </Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography
-                    sx={{
-                      fontSize: "15px",
-                      color: "black",
-                      fontWeight: "bold",
-                    }}
-                    variant="h6"
-                  >
-                    Email
-                  </Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography
-                    sx={{
-                      fontSize: "15px",
-                      color: "black",
-                      fontWeight: "bold",
-                    }}
-                    variant="h6"
-                  >
-                    Phone No.
-                  </Typography>
-                </TableCell>
+                {[
+                  "Sl.no",
+                  "First Name",
+                  "Last Name",
+                  "Reg No",
+                  "Roll No",
+                  "Course",
+                  "Department",
+                  "Year",
+                  "Semester",
+                  "Dob",
+                  "Gender",
+                  "Email",
+                  "Phone No",
+                ].map((elm) => {
+                  return (
+                    <TableCell>
+                      <Typography
+                        variant="h6"
+                        sx={{
+                          fontSize: "15px",
+                          color: "black",
+                          fontWeight: "bold",
+                        }}
+                      >
+                        {elm}
+                      </Typography>
+                    </TableCell>
+                  );
+                })}
               </TableRow>
             </TableHead>
 
@@ -385,63 +342,29 @@ function pendingStudent() {
                       {idx + 1}
                     </Typography>
                   </TableCell>
-                  <TableCell>
-                    <Typography color="textSecondary" variant="h6">
-                      {student.first_name + " " + student.last_name}
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography color="textSecondary" variant="h6">
-                      {student.student_id}
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography color="textSecondary" variant="h6">
-                      {student.roll_number}
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography color="textSecondary" variant="h6">
-                      {student.course_name}
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography color="textSecondary" variant="h6">
-                      {student.department_name}
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography color="textSecondary" variant="h6">
-                      {getOrdinals(student.year)}
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography color="textSecondary" variant="h6">
-                      {getOrdinals(student.semester)}
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography color="textSecondary" variant="h6">
-                      {student.dob}
-                      {/* {new Date(student.dob)} */}
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography color="textSecondary" variant="h6">
-                      {student.gender}
-                    </Typography>
-                  </TableCell>
 
-                  <TableCell>
-                    <Typography color="textSecondary" variant="h6">
-                      {student.email_address}
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography color="textSecondary" variant="h6">
-                      {student.phone_number}
-                    </Typography>
-                  </TableCell>
+                  {[
+                    "first_name",
+                    "last_name",
+                    "student_id",
+                    "roll_number",
+                    "course_name",
+                    "department_name",
+                    "year",
+                    "semester",
+                    "dob",
+                    "gender",
+                    "email_address",
+                    "phone_number",
+                  ].map((elm) => {
+                    return (
+                      <TableCell>
+                        <Typography color="textSecondary" variant="h6">
+                          {student[elm]}
+                        </Typography>
+                      </TableCell>
+                    );
+                  })}
                 </TableRow>
               ))}
             </TableBody>
@@ -449,7 +372,7 @@ function pendingStudent() {
           <TablePagination
             rowsPerPageOptions={[5, 10, 20, 40]}
             component="div"
-            count={filteredData.length}
+            count={filtered.length}
             rowsPerPage={rowsPerPage}
             page={currentPage}
             onPageChange={handleChangePage}
@@ -461,4 +384,4 @@ function pendingStudent() {
   );
 }
 
-export default pendingStudent;
+export default AllStudents;
