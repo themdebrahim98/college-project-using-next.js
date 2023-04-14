@@ -3711,11 +3711,6 @@ svg.select.js@^3.0.1:
   dependencies:
     svg.js "^2.6.5"
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> d35ea4aa955fa09bfb720e99b9a8b0c78cb21914
 sweetalert2@^11.7.3:
   version "11.7.3"
   resolved "https://registry.npmjs.org/sweetalert2/-/sweetalert2-11.7.3.tgz"
@@ -3742,10 +3737,6 @@ tar-stream@^2.1.4:
     inherits "^2.0.3"
     readable-stream "^3.1.1"
 
-<<<<<<< HEAD
->>>>>>> 52a0633 (filter added to each column)
-=======
->>>>>>> d35ea4aa955fa09bfb720e99b9a8b0c78cb21914
 temp-dir@^2.0.0:
   version "2.0.0"
   resolved "https://registry.npmjs.org/temp-dir/-/temp-dir-2.0.0.tgz"
