@@ -29,6 +29,7 @@ import BaseCard from "../../src/components/baseCard/BaseCard";
 import Cookies from "js-cookie";
 import axios from "axios";
 import FeatherIcon from "feather-icons-react";
+import { getOrdinals } from "../../src/Helper/functions";
 function pendingStudent() {
   const [allPendingStudents, setallPendingStudents] = useState([]);
   const [open, setopen] = useState(false);
@@ -38,9 +39,7 @@ function pendingStudent() {
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [currentPage, setCurrentPage] = React.useState(0);
   // const data = useSelector((store)=>store.user.userData.user_data.hod_data[0])
-
-
-
+ const [toggleFilter, settoggleFilter] = React.useState(false);
   const data = useSelector(
     (store) => store?.user?.userData?.user_data?.hod_data[0]
   );
@@ -49,6 +48,8 @@ function pendingStudent() {
   });
   const [filtered, setFiltered] = useState([]);
 
+
+ 
   const handleChangePage = (event, newPage) => {
     setCurrentPage(newPage);
   };
@@ -123,7 +124,7 @@ function pendingStudent() {
       try {
         const res = await axios.post(
           `${process.env.NEXT_PUBLIC_BASE_URL}get_nonapproved_students`,
-          {department_id:data.department_id, course_id:data.course_id},
+          { department_id: data.department_id, course_id: data.course_id },
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -174,6 +175,7 @@ function pendingStudent() {
         component={Paper}
         style={{ overflowX: "auto" }}
         className="table_scroll"
+        sx={{ p: 1 }}
       >
         <Dialog open={open} onClose={handleClose}>
           <DialogTitle>Confirmation</DialogTitle>
@@ -192,206 +194,90 @@ function pendingStudent() {
         <Table
           aria-label="simple table"
           sx={{
-            mt: 3,
             whiteSpace: "nowrap",
           }}
+          size="small"
         >
-          <TableHead>
+          <IconButton onClick={() => settoggleFilter(!toggleFilter)}>
+            <FilterListIcon />
+          </IconButton>
+          <TableRow>
+            {toggleFilter && (
+              <TableCell size="small">
+                <Button color="secondary" onClick={handleClearFilters}>
+                  Clear All Filter
+                </Button>
+              </TableCell>
+            )}
+            {toggleFilter &&
+              [
+                "first_name",
+                "last_name",
+                "student_id",
+                "roll_number",
+                "course_name",
+                "department_name",
+                "year",
+                "semester",
+                "dob",
+                "gender",
+                "email_address",
+                "phone_number",
+              ].map((elm, idx) => {
+                return (
+                  <TableCell size="small">
+                    <TextField
+                      onChange={handleFilterChange}
+                      name={elm}
+                      value={filters[elm] || ""}
+                      size="small"
+                    />
+                  </TableCell>
+                );
+              })}
+          </TableRow>
+          <TableHead sx={{ background: "#03c9d7" }}>
             <TableRow>
-              <TableCell>
-                <Typography variant="h6">Sl. No.</Typography>
-              </TableCell>
-              <TableCell>
-                <Typography variant="h6">Student Id</Typography>
-              </TableCell>
-              <TableCell>
-                <Typography
-                  sx={{ fontSize: "15px", color: "black" }}
-                  variant="h6"
-                >
-                  Full Name
-                </Typography>
-              </TableCell>
-              {/* <TableCell>
-                <Typography
-                  sx={{ fontSize: "15px", color: "black" }}
-                  variant="h6"
-                >
-                  Last_name
-                </Typography>
-              </TableCell> */}
-              <TableCell>
-                <Typography
-                  sx={{ fontSize: "15px", color: "black" }}
-                  variant="h6"
-                >
-                  DOB
-                </Typography>
-              </TableCell>
-              <TableCell>
-                <Typography
-                  sx={{ fontSize: "15px", color: "black" }}
-                  variant="h6"
-                >
-                  Gender
-                </Typography>
-              </TableCell>
-              <TableCell>
-                <Typography
-                  sx={{ fontSize: "15px", color: "black" }}
-                  variant="h6"
-                >
-                  Email Address
-                </Typography>
-              </TableCell>
-              <TableCell>
-                <Typography
-                  sx={{ fontSize: "15px", color: "black" }}
-                  variant="h6"
-                >
-                  Phone Number
-                </Typography>
-              </TableCell>
-
-              <TableCell>
-                <Typography
-                  sx={{ fontSize: "15px", color: "black" }}
-                  variant="h6"
-                >
-                  Role Number
-                </Typography>
-              </TableCell>
-              <TableCell>
-                <Typography
-                  sx={{ fontSize: "15px", color: "black" }}
-                  variant="h6"
-                >
-                  Course
-                </Typography>
-              </TableCell>
-              <TableCell>
-                <Typography
-                  sx={{ fontSize: "15px", color: "black" }}
-                  variant="h6"
-                >
-                  Semester
-                </Typography>
-              </TableCell>
-              <TableCell>
-                <Typography
-                  sx={{ fontSize: "15px", color: "black" }}
-                  variant="h6"
-                >
-                  Year
-                </Typography>
-              </TableCell>
-              <TableCell>
-                <Typography
-                  sx={{ fontSize: "15px", color: "black" }}
-                  variant="h6"
-                >
-                  Status
-                </Typography>
-              </TableCell>
-              <TableCell>
-                <Typography
-                  sx={{ fontSize: "15px", color: "black" }}
-                  variant="h6"
-                >
-                  Approved(Yes/NO)
-                </Typography>
-              </TableCell>
-              <TableCell>
-                <Chip color="secondary" label="Make Approved" />
-              </TableCell>
+              {[
+                "Action",
+                "First Name",
+                "Last Name",
+                "Reg No",
+                "Roll No",
+                "Course",
+                "Department",
+                "Year",
+                "Semester",
+                "Dob",
+                "Gender",
+                "Email",
+                "Phone No",
+              ].map((elm) => {
+                return (
+                  <TableCell>
+                    <Typography
+                      variant="h6"
+                      sx={{
+                        fontSize: "15px",
+                        color: "black",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      {elm}
+                    </Typography>
+                  </TableCell>
+                );
+              })}
             </TableRow>
           </TableHead>{" "}
           <TableBody>
             {displayedData.map((student, idx) => (
               <TableRow key={idx}>
                 <TableCell>
-                  <Typography color="textSecondary" variant="h6">
-                    {idx+1}
-                  </Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography color="textSecondary" variant="h6">
-                    {student.student_id}
-                  </Typography>
-                </TableCell>
-                {/* <TableCell>
-                  <Typography color="textSecondary" variant="h6">
-                    {student.first_name}
-                  </Typography>
-                </TableCell> */}
-                <TableCell>
-                  <Typography color="textSecondary" variant="h6">
-                    {student.first_name+''+student.last_name}
-                  </Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography color="textSecondary" variant="h6">
-                    {student.dob}
-                  </Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography color="textSecondary" variant="h6">
-                    {student.gender}
-                  </Typography>
-                </TableCell>
-
-                <TableCell>
-                  <Typography color="textSecondary" variant="h6">
-                    {student.email_address}
-                  </Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography color="textSecondary" variant="h6">
-                    {student.phone_number}
-                  </Typography>
-                </TableCell>
-
-                <TableCell>
-                  <Typography color="textSecondary" variant="h6">
-                    {student.roll_number}
-                  </Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography color="textSecondary" variant="h6">
-                    {student.course_id}
-                  </Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography color="textSecondary" variant="h6">
-                    {student.semester}
-                  </Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography color="textSecondary" variant="h6">
-                    {student.year}
-                  </Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography color="textSecondary" variant="h6">
-                    {student.status}
-                  </Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography color="textSecondary" variant="h6">
-                    {student.is_approved != 0 ? "Yes" : "No"}
-                  </Typography>
-                </TableCell>
-                <TableCell>
                   <Button
                     disabled={loading}
                     onClick={() => {
-                      selectCurrentStudentData(
-                        student
-                        // student.student_id,
-                        // student.first_name,
-                        // student.last_name,
-                        // student.email_address
-                      );
+                      selectCurrentStudentData(student);
                     }}
                     sx={
                       student.is_approved
@@ -399,11 +285,37 @@ function pendingStudent() {
                         : { bgcolor: "crimson" }
                     }
                     variant="contained"
+                    size="small"
                   >
-                    {loading && currStudentTobeDeleted.student_id == student.student_id ? "Approving..." : ' Make Approved'}
-
+                    {loading &&
+                    currStudentTobeDeleted.student_id == student.student_id
+                      ? "Approving..."
+                      : "Approve"}
                   </Button>
                 </TableCell>
+
+                {[
+                  "first_name",
+                  "last_name",
+                  "student_id",
+                  "roll_number",
+                  "course_name",
+                  "department_name",
+                  "year",
+                  "semester",
+                  "dob",
+                  "gender",
+                  "email_address",
+                  "phone_number",
+                ].map((elm) => {
+                  return (
+                    <TableCell>
+                      <Typography color="textSecondary" variant="h6">
+                        {student[elm]}
+                      </Typography>
+                    </TableCell>
+                  );
+                })}
               </TableRow>
             ))}
           </TableBody>

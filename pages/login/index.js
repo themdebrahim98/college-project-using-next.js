@@ -6,8 +6,6 @@ import {
   Typography,
   Box,
 } from "@mui/material";
-
-
 import React, { useState } from "react";
 import BaseCard from "../../src/components/baseCard/BaseCard";
 import { loginUser } from "../../redux/slices/userSlice";
@@ -16,7 +14,8 @@ import { useRouter } from "next/router";
 import { useCookies } from "react-cookie";
 import axios from "axios";
 import Link from "next/link";
-import {  Login } from "@mui/icons-material";
+import { Login } from "@mui/icons-material";
+import Swal from 'sweetalert2';
 
 const style = {
   background: "rgb(238,174,202)",
@@ -42,41 +41,71 @@ function index() {
   const handleSubmit = async (e) => {
     setLoading(true);
     e.preventDefault();
-    console.log(inputs);
-    const res = await axios.post("https://test.diptodiagnostic.com/api/login", {
-      username: inputs.username,
-      password: inputs.password,
-    });
-    const data = res.data.data;
-    if (data.status.status == 0) {
+    if (!inputs.username) {
+      Swal.fire({
+        position: 'top-end',
+        text: 'Username required',
+        icon: 'error',
+        showConfirmButton: false,
+        timer: 1500
+      })
       setLoading(false);
-      alert(data.status.message);
+    } else if (!inputs.password) {
+      Swal.fire({
+        position: 'top-end',
+        text: 'Password required',
+        icon: 'error',
+        showConfirmButton: false,
+        timer: 1500
+      })
+      setLoading(false);
     } else {
-      setcookie("access_key", res.data.data.access_key);
-
-      if (res.data.data.status.status == 1) {
-        const token = res.data.data.access_key;
-
-        const res2 = await axios.post(
-          "https://test.diptodiagnostic.com/api/get_user_details",
-          null,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
-        console.log(res2.data);
-        const userData = {
-          user_data: { ...res2.data.data.user_data, type: res2.data.data.type },
-        };
-        console.log(userData, "user");
-
+      console.log(inputs);
+      const res = await axios.post("https://test.diptodiagnostic.com/api/login", {
+        username: inputs.username,
+        password: inputs.password,
+      });
+      const data = res.data.data;
+      if (data.status.status == 0) {
         setLoading(false);
-        dispatch(loginUser(userData));
-        router.replace("/");
-      }
+        Swal.fire({
+          position: 'top-end',
+          text: data.status.message,
+          icon: 'error',
+          showConfirmButton: false,
+          timer: 1500
+        })
+      } else if (res.data.data.status.status == 1) {
+          setcookie("access_key", res.data.data.access_key);
+          const token = res.data.data.access_key;
+
+          const res2 = await axios.post(
+            "https://test.diptodiagnostic.com/api/get_user_details",
+            null,
+            {
+              headers: { Authorization: `Bearer ${token}` },
+            }
+          );
+          console.log(res2.data);
+          const userData = {
+            user_data: { ...res2.data.data.user_data, type: res2.data.data.type },
+          };
+          setLoading(false);
+          dispatch(loginUser(userData));
+          Swal.fire({
+            position: 'top-end',
+            text: 'Login successful',
+            icon: 'success',
+            showConfirmButton: false,
+            timer: 1000
+          })
+          setTimeout(() => {
+            router.replace("/");
+          }, 1500)
+
+        }
     }
 
-    console.log(res.data.data);
   };
   return (
     <Box sx={style}>
@@ -122,7 +151,7 @@ function index() {
               mb={2}
             >
               <Typography>Are you a student?</Typography>
-              <Link href="/student/studentSignup" style={{color:"inherit", textDecoration:'none'}}>
+              <Link href="/student/studentSignup" style={{ color: "inherit", textDecoration: 'none' }}>
                 <Button variant="contained" color="warning" size="small">
                   Register here
                 </Button>

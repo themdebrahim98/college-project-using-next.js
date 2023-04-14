@@ -39,7 +39,9 @@ import Snackbar from "@mui/material/Snackbar";
 import FeatherIcon from "feather-icons-react";
 import BrowserUpdatedIcon from "@mui/icons-material/BrowserUpdated";
 import MuiAlert from "@mui/material/Alert";
-import { FileDownload, FileUpload, UploadFile } from "@mui/icons-material";
+import { CloudDownload, FileDownload, FileUpload, UploadFile } from "@mui/icons-material";
+import { getOrdinals } from "../../src/Helper/functions";
+import Classes from "../user/Components/Classes";
 
 const style = {
   position: "absolute",
@@ -81,13 +83,6 @@ export default function Routine() {
 
   const actions = [
     {
-      icon: <SaveIcon />,
-      name: "Save",
-      onclick: (props) => {
-        window.open(props.routine_url, "_blank");
-      },
-    },
-    {
       icon: <BrowserUpdatedIcon />,
       name: "Update",
       onclick: (props) => {
@@ -95,14 +90,19 @@ export default function Routine() {
         setcurrRoutineToBeUpdate(props.id);
       },
     },
-    { icon: <DeleteIcon />, name: "Delete" },
-    { icon: <ShareIcon />, name: "Share" },
+    {
+      icon: <CloudDownload />,
+      name: "Save",
+      onclick: (props) => {
+        window.open(props.routine_url, "_blank");
+      },
+    },
   ];
 
   const handleModa2Close = () => setopen2(false);
 
   const data = useSelector(
-    (store) => store.user.userData.user_data.hod_data[0]
+    (store) => store.user.userData.user_data?.hod_data[0]
   );
   const handleChangePage = (event, newPage) => {
     setCurrentPage(newPage);
@@ -229,6 +229,9 @@ export default function Routine() {
 
   return (
     <>
+    {user.userData.user_data?.is_hod==1?
+    <>
+    {/* {console.log(user.userData.user_data.is_hod)} */}
       <Modal
         open={open2}
         onClose={handleModa2Close}
@@ -369,9 +372,6 @@ export default function Routine() {
       </Modal>
 
       <Box component={Paper}>
-        <Button size="medium" variant="contained" onClick={openModal1}>
-          Add Routine
-        </Button>
         <Box
           display="flex"
           alignItems="center"
@@ -384,7 +384,7 @@ export default function Routine() {
             variant="h2"
             sx={{ p: 1, flexGrow: 1, fontWeight: "bold" }}
           >
-            Subject and Syllabus
+            List of routine
           </Typography>
 
           <TextField
@@ -403,77 +403,82 @@ export default function Routine() {
             value={filterText}
             onChange={handleFilterTextChange}
           />
+          {/* <Button size="medium" variant="contained" onClick={openModal1}>
+            Add Routine
+          </Button> */}
+          <Fab variant="extended" size="small" color="primary" onClick={openModal1}>
+            Add Routine
+          </Fab>
         </Box>
         <TableContainer
           component={Paper}
           style={{ overflowX: "auto" }}
           className="table_scroll"
+          sx={{ p: 1 }}
         >
           <Table
-            aria-label="simple table"
             sx={{
-              mt: 3,
               whiteSpace: "nowrap",
             }}
             size="small"
           >
-            <TableHead>
+            <TableHead sx={{ background: '#03c9d7' }}>
               <TableRow>
                 <TableCell>
                   <Typography
-                    sx={{ fontSize: "15px", color: "black" }}
                     variant="h6"
+                    sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
                   >
                     Sl. No.
                   </Typography>
                 </TableCell>
                 <TableCell>
                   <Typography
-                    sx={{ fontSize: "15px", color: "black" }}
                     variant="h6"
+                    sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
                   >
                     Course Name
                   </Typography>
                 </TableCell>
                 <TableCell>
                   <Typography
-                    sx={{ fontSize: "15px", color: "black" }}
                     variant="h6"
+                    sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
                   >
                     Department Name
                   </Typography>
                 </TableCell>
                 <TableCell>
                   <Typography
-                    sx={{ fontSize: "15px", color: "black" }}
                     variant="h6"
+                    sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
                   >
                     Year
                   </Typography>
                 </TableCell>
                 <TableCell>
                   <Typography
-                    sx={{ fontSize: "15px", color: "black" }}
                     variant="h6"
+                    sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
                   >
                     Semester
                   </Typography>
                 </TableCell>
                 <TableCell>
                   <Typography
-                    sx={{ fontSize: "15px", color: "black" }}
                     variant="h6"
+                    sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
                   >
-                    Date
+                    Update on
                   </Typography>
                 </TableCell>
 
                 <TableCell>
                   <Typography
-                    sx={{ fontSize: "15px", color: "black" }}
                     variant="h6"
+                    sx={{ fontSize: "15px", color: "black", fontWeight: 'bold' }}
                   >
-                    Routine
+                    Action
                   </Typography>
                 </TableCell>
               </TableRow>
@@ -499,36 +504,29 @@ export default function Routine() {
                     </TableCell>
                     <TableCell>
                       <Typography color="textSecondary" variant="h6">
-                        {routine.year}
+                        {getOrdinals(routine.year)}
                       </Typography>
                     </TableCell>
                     <TableCell>
                       <Typography color="textSecondary" variant="h6">
-                        {routine.semester}
+                        {getOrdinals(routine.semester)}
                       </Typography>
                     </TableCell>
 
                     <TableCell>
                       <Typography color="textSecondary" variant="h6">
-                        {routine.updated_at}
+                        {new Date(routine.updated_at).toLocaleString()}
                       </Typography>
                     </TableCell>
-                    <Box
-                      sx={{
-                        height: 100,
-                        transform: "translateZ(0px)",
-                        flexGrow: 1,
-                      }}
-                    >
+                    <TableCell>
                       <SpeedDial
-                        direction="left"
-                        ariaLabel="SpeedDial basic example"
-                        sx={{ position: "absolute", bottom: 16, right: 16 }}
+                        direction="right"
+                        ariaLabel="Action Btn"
                         icon={<SpeedDialIcon />}
+
                       >
                         {actions.map((action) => (
                           <SpeedDialAction
-                            sx={{ background: "#ddd" }}
                             key={action.name}
                             icon={action.icon}
                             tooltipTitle={action.name}
@@ -536,7 +534,8 @@ export default function Routine() {
                           />
                         ))}
                       </SpeedDial>
-                    </Box>
+
+                    </TableCell>
 
                     {/* <TableCell>
                       <Typography color="textSecondary" variant="h6">
@@ -576,6 +575,8 @@ export default function Routine() {
           />
         </TableContainer>
       </Box>
+    </>
+    :<Classes/>}
     </>
   );
 }

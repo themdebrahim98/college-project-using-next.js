@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Modal from "@mui/material/Modal";
 import { InputLabel, TextField } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import styles from "../../styles/alert.module.css";
 import {
   Typography,
   Box,
@@ -28,8 +29,9 @@ import FeatherIcon from "feather-icons-react";
 import BaseCard from "../../src/components/baseCard/BaseCard";
 import Cookies from "js-cookie";
 import axios from "axios";
-import Fab from '@mui/material/Fab';
-import NavigationIcon from '@mui/icons-material/Navigation';
+import Fab from "@mui/material/Fab";
+import NavigationIcon from "@mui/icons-material/Navigation";
+import Swal from "sweetalert2";
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
   ...theme.typography.body2,
@@ -42,7 +44,7 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: { lg: '30%', xs: '80%', sm: '50%' },
+  width: { lg: "30%", xs: "80%", sm: "50%" },
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
@@ -58,7 +60,7 @@ function teachers() {
     gender: null,
     phone_number: null,
     email_address: null,
-    is_hod: null,
+   
   });
 
   const [open, setOpen] = React.useState(false);
@@ -76,7 +78,8 @@ function teachers() {
   const [filterText, setFilterText] = useState("");
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [currentPage, setCurrentPage] = React.useState(0);
-
+  const [loading, setloading] = useState(false)
+  const makeTeacherAsHodRef = useRef();
   const handleChangePage = (event, newPage) => {
     setCurrentPage(newPage);
   };
@@ -189,12 +192,34 @@ function teachers() {
         headers: { Authorization: `Bearer ${token}` },
       }
     );
-    alert("changed successfully.");
-    setOpen1(false);
-    console.log(res.data);
+    if (res.data.data.status == 1) {
+      setOpen1(false);
+      Swal.fire({
+        position: "top",
+        icon: "success",
+        title: `${res.data.data.message}`,
+        showConfirmButton: false,
+        timer: 1500,
+        customClass: {
+          container: `${styles["my-sweetalert2-container-class"]}`,
+        },
+      });
+    } else {
+      Swal.fire({
+        position: "top",
+        icon: "warning",
+        title: `${res.data.data.message}`,
+        showConfirmButton: false,
+        timer: 1500,
+        customClass: {
+          container: `${styles["my-sweetalert2-container-class"]}`,
+        },
+      });
+    }
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setloading(true)
     const token = Cookies.get("access_key");
     const res = await axios.post(
       "https://test.diptodiagnostic.com/api/add_teacher",
@@ -203,9 +228,52 @@ function teachers() {
         headers: { Authorization: `Bearer ${token}` },
       }
     );
+    if (res.data.data.status == 1) {
+        setloading(false)
+        setOpen(false);
+        Swal.fire({
+          position: "top",
+          icon: "success",
+          title: `${res.data.data.message}`,
+          showConfirmButton: false,
+          timer: 1500,
+          customClass: {
+            container: `${styles["my-sweetalert2-container-class"]}`,
+          },
+        });
+
+        const fetchTeacher = async () => {
+            const res = await axios.post(
+              `${process.env.NEXT_PUBLIC_BASE_URL}get_all_teacher`,
+              null,
+              {
+                headers: { Authorization: `Bearer ${token}` },
+              }
+            );
+      
+            console.log(res.data.data.teachers, "teacher");
+            const allTeachers = res.data.data.teachers.map((elm, idx) => {
+              return elm;
+            });
+            // console.log(allTeachers, "allkjdscnkvn");
+            setteacherDatas(allTeachers);
+          };
+          fetchTeacher()
+      } else {
+        setloading(false)
+        Swal.fire({
+          position: "top",
+          icon: "warning",
+          title: `${res.data.data.message}`,
+          showConfirmButton: false,
+          timer: 1500,
+          customClass: {
+            container: `${styles["my-sweetalert2-container-class"]}`,
+          },
+        });
+      }
     console.log(inputs);
   };
-
 
   return (
     <>
@@ -216,8 +284,19 @@ function teachers() {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style} gap={5} display="flex" flexDirection="column">
-          <Typography id="modal-modal-title" variant="h6" sx={{ fontWeight: 500, textAlign: "center" }} component="h2">
+        <Box
+          ref={makeTeacherAsHodRef}
+          sx={style}
+          gap={5}
+          display="flex"
+          flexDirection="column"
+        >
+          <Typography
+            id="modal-modal-title"
+            variant="h6"
+            sx={{ fontWeight: 500, textAlign: "center" }}
+            component="h2"
+          >
             Makes Teacher As A HOD
           </Typography>
 
@@ -247,6 +326,7 @@ function teachers() {
                   setcourse_id(e.target.value);
                 }}
               >
+                <MenuItem value="none">None</MenuItem>
                 {allCourses.length > 0 &&
                   allCourses.map((elm, idx) => {
                     return (
@@ -270,6 +350,7 @@ function teachers() {
                   setdepartment_id(e.target.value);
                 }}
               >
+                <MenuItem value="none">None</MenuItem>
                 {allDepertments.length > 0 &&
                   allDepertments.map((elm, idx) => {
                     return (
@@ -298,10 +379,12 @@ function teachers() {
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
-        sx={{ width: { xs: '100vw' } }}
+        sx={{ width: { xs: "100vw" } }}
       >
         <Box sx={style} gap={5}>
-          <Typography sx={{ textAlign: 'center', fontWeight: 800 }}>Fills Teacher's Data</Typography>
+          <Typography sx={{ textAlign: "center", fontWeight: 800 }}>
+            Fills Teacher's Data
+          </Typography>
           <Box gap={2} component="form" onSubmit={handleSubmit}>
             <Box
               sx={{
@@ -312,7 +395,6 @@ function teachers() {
                 position: "relative",
               }}
             >
-
               <TextField
                 onChange={handleChange}
                 value={inputs.teacher_id}
@@ -373,16 +455,18 @@ function teachers() {
                 position: "relative",
               }}
             >
-              <TextField
-                onChange={handleChange}
-                value={inputs.gender}
+              <FormControl fullWidth>
+                <InputLabel>Gender</InputLabel>
+                <Select
                 fullWidth
-                autoComplete="1234"
-                name="gender"
-                id="input-with-sx"
-                label="Gender"
-                variant="standard"
-              />
+                  onChange={(e) => setinputs((prev) => ({ ...prev, gender: e.target.value }))}
+                  value={inputs.gender}
+                >
+                  <MenuItem value="male">Male</MenuItem>
+                  <MenuItem value="female">Female</MenuItem>
+                </Select>
+              </FormControl>
+             
             </Box>
             <Box
               sx={{
@@ -425,7 +509,7 @@ function teachers() {
                 variant="standard"
               />
             </Box>
-            <Box
+            {/* <Box
               sx={{
                 width: "100%",
                 marginTop: "15px",
@@ -445,13 +529,15 @@ function teachers() {
                 label="Make Hod"
                 variant="standard"
               />
-            </Box>
+            </Box> */}
             <Button
+            
+            disabled={Object.values(inputs).some((input)=>input==null || input=="")}
               type="submit"
               sx={{ marginTop: "15px" }}
               variant="contained"
             >
-              Submit
+              {loading ? "Submitting..." : "Submit"}
             </Button>
           </Box>
         </Box>
@@ -462,12 +548,15 @@ function teachers() {
         <Box
           display="flex"
           alignItems="center"
-          flexDirection={{ md: 'row', xs: 'column' }}
-          justifyContent={{ md: 'space-between', xs: 'center' }}
+          flexDirection={{ md: "row", xs: "column" }}
+          justifyContent={{ md: "space-between", xs: "center" }}
           p={{ lg: 2, md: 2, sm: 0 }}
           gap={2}
         >
-          <Typography variant="h2" sx={{ p: 1, flexGrow: 1,fontWeight:'bold' }}>
+          <Typography
+            variant="h2"
+            sx={{ p: 1, flexGrow: 1, fontWeight: "bold" }}
+          >
             Teacher List
           </Typography>
           <TextField
@@ -488,75 +577,141 @@ function teachers() {
               order: {
                 xs: "2",
                 md: "0",
-              }
+              },
             }}
           />
           {/* <Button onClick={handleOpen} variant="contained">Add Teacher</Button> */}
-          <Fab variant="extended" size="small" color="primary" sx={{ p: 2 }} onClick={handleOpen}>Add Teacher</Fab>
+          <Fab
+            variant="extended"
+            size="small"
+            color="primary"
+            sx={{ p: 2 }}
+            onClick={handleOpen}
+          >
+            Add Teacher
+          </Fab>
         </Box>
 
         <TableContainer
           component={Paper}
           style={{ overflowX: "auto" }}
           className="table_scroll"
+          sx={{ p: 1 }}
         >
           <Table
             aria-label="simple table"
             sx={{
-              mt: 3,
               whiteSpace: "nowrap",
             }}
             size="small"
           >
-            <TableHead>
+            <TableHead sx={{ background: "#03c9d7" }}>
               <TableRow>
                 <TableCell>
-                  <Typography color="textSecondary" variant="h6">
+                  <Typography
+                    variant="h6"
+                    sx={{
+                      fontSize: "15px",
+                      color: "black",
+                      fontWeight: "bold",
+                    }}
+                  >
                     Sl. No.
                   </Typography>
                 </TableCell>
                 <TableCell>
-                  <Typography color="textSecondary" variant="h6">
+                  <Typography
+                    variant="h6"
+                    sx={{
+                      fontSize: "15px",
+                      color: "black",
+                      fontWeight: "bold",
+                    }}
+                  >
                     Teacher Id
                   </Typography>
                 </TableCell>
                 <TableCell>
-                  <Typography color="textSecondary" variant="h6">
-                    First Name
+                  <Typography
+                    variant="h6"
+                    sx={{
+                      fontSize: "15px",
+                      color: "black",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    Full Name
                   </Typography>
                 </TableCell>
                 <TableCell>
-                  <Typography color="textSecondary" variant="h6">
-                    last_name
+                  <Typography
+                    variant="h6"
+                    sx={{
+                      fontSize: "15px",
+                      color: "black",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    Gender
                   </Typography>
                 </TableCell>
                 <TableCell>
-                  <Typography color="textSecondary" variant="h6">
-                    gender
+                  <Typography
+                    variant="h6"
+                    sx={{
+                      fontSize: "15px",
+                      color: "black",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    Email
                   </Typography>
                 </TableCell>
                 <TableCell>
-                  <Typography color="textSecondary" variant="h6">
-                    Email Address
+                  <Typography
+                    variant="h6"
+                    sx={{
+                      fontSize: "15px",
+                      color: "black",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    Phone No.
                   </Typography>
                 </TableCell>
                 <TableCell>
-                  <Typography color="textSecondary" variant="h6">
-                    Phone Number
-                  </Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography color="textSecondary" variant="h6">
+                  <Typography
+                    variant="h6"
+                    sx={{
+                      fontSize: "15px",
+                      color: "black",
+                      fontWeight: "bold",
+                    }}
+                  >
                     {` Hod(yes/no)`}
                   </Typography>
                 </TableCell>
                 <TableCell>
-                  <Typography color="textSecondary" variant="h6">
+                  <Typography
+                    variant="h6"
+                    sx={{
+                      fontSize: "15px",
+                      color: "black",
+                      fontWeight: "bold",
+                    }}
+                  >
                     Make Hod
                   </Typography>
                 </TableCell>
                 <TableCell>
-                  <Typography color="textSecondary" variant="h6">
+                  <Typography
+                    variant="h6"
+                    sx={{
+                      fontSize: "15px",
+                      color: "black",
+                      fontWeight: "bold",
+                    }}
+                  >
                     Preview{" "}
                   </Typography>
                 </TableCell>
@@ -592,17 +747,7 @@ function teachers() {
                         fontWeight: "500",
                       }}
                     >
-                      {teacher.first_name}
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography
-                      sx={{
-                        fontSize: "15px",
-                        fontWeight: "500",
-                      }}
-                    >
-                      {teacher.last_name}
+                      {teacher.first_name + " " + teacher.last_name}
                     </Typography>
                   </TableCell>
                   <TableCell>
@@ -617,17 +762,32 @@ function teachers() {
                   </TableCell>
 
                   <TableCell>
-                    <Typography color="textSecondary" variant="h6">
+                    <Typography
+                      sx={{
+                        fontSize: "15px",
+                        fontWeight: "500",
+                      }}
+                    >
                       {teacher.email_address}
                     </Typography>
                   </TableCell>
                   <TableCell>
-                    <Typography color="textSecondary" variant="h6">
+                    <Typography
+                      sx={{
+                        fontSize: "15px",
+                        fontWeight: "500",
+                      }}
+                    >
                       {teacher.phone_number}
                     </Typography>
                   </TableCell>
                   <TableCell>
-                    <Typography color="textSecondary" variant="h6">
+                    <Typography
+                      sx={{
+                        fontSize: "15px",
+                        fontWeight: "500",
+                      }}
+                    >
                       {teacher.is_hod == 1 ? "Yes" : "No"}
                     </Typography>
                   </TableCell>
@@ -641,9 +801,14 @@ function teachers() {
                     >
                       Make Hod
                     </Button> */}
-                    <Fab variant="extended" color="primary" size="small" onClick={() => {
-                      handleModal1(teacher.teacher_id);
-                    }}>
+                    <Fab
+                      variant="extended"
+                      color="primary"
+                      size="small"
+                      onClick={() => {
+                        handleModal1(teacher.teacher_id);
+                      }}
+                    >
                       Make Hod
                     </Fab>
                   </TableCell>
@@ -657,8 +822,15 @@ function teachers() {
                     >
                       Previews
                     </Button> */}
-                    <Fab variant="extended" color="warning" size="small" onClick={() => {handleModal2(teacher);}}>
-                    Preview
+                    <Fab
+                      variant="extended"
+                      color="warning"
+                      size="small"
+                      onClick={() => {
+                        handleModal2(teacher);
+                      }}
+                    >
+                      Preview
                     </Fab>
                   </TableCell>
                 </TableRow>
@@ -666,14 +838,14 @@ function teachers() {
             </TableBody>
           </Table>
           <TablePagination
-        rowsPerPageOptions={[5, 10, 20, 40]}
-        component="div"
-        count={teacherDatas.length}
-        rowsPerPage={rowsPerPage}
-        page={currentPage}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
+            rowsPerPageOptions={[5, 10, 20, 40]}
+            component="div"
+            count={teacherDatas.length}
+            rowsPerPage={rowsPerPage}
+            page={currentPage}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />
         </TableContainer>
       </Box>
 
@@ -682,7 +854,10 @@ function teachers() {
         {/* <Button variant="contained"> close</Button> */}
         <Drawer
           PaperProps={{
-            sx: { width: { lg: '40%', md: '60%', xs: '100%' }, padding: "15px" },
+            sx: {
+              width: { lg: "40%", md: "60%", xs: "100%" },
+              padding: "15px",
+            },
           }}
           anchor="right"
           open={open2}

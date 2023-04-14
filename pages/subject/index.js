@@ -20,8 +20,9 @@ import {
   InputAdornment,
   IconButton,
   Paper,
-  Fab
+  Fab,
 } from "@mui/material";
+import styles from "../../styles/alert.module.css";
 import FeatherIcon from "feather-icons-react";
 import React, { useState, useEffect } from "react";
 import BaseCard from "../../src/components/baseCard/BaseCard";
@@ -29,6 +30,8 @@ import Link from "next/link";
 import Cookies from "js-cookie";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import { getOrdinals } from "../../src/Helper/functions";
+import Swal from "sweetalert2";
 const style = {
   position: "absolute",
   top: "50%",
@@ -100,8 +103,47 @@ function subjectIndex() {
         headers: { Authorization: `Bearer ${token}` },
       }
     );
-    setloading(false);
-    setopen1(false);
+    if (res.data.data.status == 1) {
+      setloading(false);
+      setopen1(false);
+      Swal.fire({
+        position: "top",
+        icon: "success",
+        title: `${res.data.data.message}`,
+        showConfirmButton: false,
+        timer: 1500,
+        customClass: {
+          container: `${styles["my-sweetalert2-container-class"]}`,
+        },
+      });
+      const getALLSubjects = async () => {
+        const res = await axios.post(
+          `${process.env.NEXT_PUBLIC_BASE_URL}get_all_subject`,
+          null,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        const allSubjects = res.data.data.subjects.map((elm, idx) => {
+          return elm;
+        });
+        console.log(allSubjects, "sub");
+        setallSubjects(allSubjects);
+      };
+      getALLSubjects();
+    } else {
+      setloading(false);
+      Swal.fire({
+        position: "top",
+        icon: "warning",
+        title: `${res.data.data.message}`,
+        showConfirmButton: false,
+        timer: 1500,
+        customClass: {
+          container: `${styles["my-sweetalert2-container-class"]}`,
+        },
+      });
+    }
   };
   useEffect(() => {
     const token = Cookies.get("access_key");
@@ -157,13 +199,13 @@ function subjectIndex() {
         <Box
           display="flex"
           alignItems="center"
-          flexDirection={{ md: 'row', xs: 'column' }}
-          justifyContent={{ md: 'space-between', xs: 'center' }}
+          flexDirection={{ md: "row", xs: "column" }}
+          justifyContent={{ md: "space-between", xs: "center" }}
           px={{ lg: 2, md: 2, sm: 0 }}
           py={2}
           gap={2}
         >
-          <Typography variant="h2" sx={{ ml: 1, fontWeight:'bold'}}>
+          <Typography variant="h2" sx={{ ml: 1, fontWeight: "bold" }}>
             Subject List
           </Typography>
           <TextField
@@ -184,7 +226,7 @@ function subjectIndex() {
               order: {
                 xs: "2",
                 md: "0",
-              }
+              },
             }}
           />
 
@@ -203,62 +245,125 @@ function subjectIndex() {
           </Link>
         </Box>
 
-
-        <TableContainer sx={{ overflowX: "auto" }} className="table_scroll">
-
+        <TableContainer
+          sx={{ overflowX: "auto", p: 1 }}
+          className="table_scroll"
+        >
           <Table
             aria-label="simple table"
             sx={{
-              mt: 3,
               whiteSpace: "nowrap",
             }}
             size="small"
           >
-            <TableHead>
+            <TableHead sx={{ background: "#03c9d7" }}>
               <TableRow>
                 <TableCell>
-                  <Typography color="textSecondary" variant="h6">
+                  <Typography
+                    variant="h6"
+                    sx={{
+                      fontSize: "15px",
+                      color: "black",
+                      fontWeight: "bold",
+                    }}
+                  >
                     Sl. no.
                   </Typography>
                 </TableCell>
                 <TableCell>
-                  <Typography color="textSecondary" variant="h6">
+                  <Typography
+                    variant="h6"
+                    sx={{
+                      fontSize: "15px",
+                      color: "black",
+                      fontWeight: "bold",
+                    }}
+                  >
                     Name
                   </Typography>
                 </TableCell>
                 <TableCell>
-                  <Typography color="textSecondary" variant="h6">
+                  <Typography
+                    variant="h6"
+                    sx={{
+                      fontSize: "15px",
+                      color: "black",
+                      fontWeight: "bold",
+                    }}
+                  >
                     Course
                   </Typography>
                 </TableCell>
 
                 <TableCell>
-                  <Typography color="textSecondary" variant="h6">
+                  <Typography
+                    variant="h6"
+                    sx={{
+                      fontSize: "15px",
+                      color: "black",
+                      fontWeight: "bold",
+                    }}
+                  >
                     Department
                   </Typography>
                 </TableCell>
                 <TableCell>
-                  <Typography color="textSecondary" variant="h6">
+                  <Typography
+                    variant="h6"
+                    sx={{
+                      fontSize: "15px",
+                      color: "black",
+                      fontWeight: "bold",
+                    }}
+                  >
                     Year
                   </Typography>
                 </TableCell>
                 <TableCell>
-                  <Typography color="textSecondary" variant="h6">
+                  <Typography
+                    variant="h6"
+                    sx={{
+                      fontSize: "15px",
+                      color: "black",
+                      fontWeight: "bold",
+                    }}
+                  >
                     Semester
                   </Typography>
                 </TableCell>
                 <TableCell>
-                  <Typography color="textSecondary" variant="h6">
+                  <Typography
+                    variant="h6"
+                    sx={{
+                      fontSize: "15px",
+                      color: "black",
+                      fontWeight: "bold",
+                    }}
+                  >
                     Assigned Teacher
                   </Typography>
                 </TableCell>
                 <TableCell>
-                  <Typography color="textSecondary" variant="h6">
+                  <Typography
+                    variant="h6"
+                    sx={{
+                      fontSize: "15px",
+                      color: "black",
+                      fontWeight: "bold",
+                    }}
+                  >
                     Updated at
                   </Typography>
                 </TableCell>
                 <TableCell>
-                  <Typography color="textSecondary" variant="h6">
+                  <Typography
+                    variant="h6"
+                    sx={{
+                      fontSize: "15px",
+                      color: "black",
+                      fontWeight: "bold",
+                    }}
+                  >
                     Assign Teacher
                   </Typography>
                 </TableCell>
@@ -344,7 +449,7 @@ function subjectIndex() {
                             fontSize: "13px",
                           }}
                         >
-                          {item.year}
+                          {getOrdinals(item.year)}
                         </Typography>
                       </Box>
                     </Box>
@@ -362,7 +467,7 @@ function subjectIndex() {
                             fontSize: "13px",
                           }}
                         >
-                          {item.semester}
+                          {getOrdinals(item.semester)}
                         </Typography>
                       </Box>
                     </Box>
@@ -424,10 +529,16 @@ function subjectIndex() {
                         >
                           Assign Teacher
                         </Button> */}
-                        <Fab variant="extended" size="small" color="success" sx={{ p: 2 }} onClick={() => {
+                        <Fab
+                          variant="extended"
+                          size="small"
+                          color="success"
+                          sx={{ p: 2 }}
+                          onClick={() => {
                             handleModal1(item.id);
-                          }}>
-                        Assign Teacher
+                          }}
+                        >
+                          Assign Teacher
                         </Fab>
                       </Box>
                     </Box>
@@ -482,9 +593,7 @@ function subjectIndex() {
                   }}
                   defaultValue="fksdnkn"
                 >
-                  <MenuItem value="" disabled>
-                    Please Select teacher to assign
-                  </MenuItem>
+                  <MenuItem value="">None</MenuItem>
 
                   {allTeachers.length > 0 &&
                     allTeachers.map((elm, idx) => {
@@ -501,7 +610,7 @@ function subjectIndex() {
                   type="submit"
                   variant="contained"
                   sx={{ marginTop: "25px" }}
-                  disabled={loading}
+                  disabled={teacherId == null || teacherId == ""}
                 >
                   {loading ? "Updating..." : "Update"}
                 </Button>

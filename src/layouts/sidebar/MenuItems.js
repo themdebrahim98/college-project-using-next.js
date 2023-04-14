@@ -13,66 +13,93 @@ export const useMenu = (data) => {
     });
     menuItem.push({
       title: "Subjects",
-      icon:"clipboard",
+      icon: "clipboard",
       href: "/subject",
     });
-  } else if(data?.type == "teacher"){
+
+    menuItem.push({
+      title: "Session",
+      icon: "clipboard",
+      href: "/session",
+    });
+
+
+  } else if (data?.type == "teacher") {
     menuItem.push({
       title: "Dashbaord",
       icon: "home",
       href: "/",
     });
     menuItem.push({
+      title: "Class Room",
+      icon: "clipboard",
+      href: "/teacher/classRoom",
+    });
+    menuItem.push({
       title: "Students",
-      icon:'users',
+      icon: 'users',
       href: "/student",
     });
-
     menuItem.push({
       title: "Syllabus",
-      icon:"clipboard",
+      icon: "clipboard",
       href: "/teacher/syllabus",
     });
 
+    menuItem.push({
+      title: "Routine",
+      icon: "clipboard",
+      href: "/teacher/routine",
+    });
     if (data?.is_hod == 1) {
       menuItem.push({
         title: "Pending Students",
-        icon:"clock",
+        icon: "clock",
         href: "/student/pendingStudent",
       });
       menuItem.push({
         title: "Notices",
-        icon:"clipboard",
+        icon: "clipboard",
         href: "/notices",
       });
-      menuItem.push({
-        title: "Subject",
-        icon:"clipboard",
-        href: "/teacher/allSubject",
-      });
-    
-      menuItem.push({
-        title: "Routine",
-        icon:"clipboard",
-        href: "/teacher/routine",
-      });
+      // menuItem.push({
+      //   title: "Subject",
+      //   icon:"clipboard",
+      //   href: "/teacher/allSubject",
+      // });
+      // menuItem.push({
+      //   title: "Student Session Assign",
+      //   icon:"clipboard",
+      //   href: "/session/studentsessionassign",
+      // });
+
     }
-  }else if(data?.type == "student"){
+  } else if (data?.type == "student") {
     menuItem.push({
       title: "Dashbaord",
       icon: "home",
       href: "/",
     });
     menuItem.push({
-        title: "Notices",
-        icon:"clipboard",
-        href: "/notices",
+      title: "Classes",
+      icon: "clipboard",
+      href: "/user/student/studentClass",
     });
     menuItem.push({
-        title: "Subjects",
-        icon:"clipboard",
-        href: "/student/subject",
-      });
+      title: "Notices",
+      icon: "clipboard",
+      href: "/notices",
+    });
+    // menuItem.push({
+    //   title: "Syllabus",
+    //   icon: "clipboard",
+    //   href: "/user/student/syllabus",
+    // });
+    // menuItem.push({
+    //   title: "Routine",
+    //   icon: "clipboard",
+    //   href: "/user/student/routine",
+    // });
   }
 
   return menuItem;

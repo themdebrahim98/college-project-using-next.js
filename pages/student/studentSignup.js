@@ -16,6 +16,7 @@ import MuiAlert from "@mui/material/Alert";
 // import { commonConstants } from "../../constant/common.constant";
 import axios from "axios";
 import router from "next/router";
+import Swal from 'sweetalert2';
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
@@ -39,7 +40,7 @@ const StudentRegister = () => {
     department_id: "",
     semester: "",
     year: "",
-    roll_number:""
+    roll_number: ""
 
   });
 
@@ -101,7 +102,7 @@ const StudentRegister = () => {
     } else if (!studentDetails.student_id) {
       setOpenAlert(true);
       setAlertMsg("please enter registration number");
-    } 
+    }
     else {
       setLoading(true);
       dispatch(
@@ -112,15 +113,30 @@ const StudentRegister = () => {
             data?.status == 200 &&
             data?.data?.status === 1
           ) {
-            setAlertVisible("block");
-            setAlertMsg(
-              "You have successfully submited your details..! Please wait for admin approval"
-             
-            );
-            router.replace("/login")
+            // setAlertVisible("block");
+            // setAlertMsg(
+            //   "You have successfully submited your details..! Please wait for admin approval"
+
+            // );
+            Swal.fire({
+              icon: 'success',
+              title: 'You have successfully submited your details..! Please wait for admin approval',
+              showConfirmButton: true,
+              confirmButtonText: 'I understand..!'
+            }).then((result) => {
+              if (result.isConfirmed) {
+                router.replace("/login")
+              }
+            })
           } else {
-            setOpenAlert(true);
-            setAlertMsg(data?.data?.message);
+            // setOpenAlert(true);
+            // setAlertMsg(data?.data?.message);
+            Swal.fire({
+              icon: 'error',
+              title: data?.data?.message,
+              showConfirmButton: true,
+              confirmButtonText: 'I understand..!'
+            })
           }
         })
       );
@@ -154,8 +170,8 @@ const StudentRegister = () => {
   const emailVerify = async () => {
     if (
       studentDetails.email_address != "" &&
-      studentDetails.first_name !="" &&
-      studentDetails.last_name !=""
+      studentDetails.first_name != "" &&
+      studentDetails.last_name != ""
     ) {
       setLoadingEmailVerify(true);
       const res = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}verify_mail`, {
@@ -167,23 +183,49 @@ const StudentRegister = () => {
       if (res.data.data.status.status == 1) {
         setLoadingEmailVerify(false);
         setisSuccsessfullySendEmail(true);
-        alert(res.data.data.status?.message);
+        Swal.fire({
+          position: 'top-end',
+          text: res.data.data.status?.message,
+          icon: 'success',
+          showConfirmButton: false,
+          timer: 1500
+        })
+        // alert(res.data.data.status?.message);
         setcurrentOtp(res.data.data.otp);
       } else {
-        alert(res && res.data.data.status?.message);
+        Swal.fire({
+          position: 'top-end',
+          text: res.data.data.status?.message,
+          icon: 'error',
+          showConfirmButton: false,
+          timer: 1500
+        })
+        // alert(res && res.data.data.status?.message);
       }
       console.log(res, "eamil");
-    }else{
-      alert("please filled ")
+    } else {
+      Swal.fire({
+        title: 'Error!',
+        text: 'Please fill first name, last name & email',
+        icon: 'error',
+        confirmButtonText: 'Ok'
+      })
     }
   };
 
   const VerifyOtp = () => {
-    
+
     if (OtpInput.toLocaleLowerCase().includes(currentOtp.toLocaleLowerCase())) {
       setisVerifyEmail(true);
       console.log("verified");
     } else {
+      Swal.fire({
+        position: 'top-end',
+        text: 'invalid OTP',
+        icon: 'error',
+        showConfirmButton: false,
+        timer: 1500
+      })
       console.log(OtpInput, currentOtp);
       console.log("NOT verified");
     }
@@ -293,9 +335,9 @@ const StudentRegister = () => {
                 onChange={getInput}
                 value={studentDetails.gender}
               >
-                <MenuItem value={10}>Male</MenuItem>
-                <MenuItem value={20}>Female</MenuItem>
-                <MenuItem value={30}>Others</MenuItem>
+                <MenuItem value={'male'}>Male</MenuItem>
+                <MenuItem value={'female'}>Female</MenuItem>
+                <MenuItem value={'others'}>Others</MenuItem>
               </Select>
             </FormControl>
           </Grid>
@@ -439,7 +481,7 @@ const StudentRegister = () => {
               autoComplete="on"
               onChange={getInput}
               value={studentDetails.roll_number}
-              
+
             />
           </Grid>
           <Grid item xs={12} sm={4}>
@@ -455,7 +497,7 @@ const StudentRegister = () => {
               value={studentDetails.student_id}
             />
           </Grid>
-          <Grid item xs={6} sm={4}>
+          <Grid item xs={12} sm={4}>
             {isSuccsessfullySendEmail ? null : (
               <Button
                 onClick={emailVerify}
@@ -474,7 +516,7 @@ const StudentRegister = () => {
             <>
               {isVerifyEmail ? null : (
                 <>
-                  <Grid item xs={6} sm={3}>
+                  <Grid item xs={6} sm={4}>
                     <TextField
                       variant="outlined"
                       required
@@ -488,7 +530,7 @@ const StudentRegister = () => {
                       helperText={`Eneter OTP send your ${studentDetails.email_address}`}
                     />
                   </Grid>
-                  <Grid item xs={6} sm={1}>
+                  <Grid item xs={6} sm={4}>
                     <Button
                       onClick={VerifyOtp}
                       type="submit"

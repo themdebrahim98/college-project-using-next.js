@@ -15,6 +15,8 @@ import {
   ListItemText,
   Button,
   Divider,
+  ListItemAvatar,
+  Avatar,
 } from "@mui/material";
 
 import router from "next/router";
@@ -45,15 +47,17 @@ const ProfileDD = () => {
         aria-controls="profile-menu"
         aria-haspopup="true"
         onClick={handleClick4}
+        sx={{mt:'6px'}}
       >
         <Box display="flex" alignItems="center">
           <Image
-            src={userimg}
-            alt={userimg}
-            width="30"
-            height="30"
+            src='/static/images/users/user_avtar.png'
+            alt='/static/images/users/user_avtar.png'
+            width="45"
+            height="45"
             className="roundedCircle"
           />
+          {/* {console.log(user.userData.user_data.type)} */}
           <Box
             sx={{
               display: {
@@ -63,14 +67,13 @@ const ProfileDD = () => {
               alignItems: "center",
             }}
           >
-            <Typography
+            {/* <Typography
               color="textSecondary"
               variant="h5"
               fontWeight="400"
-              sx={{ ml: 1 }}
+              // sx={{ ml: 1 }}
             >
-              Hi,
-            </Typography>
+            </Typography> */}
             <Typography
               variant="h5"
               fontWeight="700"
@@ -79,8 +82,8 @@ const ProfileDD = () => {
               }}
             >
               {user &&
-              user.userData.user_data?.first_name &&
-              user.userData.user_data?.last_name
+                user.userData.user_data?.first_name &&
+                user.userData.user_data?.last_name
                 ? `${user.userData.user_data?.first_name} ${user.userData.user_data?.last_name} `
                 : null}
 
@@ -103,6 +106,34 @@ const ProfileDD = () => {
             width: "250px",
           },
         }}
+        PaperProps={{
+          elevation: 0,
+          sx: {
+            overflow: 'visible',
+            filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+            mt: 1.5,
+            '& .MuiAvatar-root': {
+              width: 32,
+              height: 32,
+              ml: -0.5,
+              mr: 1,
+            },
+            '&:before': {
+              content: '""',
+              display: 'block',
+              position: 'absolute',
+              top: 0,
+              right: 14,
+              width: 10,
+              height: 10,
+              bgcolor: 'background.paper',
+              transform: 'translateY(-50%) rotate(45deg)',
+              zIndex: 0,
+            },
+          },
+        }}
+        transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
         <Box>
           <Box p={2} pt={0}>
@@ -114,14 +145,32 @@ const ProfileDD = () => {
               {/* <ListItemButton>
                 <ListItemText primary="Edit Profile" />
               </ListItemButton> */}
+              <ListItemButton
+                variant="h5"
+                fontWeight="bold"
+              >
+                <ListItemAvatar>
+                  <Avatar
+                    src='/static/images/users/user_avtar.png'
+                  />
+                </ListItemAvatar>
+                {user &&
+                  user.userData.user_data?.first_name &&
+                  user.userData.user_data?.last_name
+                  ? `${user.userData.user_data?.first_name} ${user.userData.user_data?.last_name} `
+                  : null}
+
+                {user && user.userData.user_data?.name
+                  ? `${user.userData.user_data?.name} `
+                  : null}
+              </ListItemButton>
               <ListItemButton>
-                <Link style={{color:'inherit', textDecoration:'none'}} href="/account">
-                  <ListItemText primary="Account" />
-          
+                <Link style={{ color: 'inherit', textDecoration: 'none' }} href="/account">
+                  <ListItemText primary={'Account('+(user.userData.user_data?.is_hod==1?'HOD':user.userData.user_data?.type)+')'} />
                 </Link>
               </ListItemButton>
               <ListItemButton>
-                <Link style={{color:'inherit', textDecoration:'none'}}  href='/changePassword'>
+                <Link style={{ color: 'inherit', textDecoration: 'none' }} href='/changePassword'>
                   <ListItemText primary="Change Password" />
                 </Link>
               </ListItemButton>
@@ -132,7 +181,7 @@ const ProfileDD = () => {
           </Box>
           <Divider />
           <Box p={2}>
-            <Link href="/" style={{color:'inherit', textDecoration:'none'}} > 
+            <Link href="/" style={{ color: 'inherit', textDecoration: 'none' }} >
               <Button
                 onClick={handleLogOut}
                 fullWidth

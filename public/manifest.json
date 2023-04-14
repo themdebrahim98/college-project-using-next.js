@@ -1,12 +1,12 @@
 {
-    "theme_color": "#5E5EFC",
-    "background_color": "#5E5EFC",
+    "theme_color": "#03c9d7",
+    "background_color": "#fff",
     "display": "standalone",
     "scope": "/",
     "start_url": "/",
-    "name": "Makaut Student Information System",
-    "short_name": "MSIS",
-    "description": "Makaut Student Information System",
+    "name": "Makaut Student Information Portal",
+    "short_name": "MSIP",
+    "description": "Makaut Student Information Portal",
     "icons": [
         {
             "src": "/icon-192x192.png",
