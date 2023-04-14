@@ -58,7 +58,8 @@ function AllStudents() {
   };
 
   const handleFilterTextChange = (event) => {
-    setFilterText(event.target.value);
+    setFilterText(event.target.value.toLowerCase());
+    console.log(event.target.value.toLowerCase());
   };
 
   const handleClearFilters = () => {
@@ -73,7 +74,7 @@ function AllStudents() {
   const handleFilterChange = (event) => {
     setfilters((prevFilters) => ({
       ...prevFilters,
-      [event.target.name]: event.target.value,
+      [event.target.name]: event.target.value.toLowerCase(),
     }));
   };
 
@@ -260,7 +261,7 @@ function AllStudents() {
             }}
             size="small"
           >
-               <IconButton onClick={() => settoggleFilter(!toggleFilter)}>
+            <IconButton onClick={() => settoggleFilter(!toggleFilter)}>
               <FilterListIcon />
             </IconButton>
             <TableRow>
@@ -298,7 +299,7 @@ function AllStudents() {
                   );
                 })}
             </TableRow>
-           
+
             <TableHead sx={{ fontWeight: "bold", background: "#03c9d7" }}>
               <TableRow>
                 {[

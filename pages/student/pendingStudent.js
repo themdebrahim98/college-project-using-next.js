@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import FilterListIcon from '@mui/icons-material/FilterList';
+import FilterListIcon from "@mui/icons-material/FilterList";
 import {
   Typography,
   Box,
@@ -39,8 +39,6 @@ function pendingStudent() {
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [currentPage, setCurrentPage] = React.useState(0);
   const [toggleFilter, settoggleFilter] = React.useState(false);
-
-
 
   const data = useSelector(
     (store) => store?.user?.userData?.user_data?.hod_data[0]
@@ -84,7 +82,6 @@ function pendingStudent() {
     setfilters({});
   };
 
-  
   const selectCurrentStudentData = (student) => {
     console.log(student);
     setcurrStudentTobeDeleted(student);
@@ -168,8 +165,6 @@ function pendingStudent() {
         <Typography variant="h2" sx={{ ml: 1, fontWeight: "bold" }}>
           Pending students
         </Typography>
-
-        
       </Box>
       <TableContainer
         component={Paper}
@@ -198,44 +193,43 @@ function pendingStudent() {
           }}
           size="small"
         >
-             <IconButton onClick={() => settoggleFilter(!toggleFilter)}>
-              <FilterListIcon />
-            </IconButton>
-       
+          <IconButton onClick={() => settoggleFilter(!toggleFilter)}>
+            <FilterListIcon />
+          </IconButton>
           <TableRow>
-           { toggleFilter && <TableCell size="small">
-              <Button color="secondary" onClick={handleClearFilters}>
-                Clear All Filter
-              </Button>
-            </TableCell>}
-            { 
-            toggleFilter &&
-            
-            [
-              "first_name",
-              "last_name",
-              "student_id",
-              "roll_number",
-              "course_name",
-              "department_name",
-              "year",
-              "semester",
-              "dob",
-              "gender",
-              "email_address",
-              "phone_number",
-            ].map((elm, idx) => {
-              return (
-                <TableCell size="small">
-                  <TextField
-                    onChange={handleFilterChange}
-                    name={elm}
-                    value={filters[elm] || ""}
-                    size="small"
-                  />
-                </TableCell>
-              );
-            })}
+            {toggleFilter && (
+              <TableCell size="small">
+                <Button color="secondary" onClick={handleClearFilters}>
+                  Clear All Filter
+                </Button>
+              </TableCell>
+            )}
+            {toggleFilter &&
+              [
+                "first_name",
+                "last_name",
+                "student_id",
+                "roll_number",
+                "course_name",
+                "department_name",
+                "year",
+                "semester",
+                "dob",
+                "gender",
+                "email_address",
+                "phone_number",
+              ].map((elm, idx) => {
+                return (
+                  <TableCell size="small">
+                    <TextField
+                      onChange={handleFilterChange}
+                      name={elm}
+                      value={filters[elm] || ""}
+                      size="small"
+                    />
+                  </TableCell>
+                );
+              })}
           </TableRow>
           <TableHead sx={{ background: "#03c9d7" }}>
             <TableRow>
