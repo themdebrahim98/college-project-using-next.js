@@ -17,6 +17,7 @@ import MuiAlert from "@mui/material/Alert";
 import axios from "axios";
 import router from "next/router";
 import Swal from 'sweetalert2';
+import { getOrdinals, getSemesterByYear } from "../../src/Helper/functions";
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
@@ -34,6 +35,8 @@ const StudentRegister = () => {
     last_name: "",
     phone_number: "",
     email_address: "",
+    parent_name:"",
+    parent_phone_number:"",
     gender: "",
     dob: "",
     course_id: "",
@@ -53,6 +56,7 @@ const StudentRegister = () => {
   const [alertVisible, setAlertVisible] = useState("none");
   const [loading, setLoading] = useState(false);
   const [loadingEmailVerify, setLoadingEmailVerify] = useState(false);
+  const [allSemesters,setAllSemesters]=useState([]);
 
   const vertical = "top",
     horizontal = "right";
@@ -68,6 +72,16 @@ const StudentRegister = () => {
       };
     });
   };
+  const changeYear = (e) => {
+    setStudentDetails((prevState) => {
+      return {
+        ...prevState,
+        [e.target.name]: e.target.value,
+      };
+    });
+    console.log(getSemesterByYear(e.target.value));
+    setAllSemesters(getSemesterByYear(e.target.value));
+  };
   const onSubmitBtnClick = () => {
     if (!studentDetails.first_name) {
       setOpenAlert(true);
@@ -78,10 +92,22 @@ const StudentRegister = () => {
     } else if (!studentDetails.phone_number) {
       setOpenAlert(true);
       setAlertMsg("Please enter phone number");
+    } else if (studentDetails.phone_number.length!=10){
+      setOpenAlert(true);
+      setAlertMsg("Enter correct phone number");
     } else if (!studentDetails.email_address) {
       setOpenAlert(true);
       setAlertMsg("Please enter email address");
-    } else if (!studentDetails.gender) {
+    } else if (!studentDetails.parent_name) {
+      setOpenAlert(true);
+      setAlertMsg("Please enter your parent name");
+    } else if (!studentDetails.parent_phone_number) {
+      setOpenAlert(true);
+      setAlertMsg("Please enter your parent phone number");
+    } else if (studentDetails.parent_phone_number.length!=10){
+      setOpenAlert(true);
+      setAlertMsg("Enter correct parent phone number");
+    }else if (!studentDetails.gender) {
       setOpenAlert(true);
       setAlertMsg("Please select gender");
     } else if (!studentDetails.course_id) {
@@ -92,16 +118,19 @@ const StudentRegister = () => {
       setAlertMsg("Please select department");
     } else if (!studentDetails.semester) {
       setOpenAlert(true);
-      setAlertMsg("please select semester");
+      setAlertMsg("Please select semester");
     } else if (!studentDetails.year) {
       setOpenAlert(true);
-      setAlertMsg("please select year");
+      setAlertMsg("Please select year");
     } else if (!studentDetails.roll_number) {
       setOpenAlert(true);
-      setAlertMsg("please enter roll number");
+      setAlertMsg("Please enter roll number");
     } else if (!studentDetails.student_id) {
       setOpenAlert(true);
-      setAlertMsg("please enter registration number");
+      setAlertMsg("Please enter registration number");
+    }else if(studentDetails.parent_phone_number == studentDetails.phone_number){
+      setOpenAlert(true);
+      setAlertMsg("Parent number shouldn't be same as your number");
     }
     else {
       setLoading(true);
@@ -113,11 +142,6 @@ const StudentRegister = () => {
             data?.status == 200 &&
             data?.data?.status === 1
           ) {
-            // setAlertVisible("block");
-            // setAlertMsg(
-            //   "You have successfully submited your details..! Please wait for admin approval"
-
-            // );
             Swal.fire({
               icon: 'success',
               title: 'You have successfully submited your details..! Please wait for admin approval',
@@ -129,8 +153,6 @@ const StudentRegister = () => {
               }
             })
           } else {
-            // setOpenAlert(true);
-            // setAlertMsg(data?.data?.message);
             Swal.fire({
               icon: 'error',
               title: data?.data?.message,
@@ -384,6 +406,32 @@ const StudentRegister = () => {
             />
           </Grid>
           <Grid item xs={12} sm={6}>
+            <TextField
+              variant="outlined"
+              required
+              fullWidth
+              id="parent_name"
+              label="Parent name"
+              name="parent_name"
+              autoComplete="off"
+              onChange={getInput}
+              value={studentDetails.parent_name}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              variant="outlined"
+              required
+              fullWidth
+              id="parent_phone_number"
+              label="Parent phone number"
+              name="parent_phone_number"
+              autoComplete="off"
+              onChange={getInput}
+              value={studentDetails.parent_phone_number}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
             <FormControl fullWidth>
               <InputLabel id="gender">Select Year</InputLabel>
               <Select
@@ -391,7 +439,7 @@ const StudentRegister = () => {
                 id="selectYear"
                 label="year"
                 name="year"
-                onChange={getInput}
+                onChange={changeYear}
                 value={studentDetails.year}
               >
                 <MenuItem value={1}>1st</MenuItem>
@@ -404,25 +452,24 @@ const StudentRegister = () => {
           </Grid>
           <Grid item xs={12} sm={6}>
             <FormControl fullWidth>
-              <InputLabel id="gender">Select Semester</InputLabel>
+              <InputLabel id="semester">Select Semester</InputLabel>
               <Select
-                labelId="year"
+                labelId="semester"
                 id="selectYear"
-                label="year"
+                label="semester"
                 name="semester"
                 onChange={getInput}
                 value={studentDetails.semester}
               >
-                <MenuItem value={1}>1st Sem</MenuItem>
-                <MenuItem value={2}>2nd Sem</MenuItem>
-                <MenuItem value={3}>3rd Sem</MenuItem>
-                <MenuItem value={4}>4th Sem</MenuItem>
-                <MenuItem value={5}>5th Sem</MenuItem>
-                <MenuItem value={6}>6th Sem</MenuItem>
-                <MenuItem value={7}>7th Sem</MenuItem>
-                <MenuItem value={8}>8th Sem</MenuItem>
-                <MenuItem value={9}>9th Sem</MenuItem>
-                <MenuItem value={10}>10th Sem</MenuItem>
+                {allSemesters.length > 0 &&
+                  allSemesters.map((elm, idx) => {
+                    return (
+                      <MenuItem key={idx} value={elm}>
+                        {getOrdinals(elm)}
+                      </MenuItem>
+                    );
+                  })}
+                
               </Select>
             </FormControl>
           </Grid>
