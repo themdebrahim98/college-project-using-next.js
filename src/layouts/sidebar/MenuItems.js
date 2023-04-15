@@ -51,6 +51,11 @@ export const useMenu = (data) => {
       icon: "clipboard",
       href: "/teacher/routine",
     });
+    menuItem.push({
+      title: "Exam",
+      icon: "clipboard",
+      href: "/teacher/exam",
+    });
     if (data?.is_hod == 1) {
       menuItem.push({
         title: "Pending Students",
@@ -62,16 +67,6 @@ export const useMenu = (data) => {
         icon: "clipboard",
         href: "/notices",
       });
-      // menuItem.push({
-      //   title: "Subject",
-      //   icon:"clipboard",
-      //   href: "/teacher/allSubject",
-      // });
-      // menuItem.push({
-      //   title: "Student Session Assign",
-      //   icon:"clipboard",
-      //   href: "/session/studentsessionassign",
-      // });
 
     }
   } else if (data?.type == "student") {
