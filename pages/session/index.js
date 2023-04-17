@@ -152,7 +152,7 @@ function Session() {
       );
 
       const allSession = res.data.data.sessions.map((elm, idx) => {
-        return ({...elm, checked:false})
+        return ({ ...elm, checked: false })
       });
       setallSession(allSession)
       console.log(allSession)
@@ -162,8 +162,8 @@ function Session() {
 
 
     getAllSession();
-  
-    
+
+
   }, []);
 
   const updateHod = async () => {
@@ -208,8 +208,8 @@ function Session() {
   const getNYears = (n) => {
     const years = [];
     const currentYear = new Date().getFullYear();
-
-    for (let i = currentYear; i <= currentYear + n; i++) {
+    const start = currentYear-5;
+    for (let i = start; i <= currentYear + n; i++) {
       years.push(i);
     }
 
@@ -325,90 +325,78 @@ function Session() {
           <Typography sx={{ textAlign: "center", fontWeight: 800 }}>
             Fills Session's Data
           </Typography>
-          <Box sx={{ minWidth: 120 }}>
-            <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label">
-                Choose Odd OR Even
-              </InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                label="odd OR Even"
-                value={inputsData.oddOrEven}
-                onChange={(e) => {
-                  setinputsData({ ...inputsData, oddOrEven: e.target.value });
-                }}
-              >
-                <MenuItem value="ODD">ODD</MenuItem>
-                <MenuItem value="EVEN">EVEN</MenuItem>
-              </Select>
-            </FormControl>
-          </Box>
-          <Box sx={{ minWidth: 120 }}>
-            <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label">
-                Choose Start Session Year
-              </InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                label=" Choose-Star-Session-Year"
-                value={inputsData.startSession}
-                onChange={(e) => {
-                  setinputsData({
-                    ...inputsData,
-                    startSession: e.target.value,
-                  });
-                }}
-              >
-                {getNYears(5).map((year) => {
-                  return <MenuItem value={year}>{year}</MenuItem>;
-                })}
-              </Select>
-            </FormControl>
-          </Box>
-          <Box sx={{ minWidth: 120 }}>
-            <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label">
-                Choose End Session Year
-              </InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                label=" Choose-end-Session-Year"
-                value={inputsData.endSession}
-                onChange={(e) => {
-                  setinputsData({ ...inputsData, endSession: e.target.value });
-                }}
-              >
-                {getNYears(5).map((year) => {
-                  return <MenuItem value={year}>{year}</MenuItem>;
-                })}
-              </Select>
-            </FormControl>
-          </Box>
-
-          <Box sx={{ minWidth: 120 }}>
-            <TextField
-              name="description"
+          <FormControl fullWidth>
+            <InputLabel id="choose-even-odd-lebel">
+            Choose Odd or Even
+            </InputLabel>
+            <Select
+              labelId="choose-even-odd-lebel"
+              id="choose-even-odd"
+              label="Choose-Odd-or-Even"
+              value={inputsData.oddOrEven}
               onChange={(e) => {
-                setinputsData({ ...inputsData, description: e.target.value });
+                setinputsData({ ...inputsData, oddOrEven: e.target.value });
               }}
-              label="description"
-              placeholder="Please Enter Description "
-            />
-          </Box>
-
-          <Box>
-            <Button
-              onClick={handleSubmit}
-              type="submit"
-              sx={{ marginTop: "15px" }}
-              variant="contained"
             >
-              Submit
-            </Button>
-          </Box>
+              <MenuItem value="ODD">ODD</MenuItem>
+              <MenuItem value="EVEN">EVEN</MenuItem>
+            </Select>
+          </FormControl>
+          <FormControl fullWidth>
+            <InputLabel id="demo-simple-select-label">
+              Choose Start Session Year
+            </InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              label=" Choose-Star-Session-Year"
+              value={inputsData.startSession}
+              onChange={(e) => {
+                setinputsData({
+                  ...inputsData,
+                  startSession: e.target.value,
+                });
+              }}
+            >
+              {getNYears(5).map((year) => {
+                return <MenuItem value={year}>{year}</MenuItem>;
+              })}
+            </Select>
+          </FormControl>
+          <FormControl fullWidth>
+            <InputLabel id="demo-simple-select-label">
+              Choose End Session Year
+            </InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              label=" Choose-end-Session-Year"
+              value={inputsData.endSession}
+              onChange={(e) => {
+                setinputsData({ ...inputsData, endSession: e.target.value });
+              }}
+            >
+              {getNYears(5).map((year) => {
+                return <MenuItem value={year}>{year}</MenuItem>;
+              })}
+            </Select>
+          </FormControl>
+          <TextField
+            name="description"
+            onChange={(e) => {
+              setinputsData({ ...inputsData, description: e.target.value });
+            }}
+            label="Description"
+            placeholder="Please Enter Description "
+          />
+          <Button
+            onClick={handleSubmit}
+            type="submit"
+            sx={{ marginTop: "15px" }}
+            variant="contained"
+          >
+            Submit
+          </Button>
         </Box>
       </Modal>
 
@@ -426,7 +414,7 @@ function Session() {
             variant="h2"
             sx={{ p: 1, flexGrow: 1, fontWeight: "bold" }}
           >
-            Teacher List
+            Sessions List
           </Typography>
           <TextField
             size="small"
@@ -449,7 +437,6 @@ function Session() {
               },
             }}
           />
-          {/* <Button onClick={handleOpen} variant="contained">Add Teacher</Button> */}
           <Fab
             variant="extended"
             size="small"
@@ -565,12 +552,6 @@ function Session() {
             <TableBody>
               {displayedData.map((elm, idx) => (
                 <TableRow key={idx}>
-                   {/* <TableCell>
-                    <CheckBox
-                    checked={elm.checked}
-                    onChange={(event) => handleCheckboxChange(event, elm.id)}
-                    />
-                  </TableCell> */}
                   <TableCell>
                     <Typography
                       sx={{

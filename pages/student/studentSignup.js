@@ -331,6 +331,7 @@ const StudentRegister = () => {
               autoFocus
               onChange={getInput}
               value={studentDetails.first_name}
+              autoComplete="off"
             />
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -399,7 +400,7 @@ const StudentRegister = () => {
               id="email"
               label="Email Address"
               name="email_address"
-              autoComplete="on"
+              autoComplete="off"
               onChange={getInput}
               disabled={isSuccsessfullySendEmail}
               value={studentDetails.email_address}
@@ -525,7 +526,7 @@ const StudentRegister = () => {
               id="RollNumber"
               label="Roll Number"
               name="roll_number"
-              autoComplete="on"
+              autoComplete="off"
               onChange={getInput}
               value={studentDetails.roll_number}
 

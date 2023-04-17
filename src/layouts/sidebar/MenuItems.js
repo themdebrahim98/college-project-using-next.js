@@ -23,6 +23,12 @@ export const useMenu = (data) => {
       href: "/session",
     });
 
+    menuItem.push({
+      title: "Master",
+      icon: "settings",
+      href: "/master",
+    });
+
 
   } else if (data?.type == "teacher") {
     menuItem.push({

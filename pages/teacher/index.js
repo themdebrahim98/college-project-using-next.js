@@ -315,18 +315,19 @@ function teachers() {
             />
 
             <FormControl>
-              <InputLabel id="demo-simple-select-label2">
+              <InputLabel id="select_course_label">
                 Please select course
               </InputLabel>
               <Select
-                labelId="demo-simple-select-label2"
-                id="demo-simple-select2"
+                labelId="select_course_label"
+                id="select_course"
+                label="Please select course"
                 value={course_id}
                 onChange={(e) => {
                   setcourse_id(e.target.value);
                 }}
               >
-                <MenuItem value="none">None</MenuItem>
+                {/* <MenuItem value="none">None</MenuItem> */}
                 {allCourses.length > 0 &&
                   allCourses.map((elm, idx) => {
                     return (
@@ -338,19 +339,19 @@ function teachers() {
               </Select>
             </FormControl>
             <FormControl>
-              <InputLabel id="demo-simple-select1-label1">
+              <InputLabel id="select_department_label">
                 Please select department
               </InputLabel>
               <Select
-                autoWidth={true}
-                labelId="demo-simple-select1-label1"
-                id="demo-simple-select1"
+                labelId="select_department_label"
+                id="select_department"
+                label="Please select department"
                 value={department_id}
                 onChange={(e) => {
                   setdepartment_id(e.target.value);
                 }}
               >
-                <MenuItem value="none">None</MenuItem>
+                {/* <MenuItem value="none">None</MenuItem> */}
                 {allDepertments.length > 0 &&
                   allDepertments.map((elm, idx) => {
                     return (
@@ -387,34 +388,23 @@ function teachers() {
           </Typography>
           <Box gap={2} component="form" onSubmit={handleSubmit}>
             <Box
-              sx={{
-                marginTop: "15px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "start",
-                position: "relative",
-              }}
+                display="flex"
+                alignItems="center"
+                flexDirection="column"
+                px={{ lg: 2, md: 2, sm: 0 }}
+                py={2}
+                gap={2}
             >
               <TextField
                 onChange={handleChange}
                 value={inputs.teacher_id}
                 fullWidth
-                autoComplete="1234"
+                autoComplete="off"
                 name="teacher_id"
                 id="input-with-sx"
                 label="Teacher Id"
                 variant="standard"
               />
-            </Box>
-            <Box
-              sx={{
-                marginTop: "15px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "start",
-                position: "relative",
-              }}
-            >
               <TextField
                 onChange={handleChange}
                 value={inputs.first_name}
@@ -425,16 +415,6 @@ function teachers() {
                 label="First Name"
                 variant="standard"
               />
-            </Box>
-            <Box
-              sx={{
-                marginTop: "15px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "start",
-                position: "relative",
-              }}
-            >
               <TextField
                 onChange={handleChange}
                 value={inputs.last_name}
@@ -445,17 +425,7 @@ function teachers() {
                 label="LastName"
                 variant="standard"
               />
-            </Box>
-            <Box
-              sx={{
-                marginTop: "15px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "start",
-                position: "relative",
-              }}
-            >
-              <FormControl fullWidth>
+              <FormControl fullWidth variant="standard">
                 <InputLabel>Gender</InputLabel>
                 <Select
                 fullWidth
@@ -466,17 +436,6 @@ function teachers() {
                   <MenuItem value="female">Female</MenuItem>
                 </Select>
               </FormControl>
-             
-            </Box>
-            <Box
-              sx={{
-                marginTop: "15px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "start",
-                position: "relative",
-              }}
-            >
               <TextField
                 onChange={handleChange}
                 value={inputs.phone_number}
@@ -487,17 +446,6 @@ function teachers() {
                 label="Phone No"
                 variant="standard"
               />
-            </Box>
-            <Box
-              sx={{
-                width: "100%",
-                marginTop: "15px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "start",
-                position: "relative",
-              }}
-            >
               <TextField
                 onChange={handleChange}
                 value={inputs.email_address}
@@ -508,28 +456,6 @@ function teachers() {
                 label="Email"
                 variant="standard"
               />
-            </Box>
-            {/* <Box
-              sx={{
-                width: "100%",
-                marginTop: "15px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "start",
-                position: "relative",
-              }}
-            >
-              <TextField
-                onChange={handleChange}
-                value={inputs.is_hod}
-                fullWidth
-                autoComplete="1234"
-                name="is_hod"
-                id="input-with-sx"
-                label="Make Hod"
-                variant="standard"
-              />
-            </Box> */}
             <Button
             
             disabled={Object.values(inputs).some((input)=>input==null || input=="")}
@@ -539,6 +465,7 @@ function teachers() {
             >
               {loading ? "Submitting..." : "Submit"}
             </Button>
+            </Box>
           </Box>
         </Box>
       </Modal>
