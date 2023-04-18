@@ -37,7 +37,7 @@ function Courses() {
     const [open, setOpen] = React.useState(false);
 
     const handleChange = (event, value) => {
-        console.log(value?.id);
+        console.log(value.current_session_id, "chk");
     };
     const handleUpdateSessionClick = () => {
         setOpen(true);
@@ -76,6 +76,10 @@ function Courses() {
     }, []);
     return (
         <>
+        {
+            console.log(allCourses)
+
+        }
             <TableContainer
                 style={{ overflowX: "auto" }}
                 className="table_scroll"
@@ -245,7 +249,7 @@ function Courses() {
                         </Select>
                     </FormControl> */}
                     <Autocomplete
-                        options={allSessions}
+                        options={allCourses}
                         getOptionLabel={(option) => option.name}
                         onChange={handleChange}
                         sx={{ width: 300 }}
