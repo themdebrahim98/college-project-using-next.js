@@ -7,6 +7,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Swal from "sweetalert2";
+import styles from '../.././/../styles/alert.module.css'
 import {
   Box,
   Button,
@@ -273,6 +274,15 @@ function Exam() {
         );
       }
       if (res.data.data.status == 1) {
+        setopen(false)
+        setopen2(false)
+        Swal.fire({
+          icon: 'success',
+          title: 'You have successfully updated exam data',
+          showConfirmButton: true,
+          confirmButtonText: 'I understand..!'
+        })
+
         const res = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}get_all_exam_by_teacherId`,
           {
             session_id: currSessionId,
@@ -286,23 +296,21 @@ function Exam() {
 
         const filterSubject = res.data.data.exams.filter((elm) => elm?.course_id == currCourseId)
         setallExamData(filterSubject)
-        console.log(res.data.data.exams)
-        Swal.fire({
-          icon: "Success",
-          title: "Ok",
-          text: res.data.data.message
-        });
+       
+       
       } else {
+        setopen(true)
+
         Swal.fire({
-          icon: "warninf",
+          icon: "warning",
           title: "Oopps....",
-          text: "something went wrong"
+          text: `${res.data.data.message}`,
+          timer: 1500,
+        customClass: {
+          container: `${styles["my-sweetalert2-container-class"]}`,
+        },
         });
       }
-
-      console.log(res.data.data)
-      setopen(false)
-      setopen2(false)
 
     } catch (err) {
       console.log(err)
@@ -485,7 +493,7 @@ function Exam() {
                   <TableCell>{row.date}</TableCell>
                   <TableCell>{row.total_marks}</TableCell>
                   <TableCell>
-                    <Link href="exam/giveMarks">
+                    <Link href={`exam/givemarks/${row.id}`}>
                       <Fab
                         variant="extended"
                         size="small"
@@ -495,7 +503,7 @@ function Exam() {
                         <BookmarkAdd />
                       </Fab>
                     </Link>
-                    <Link href="exam/examDetails">
+                    <Link href={`exam/examdetails/${row.id}`}>
                       <Fab
                         variant="extended"
                         sx={{ m: 1 }}
@@ -617,6 +625,7 @@ function Exam() {
           </Button>
         </Box>
       </Modal>
+
       {/* update exam data */}
       <Modal
         open={open2}
@@ -669,7 +678,7 @@ function Exam() {
           <TextField
             id="date"
             type="datetime-local"
-            defaultValue={new Date().toISOString().substring(0, 10)}
+            defaultValue={new Date(updatedInformation.date).toISOString().substring(0, 10)}
             name="date"
             value={updatedInformation.date}
             label="Date"

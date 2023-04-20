@@ -45,13 +45,15 @@ function studentSubjectAssign() {
   const [allChecked, setallChecked] = useState(false);
   const [allSubjects, setallSubjects] = useState([]);
   const [currSubjectId, setcurrSubjectId] = useState("");
+  const [allCourses, setsetallCourses] = useState("");
+  const [allDepertments, setallDepertments] = useState("");
+
+
+
   const [filters, setfilters] = useState({
-    first_name: ""
+    first_name: "",
   });
   const [filtered, setFiltered] = useState([]);
-
-
-
 
   const handleChange = (e) => {
     setcurrSessionID(e.target.value);
@@ -71,10 +73,13 @@ function studentSubjectAssign() {
   };
 
   const handleFilterChange = (event) => {
-    setfilters((prevFilters) => ({...prevFilters, [event.target.name] : event.target.value}));
+    setfilters((prevFilters) => ({
+      ...prevFilters,
+      [event.target.name]: event.target.value,
+    }));
   };
 
-  const tempFilteredData = allApprovedStudents.filter(item => {
+  const tempFilteredData = allApprovedStudents.filter((item) => {
     return Object.entries(filters).every(([key, value]) => {
       return item[key].toString().toLowerCase().includes(value);
     });
@@ -86,12 +91,12 @@ function studentSubjectAssign() {
   );
 
   const handleClearFilters = () => {
-    setfilters({})
-  }
+    setfilters({});
+  };
 
   useEffect(() => {
-    setChecked([])
-    setcheckedStudentTobeUpload([])
+    setChecked([]);
+    setcheckedStudentTobeUpload([]);
     const token = Cookies.get("access_key");
     if (data != undefined) {
       const fetchAllApprovedStudents = async () => {
@@ -104,8 +109,6 @@ function studentSubjectAssign() {
             }
           );
 
-
-
           const currSessionStudent = res.data.data.students.filter(
             (elm, idx) => elm.current_session_id == currSessionID
           );
@@ -116,12 +119,30 @@ function studentSubjectAssign() {
         }
       };
       fetchAllApprovedStudents();
-
     }
   }, [currSessionID, currSubjectId]);
 
   useEffect(() => {
     const token = Cookies.get("access_key");
+
+    const fetchAllDepertment = async () => {
+      const res2 = await axios.post(
+        `${process.env.NEXT_PUBLIC_BASE_URL}get_departments`,
+        null
+      );
+      setallDepertments([...res2.data.data.departments]);
+    };
+
+    const fetchALlCourse = async () => {
+      const res2 = await axios.post(
+        `${process.env.NEXT_PUBLIC_BASE_URL}get_courses`,
+        null
+      );
+      setsetallCourses([...res2.data.data.courses]);
+    };
+    fetchAllDepertment();
+    fetchALlCourse();
+
     const getALLSubjects = async () => {
       const res = await axios.post(
         `${process.env.NEXT_PUBLIC_BASE_URL}get_all_subject`,
@@ -212,18 +233,18 @@ function studentSubjectAssign() {
 
       if (res.data.data.status == 1) {
         if (data != undefined) {
-
           const fetchAllApprovedStudents = async () => {
             try {
               const res = await axios.post(
                 `${process.env.NEXT_PUBLIC_BASE_URL}get_all_students_with_subjects`,
-                { department_id: data.department_id, course_id: data.course_id },
+                {
+                  department_id: data.department_id,
+                  course_id: data.course_id,
+                },
                 {
                   headers: { Authorization: `Bearer ${token}` },
                 }
               );
-
-
 
               const currSessionStudent = res.data.data.students.filter(
                 (elm, idx) => elm.current_session_id == currSessionID
@@ -257,14 +278,11 @@ function studentSubjectAssign() {
     }
   };
 
-
-
   return (
     <>
       {console.log(filters)}
       {console.log(filtered)}
       {console.log(allApprovedStudents)}
-
 
       <Box component={Paper}>
         {console.log(checked)}
@@ -279,7 +297,41 @@ function studentSubjectAssign() {
         >
           <FormControl fullWidth>
             <InputLabel sx={{ m: 2 }} size="small">
-              Select Session
+              course
+            </InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              label="course"
+              value={currSessionID}
+              onChange={handleChange}
+              sx={{ m: 2 }}
+              size="small"
+            >
+              {allSession.map((elm) => (
+                <MenuItem value={elm.id}>{elm.name}</MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          <FormControl fullWidth>
+            <InputLabel sx={{ m: 2 }} size="small">
+              separtment
+            </InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              label="department"
+              value={currSessionID}
+              onChange={handleChange}
+              sx={{ m: 2 }}
+              size="small"
+            >
+              {allSession.map((elm) => (
+                <MenuItem value={elm.id}>{elm.name}</MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          <FormControl fullWidth>
+            <InputLabel sx={{ m: 2 }} size="small">
+              Session
             </InputLabel>
             <Select
               labelId="demo-simple-select-label"
@@ -296,15 +348,15 @@ function studentSubjectAssign() {
           </FormControl>
           <FormControl fullWidth>
             <InputLabel sx={{ m: 2 }} size="small">
-              Select Subjects
+              subjects
             </InputLabel>
             <Select
               id="demo-simple-select"
               value={currSubjectId}
               label="subject"
               onChange={(e) => {
-                setisSellectedSubjectId(true)
-                setcurrSubjectId(e.target.value)
+                setisSellectedSubjectId(true);
+                setcurrSubjectId(e.target.value);
               }}
               sx={{ m: 2 }}
               size="small"
@@ -352,51 +404,73 @@ function studentSubjectAssign() {
           <Typography variant="h2" sx={{ ml: 1, fontWeight: "bold" }}>
             Student List
           </Typography>
-
-      
         </Box>
-        {isSellectSessionID && isSellectedSubjectId && ( //have to check in future
-          <TableContainer
-            component={Paper}
-            style={{ overflowX: "auto" }}
-            className="table_scroll"
-            sx={{ p: 1 }}
-          >
-            <Table
-              aria-label="simple table"
-              sx={{
-                // p: 2,
-                whiteSpace: "nowrap",
-              }}
-              size="small"
+        {isSellectSessionID &&
+          isSellectedSubjectId && ( //have to check in future
+            <TableContainer
+              component={Paper}
+              style={{ overflowX: "auto" }}
+              className="table_scroll"
+              sx={{ p: 1 }}
             >
-              <TableRow>
-                <TableCell size="small">
-                  <Button color="secondary" onClick={handleClearFilters}>Clear All Filter</Button>
-                </TableCell>
-                {
-                  ["first_name", "last_name", "current_session_name", "student_id", "roll_number", "course_name", "department_name", "year", "semester"].map((elm, idx) => {
+              <Table
+                aria-label="simple table"
+                sx={{
+                  // p: 2,
+                  whiteSpace: "nowrap",
+                }}
+                size="small"
+              >
+                <TableRow>
+                  <TableCell size="small">
+                    <Button color="secondary" onClick={handleClearFilters}>
+                      Clear All Filter
+                    </Button>
+                  </TableCell>
+                  {[
+                    "first_name",
+                    "last_name",
+                    "current_session_name",
+                    "student_id",
+                    "roll_number",
+                    "course_name",
+                    "department_name",
+                    "year",
+                    "semester",
+                  ].map((elm, idx) => {
                     return (
                       <TableCell size="small">
-                        <TextField onChange={handleFilterChange} name={elm} value={filters[elm] || ""} size="small" />
+                        <TextField
+                          onChange={handleFilterChange}
+                          name={elm}
+                          value={filters[elm] || ""}
+                          size="small"
+                        />
                       </TableCell>
-                    )
-                  })
-                }
-              </TableRow>
+                    );
+                  })}
+                </TableRow>
 
-
-              <TableHead sx={{ fontWeight: "bold", background: "#03c9d7" }}>
-                <TableRow>
-                  <TableCell>
-                    <Checkbox
-                      onChange={handleAllChecked}
-                      checked={allChecked}
-                      color="secondary"
-                    />
-                  </TableCell>
-                  {
-                    ["First Name", "Last Name", "Session", "Reg No", "Roll No", "Course", "Department", "Year", "Semester"].map((elm) => {
+                <TableHead sx={{ fontWeight: "bold", background: "#03c9d7" }}>
+                  <TableRow>
+                    <TableCell>
+                      <Checkbox
+                        onChange={handleAllChecked}
+                        checked={allChecked}
+                        color="secondary"
+                      />
+                    </TableCell>
+                    {[
+                      "First Name",
+                      "Last Name",
+                      "Session",
+                      "Reg No",
+                      "Roll No",
+                      "Course",
+                      "Department",
+                      "Year",
+                      "Semester",
+                    ].map((elm) => {
                       return (
                         <TableCell>
                           <Typography
@@ -410,73 +484,81 @@ function studentSubjectAssign() {
                             {elm}
                           </Typography>
                         </TableCell>
-                      )
-                    })
-                  }
+                      );
+                    })}
+                  </TableRow>
+                </TableHead>
 
-
-                </TableRow>
-
-              </TableHead>
-
-              <TableBody>
-                {displayedData.map((student, idx) => (
-                  <TableRow key={idx}>
-                    <TableCell>
-                      {
-                        student.subjects != "" &&
+                <TableBody>
+                  {displayedData.map((student, idx) => (
+                    <TableRow key={idx}>
+                      <TableCell>
+                        {student.subjects != "" &&
                           student.subjects?.some((subject) => {
                             return subject.subject_id == currSubjectId;
-                          }) ? <Checkbox disabled checked={student.subjects.some((subject) => {
-                            return subject.subject_id == currSubjectId;
-                          })} /> : <Checkbox
-                          //   disabled={student.current_session_id != null ? true : false}
-                          checked={checked.some((id) => id == student.student_id)}
-                          onChange={(event) =>
-                            handleCheckboxChange(event, student.student_id)
-                          }
-                        />
-                      }
-                    </TableCell>
+                          }) ? (
+                          <Checkbox
+                            disabled
+                            checked={student.subjects.some((subject) => {
+                              return subject.subject_id == currSubjectId;
+                            })}
+                          />
+                        ) : (
+                          <Checkbox
+                            //   disabled={student.current_session_id != null ? true : false}
+                            checked={checked.some(
+                              (id) => id == student.student_id
+                            )}
+                            onChange={(event) =>
+                              handleCheckboxChange(event, student.student_id)
+                            }
+                          />
+                        )}
+                      </TableCell>
 
-                    {
-                      ["first_name", "last_name", "current_session_name", "student_id", "roll_number", "course_name", "department_name"].map((elm, idx) => {
+                      {[
+                        "first_name",
+                        "last_name",
+                        "current_session_name",
+                        "student_id",
+                        "roll_number",
+                        "course_name",
+                        "department_name",
+                      ].map((elm, idx) => {
                         return (
                           <TableCell>
                             <Typography color="textSecondary" variant="h6">
                               {student[elm]}
                             </Typography>
                           </TableCell>
-                        )
-                      })
-                    }
+                        );
+                      })}
 
-                    <TableCell>
-                      <Typography color="textSecondary" variant="h6">
-                        {getOrdinals(student.year)}
-                      </Typography>
-                    </TableCell>
-                    <TableCell>
-                      <Typography color="textSecondary" variant="h6">
-                        {getOrdinals(student.semester)}
-                      </Typography>
-                    </TableCell>
-
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-            <TablePagination
-              rowsPerPageOptions={[5, 10, 20, 40]}
-              component="div"
-              count={filtered.length}
-              rowsPerPage={rowsPerPage}
-              page={currentPage}
-              onPageChange={handleChangePage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
-            />
-          </TableContainer>
-        )}
+                      <TableCell>
+                        <Typography color="textSecondary" variant="h6">
+                          {getOrdinals(student.year)}
+                        </Typography>
+                      </TableCell>
+                      <TableCell>
+                        <Typography color="textSecondary" variant="h6">
+                          {getOrdinals(student.semester)}
+                        </Typography>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+              <TablePagination
+                rowsPerPageOptions={[5, 10, 20, 40]}
+                component="div"
+                count={filtered.length}
+                rowsPerPage={rowsPerPage}
+                page={currentPage}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+              />
+            </TableContainer>
+          )}
       </Box>
     </>
   );
