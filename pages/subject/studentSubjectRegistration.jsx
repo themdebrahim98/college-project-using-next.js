@@ -45,8 +45,15 @@ function studentSubjectAssign() {
   const [allChecked, setallChecked] = useState(false);
   const [allSubjects, setallSubjects] = useState([]);
   const [currSubjectId, setcurrSubjectId] = useState("");
-  const [allCourses, setsetallCourses] = useState("");
-  const [allDepertments, setallDepertments] = useState("");
+  const [allCourses, setsetallCourses] = useState([]);
+  const [allDepertments, setallDepertments] = useState([]);
+  const [inputData, setinputData] = useState({
+    course: "",
+    department: "",
+
+  });
+
+
 
 
 
@@ -56,6 +63,7 @@ function studentSubjectAssign() {
   const [filtered, setFiltered] = useState([]);
 
   const handleChange = (e) => {
+    setinputData((prev) => ({ ...prev, [e.target.name]: e.target.value }))
     setcurrSessionID(e.target.value);
     setisSellectSessionID(true);
   };
@@ -79,11 +87,15 @@ function studentSubjectAssign() {
     }));
   };
 
-  const tempFilteredData = allApprovedStudents.filter((item) => {
+  let tempFilteredData = allApprovedStudents.filter((item) => {
     return Object.entries(filters).every(([key, value]) => {
       return item[key].toString().toLowerCase().includes(value);
     });
   });
+
+  tempFilteredData = tempFilteredData.filter((item) => {
+    return item.course_name.toLowerCase().includes(inputData.course.toLowerCase()) && item.department_name.toLowerCase().includes(inputData.department.toLowerCase()) && item.current_session_id === currSessionID
+  })
 
   const displayedData = tempFilteredData.slice(
     currentPage * rowsPerPage,
@@ -300,32 +312,34 @@ function studentSubjectAssign() {
               course
             </InputLabel>
             <Select
+              name="course"
               labelId="demo-simple-select-label"
               label="course"
-              value={currSessionID}
+              value={inputData.course}
               onChange={handleChange}
               sx={{ m: 2 }}
               size="small"
             >
-              {allSession.map((elm) => (
-                <MenuItem value={elm.id}>{elm.name}</MenuItem>
+              {allCourses.map((elm) => (
+                <MenuItem value={elm.name}>{elm.name}</MenuItem>
               ))}
             </Select>
           </FormControl>
           <FormControl fullWidth>
             <InputLabel sx={{ m: 2 }} size="small">
-              separtment
+              department
             </InputLabel>
             <Select
+              name='department'
               labelId="demo-simple-select-label"
               label="department"
-              value={currSessionID}
+              value={inputData.department}
               onChange={handleChange}
               sx={{ m: 2 }}
               size="small"
             >
-              {allSession.map((elm) => (
-                <MenuItem value={elm.id}>{elm.name}</MenuItem>
+              {allDepertments.map((elm) => (
+                <MenuItem value={elm.name}>{elm.name}</MenuItem>
               ))}
             </Select>
           </FormControl>
@@ -351,6 +365,7 @@ function studentSubjectAssign() {
               subjects
             </InputLabel>
             <Select
+              disabled={inputData.course == "" || inputData.department == ""}
               id="demo-simple-select"
               value={currSubjectId}
               label="subject"
@@ -361,12 +376,15 @@ function studentSubjectAssign() {
               sx={{ m: 2 }}
               size="small"
             >
-              {allSubjects.map((elm, idx) => (
-                <MenuItem key={idx} value={elm.id}>
-                  {elm.name}
-                </MenuItem>
-              ))}
+              {allSubjects.filter((sub, idx) =>
+                sub.course_name.toLowerCase().includes(inputData.course.toLowerCase()) &&
+                sub.department_name.toLowerCase().includes(inputData.department.toLowerCase())
+
+              ).map((elm, idx) => <MenuItem key={idx} value={elm.value}>{elm.name}</MenuItem>)
+
+              }
             </Select>
+
           </FormControl>
           <Button
             color="warning"
