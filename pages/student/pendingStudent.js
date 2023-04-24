@@ -22,6 +22,7 @@ import {
   InputAdornment,
   IconButton,
   TextField,
+  Fab,
 } from "@mui/material";
 
 import Link from "next/link";
@@ -30,6 +31,8 @@ import Cookies from "js-cookie";
 import axios from "axios";
 import FeatherIcon from "feather-icons-react";
 import { getOrdinals } from "../../src/Helper/functions";
+import { Check, Close } from "@mui/icons-material";
+import { bgcolor } from "@mui/system";
 function pendingStudent() {
   const [allPendingStudents, setallPendingStudents] = useState([]);
   const [open, setopen] = useState(false);
@@ -39,7 +42,8 @@ function pendingStudent() {
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [currentPage, setCurrentPage] = React.useState(0);
   // const data = useSelector((store)=>store.user.userData.user_data.hod_data[0])
- const [toggleFilter, settoggleFilter] = React.useState(false);
+  const [toggleFilter, settoggleFilter] = React.useState(false);
+  const [toggleStudent, setToggleStudent] = React.useState(0);
   const data = useSelector(
     (store) => store?.user?.userData?.user_data?.hod_data[0]
   );
@@ -49,7 +53,7 @@ function pendingStudent() {
   const [filtered, setFiltered] = useState([]);
 
 
- 
+
   const handleChangePage = (event, newPage) => {
     setCurrentPage(newPage);
   };
@@ -84,7 +88,7 @@ function pendingStudent() {
     setfilters({});
   };
 
-  
+
   const selectCurrentStudentData = (student) => {
     console.log(student);
     setcurrStudentTobeDeleted(student);
@@ -154,127 +158,160 @@ function pendingStudent() {
     console.log("Confirmed!");
   };
 
-  return (
-    <Box component={Paper}>
-      <Box
-        display="flex"
-        alignItems="center"
-        flexDirection={{ md: "row", xs: "column" }}
-        justifyContent={{ md: "space-between", xs: "center" }}
-        px={{ lg: 2, md: 2, sm: 0 }}
-        py={2}
-        gap={2}
-      >
-        <Typography variant="h2" sx={{ ml: 1, fontWeight: "bold" }}>
-          Pending students
-        </Typography>
+  const handleToggleStudetList = (e) => {
+    setToggleStudent(e.target.value);
+  }
 
-        
-      </Box>
-      <TableContainer
-        component={Paper}
-        style={{ overflowX: "auto" }}
-        className="table_scroll"
-        sx={{ p: 1 }}
-      >
-        <Dialog open={open} onClose={handleClose}>
-          <DialogTitle>Confirmation</DialogTitle>
-          <DialogContent>
-            <DialogContentText>
-              Are you sure you want to perform this action?
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleClose}>Cancel</Button>
-            <Button onClick={handleConfirm} autoFocus>
-              Confirm
-            </Button>
-          </DialogActions>
-        </Dialog>
-        <Table
-          aria-label="simple table"
-          sx={{
-            whiteSpace: "nowrap",
-          }}
-          size="small"
+  return (
+    <>
+      <Box component={Paper} sx={{ mb: 1 }}>
+        <Box
+          display="flex"
+          alignItems="center"
+          flexDirection={{ md: "row", xs: "column" }}
+          justifyContent="start"
+          p={1}
+          gap={2}
         >
-          <IconButton onClick={() => settoggleFilter(!toggleFilter)}>
-            <FilterListIcon />
-          </IconButton>
-          <TableRow>
-            {toggleFilter && (
-              <TableCell size="small">
-                <Button color="secondary" onClick={handleClearFilters}>
-                  Clear All Filter
-                </Button>
-              </TableCell>
-            )}
-            {toggleFilter &&
-              [
-                "first_name",
-                "last_name",
-                "student_id",
-                "roll_number",
-                "course_name",
-                "department_name",
-                "year",
-                "semester",
-                "dob",
-                "gender",
-                "email_address",
-                "phone_number",
-              ].map((elm, idx) => {
-                return (
-                  <TableCell size="small">
-                    <TextField
-                      onChange={handleFilterChange}
-                      name={elm}
-                      value={filters[elm] || ""}
-                      size="small"
-                    />
-                  </TableCell>
-                );
-              })}
-          </TableRow>
-          <TableHead sx={{ background: "#03c9d7" }}>
+          <Box sx={{ flexGrow: 1 }}>
+            <Fab variant="extended" size="small" color="success" sx={{ ml: 1 }}>Total Pending : 00</Fab>
+            <Fab variant="extended" size="small" color="danger" sx={{ ml: 1 }}>Total Rejected : 00</Fab>
+          </Box>
+          <Box>
+            <Button variant={toggleStudent == 0 ? "contained" : "outlined"} onClick={handleToggleStudetList} value="0" color="success" sx={{ ml: 2 }}>Pending</Button>
+            <Button variant={toggleStudent == 2 ? "contained" : "outlined"} onClick={handleToggleStudetList} value="2" color="danger" sx={{ ml: 2 }}>Rejected</Button>
+          </Box>
+
+        </Box>
+      </Box>
+
+      <Box component={Paper}>
+        <Box
+          display="flex"
+          alignItems="center"
+          flexDirection={{ md: "row", xs: "column" }}
+          justifyContent={{ md: "space-between", xs: "center" }}
+          px={{ lg: 2, md: 2, sm: 0 }}
+          py={2}
+          gap={2}
+        >
+          <Typography variant="h2" sx={{ ml: 1, fontWeight: "bold" }}>
+            Pending students
+          </Typography>
+
+
+        </Box>
+        <TableContainer
+          component={Paper}
+          style={{ overflowX: "auto" }}
+          className="table_scroll"
+          sx={{ p: 1 }}
+        >
+          <Dialog open={open} onClose={handleClose}>
+            <DialogTitle>Confirmation</DialogTitle>
+            <DialogContent>
+              <DialogContentText>
+                Are you sure you want to perform this action?
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleClose}>Cancel</Button>
+              <Button onClick={handleConfirm} autoFocus>
+                Confirm
+              </Button>
+            </DialogActions>
+          </Dialog>
+          <Table
+            aria-label="simple table"
+            sx={{
+              whiteSpace: "nowrap",
+            }}
+            size="small"
+          >
+            <IconButton onClick={() => settoggleFilter(!toggleFilter)}>
+              <FilterListIcon />
+            </IconButton>
             <TableRow>
-              {[
-                "Action",
-                "First Name",
-                "Last Name",
-                "Reg No",
-                "Roll No",
-                "Course",
-                "Department",
-                "Year",
-                "Semester",
-                "Dob",
-                "Gender",
-                "Email",
-                "Phone No",
-              ].map((elm) => {
-                return (
-                  <TableCell>
-                    <Typography
-                      variant="h6"
-                      sx={{
-                        fontSize: "15px",
-                        color: "black",
-                        fontWeight: "bold",
-                      }}
-                    >
-                      {elm}
-                    </Typography>
-                  </TableCell>
-                );
-              })}
+              {toggleFilter && (
+                <TableCell size="small">
+                  <Button color="secondary" onClick={handleClearFilters}>
+                    Clear All Filter
+                  </Button>
+                </TableCell>
+              )}
+              {toggleFilter &&
+                [
+                  "first_name",
+                  "last_name",
+                  "student_id",
+                  "roll_number",
+                  "course_name",
+                  "department_name",
+                  "year",
+                  "semester",
+                  "dob",
+                  "gender",
+                  "email_address",
+                  "phone_number",
+                ].map((elm, idx) => {
+                  return (
+                    <TableCell size="small">
+                      <TextField
+                        onChange={handleFilterChange}
+                        name={elm}
+                        value={filters[elm] || ""}
+                        placeholder="Search here"
+                        size="small"
+                      />
+                    </TableCell>
+                  );
+                })}
             </TableRow>
-          </TableHead>{" "}
-          <TableBody>
-            {displayedData.map((student, idx) => (
-              <TableRow key={idx}>
-                <TableCell>
-                  <Button
+            <TableHead sx={{ background: "#03c9d7" }}>
+              <TableRow>
+                {[
+                  "Action",
+                  "First Name",
+                  "Last Name",
+                  "Reg No",
+                  "Roll No",
+                  "Course",
+                  "Department",
+                  "Year",
+                  "Semester",
+                  "Dob",
+                  "Gender",
+                  "Email",
+                  "Phone No",
+                ].map((elm) => {
+                  return (
+                    <TableCell>
+                      <Typography
+                        variant="h6"
+                        sx={{
+                          fontSize: "15px",
+                          color: "black",
+                          fontWeight: "bold",
+                        }}
+                      >
+                        {elm}
+                      </Typography>
+                    </TableCell>
+                  );
+                })}
+              </TableRow>
+            </TableHead>{" "}
+            <TableBody>
+              {displayedData.map((student, idx) => (
+                  <TableRow key={idx}>
+                    <TableCell>
+                      <Fab color="success" sx={{ bgcolor: 'green', color: '#fff' }} aria-label="approve" title="Accept" size="small">
+                        <Check />
+                      </Fab>{" "}
+                      <Fab color="secondary" sx={{ bgcolor: 'red', color: '#fff' }} aria-label="decline" title="decline" size="small">
+                        <Close />
+                      </Fab>
+                      {/* <Button
                     disabled={loading}
                     onClick={() => {
                       selectCurrentStudentData(student);
@@ -288,49 +325,50 @@ function pendingStudent() {
                     size="small"
                   >
                     {loading &&
-                    currStudentTobeDeleted.student_id == student.student_id
+                      currStudentTobeDeleted.student_id == student.student_id
                       ? "Approving..."
                       : "Approve"}
-                  </Button>
-                </TableCell>
-
-                {[
-                  "first_name",
-                  "last_name",
-                  "student_id",
-                  "roll_number",
-                  "course_name",
-                  "department_name",
-                  "year",
-                  "semester",
-                  "dob",
-                  "gender",
-                  "email_address",
-                  "phone_number",
-                ].map((elm) => {
-                  return (
-                    <TableCell>
-                      <Typography color="textSecondary" variant="h6">
-                        {student[elm]}
-                      </Typography>
+                  </Button> */}
                     </TableCell>
-                  );
-                })}
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 20, 40]}
-          component="div"
-          count={filtered.length}
-          rowsPerPage={rowsPerPage}
-          page={currentPage}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
-      </TableContainer>
-    </Box>
+
+                    {[
+                      "first_name",
+                      "last_name",
+                      "student_id",
+                      "roll_number",
+                      "course_name",
+                      "department_name",
+                      "year",
+                      "semester",
+                      "dob",
+                      "gender",
+                      "email_address",
+                      "phone_number",
+                    ].map((elm) => {
+                      return (
+                        <TableCell>
+                          <Typography color="textSecondary" variant="h6">
+                            {student[elm]}
+                          </Typography>
+                        </TableCell>
+                      );
+                    })}
+                  </TableRow>                                    
+              ))}
+            </TableBody>
+          </Table>
+          <TablePagination
+            rowsPerPageOptions={[5, 10, 20, 40]}
+            component="div"
+            count={filtered.length}
+            rowsPerPage={rowsPerPage}
+            page={currentPage}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />
+        </TableContainer>
+      </Box>
+    </>
   );
 }
 

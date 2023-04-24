@@ -25,6 +25,9 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import NextLink from "next/link";
 import { getOrdinals } from "../../src/Helper/functions";
+import { CleaningServices, RemoveRedEye } from "@mui/icons-material";
+import Link from "next/link";
+import { useRouter } from 'next/router'
 
 function AllStudents() {
   const [allApprovedStudents, setallApprovedStudents] = useState([]);
@@ -120,7 +123,6 @@ function AllStudents() {
       fetchAllApprovedStudents();
     }
   }, []);
-
   return (
     <>
       {data != undefined && (
@@ -261,17 +263,20 @@ function AllStudents() {
             }}
             size="small"
           >
-            <IconButton onClick={() => settoggleFilter(!toggleFilter)}>
-              <FilterListIcon />
-            </IconButton>
             <TableRow>
-              {toggleFilter && (
+              {toggleFilter ? (
+
                 <TableCell size="small">
-                  <Button color="secondary" onClick={handleClearFilters}>
-                    Clear All Filter
-                  </Button>
+                  <IconButton onClick={() => settoggleFilter(!toggleFilter)}>
+                    <FilterListIcon />
+                  </IconButton>
+                  <IconButton color="secondary" onClick={handleClearFilters}>
+                    <CleaningServices />
+                  </IconButton>
                 </TableCell>
-              )}
+              ) : <IconButton onClick={() => settoggleFilter(!toggleFilter)}>
+                <FilterListIcon />
+              </IconButton>}
               {toggleFilter &&
                 [
                   "first_name",
@@ -303,7 +308,7 @@ function AllStudents() {
             <TableHead sx={{ fontWeight: "bold", background: "#03c9d7" }}>
               <TableRow>
                 {[
-                  "Sl.no",
+                  "Action",
                   "First Name",
                   "Last Name",
                   "Reg No",
@@ -316,7 +321,7 @@ function AllStudents() {
                   "Gender",
                   "Email",
                   "Phone No",
-                ].map((elm) => {
+                ].map((elm, idx) => {
                   return (
                     <TableCell>
                       <Typography
@@ -339,9 +344,7 @@ function AllStudents() {
               {displayedData.map((student, idx) => (
                 <TableRow key={idx}>
                   <TableCell>
-                    <Typography color="textSecondary" variant="h6">
-                      {idx + 1}
-                    </Typography>
+                    <IconButton color="primary" size="small"><RemoveRedEye /></IconButton>
                   </TableCell>
 
                   {[

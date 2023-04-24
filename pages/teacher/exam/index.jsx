@@ -44,12 +44,14 @@ import EditIcon from "@mui/icons-material/Edit";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useSelector } from "react-redux";
+import { LoadingButton } from "@mui/lab";
 
 
 
 function Exam() {
 
   const [allExamData, setallExamData] = useState([]);
+  const [fetchDataLoading, setFetchDataLoading] = useState(false);
   const [open, setopen] = useState(false);
   const [open2, setopen2] = useState(false);
   const [allCourses, setallCourses] = useState([]);
@@ -155,6 +157,7 @@ function Exam() {
 
   useEffect(() => {
     if (currCourseId && currSessionId) {
+      setFetchDataLoading(true);
       const fetchAllExamData = async () => {
         const res = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}get_all_exam_by_teacherId`,
           {
@@ -169,17 +172,9 @@ function Exam() {
         const temp = res.data.data.exams.filter((elm) => elm.course_id === currCourseId && elm.session_id === currSessionId)
         setallExamData(temp)
         if (res.data.data.status.status == 1) {
-          Swal.fire({
-            icon: "succsess",
-            title: "Done",
-            text: "Success",
-          });
+          setFetchDataLoading(false);
         } else {
-          Swal.fire({
-            icon: "Success",
-            title: "Ok",
-            text: "No Data",
-          });
+          setFetchDataLoading(false);
         }
 
       }
@@ -296,8 +291,8 @@ function Exam() {
 
         const filterSubject = res.data.data.exams.filter((elm) => elm?.course_id == currCourseId)
         setallExamData(filterSubject)
-       
-       
+
+
       } else {
         setopen(true)
 
@@ -306,9 +301,9 @@ function Exam() {
           title: "Oopps....",
           text: `${res.data.data.message}`,
           timer: 1500,
-        customClass: {
-          container: `${styles["my-sweetalert2-container-class"]}`,
-        },
+          customClass: {
+            container: `${styles["my-sweetalert2-container-class"]}`,
+          },
         });
       }
 
@@ -322,7 +317,13 @@ function Exam() {
   return (
     <Box component={Paper}>
 
-      <Box display="flex" gap={2} flexDirection="row">
+      <Box display="flex"
+        alignItems="center"
+        flexDirection={{ md: "row", xs: "column" }}
+        justifyContent={{ md: "space-between", xs: "center" }}
+        px={{ lg: 2, md: 2, sm: 0 }}
+        py={2}
+        gap={2}>
         <FormControl fullWidth sx={{ display: "flex" }}>
           <Autocomplete
 
@@ -330,7 +331,7 @@ function Exam() {
             onChange={handlecourseChange}
             id="controllable-states-demo"
             options={allCourses}
-            sx={{ width: 300 }}
+            sx={{ m: 1 }}
             renderInput={(params) => (
               <TextField {...params} label="Current course" />
             )}
@@ -344,16 +345,13 @@ function Exam() {
             onChange={handleSessionChange}
             id="controllable-states-demo"
             options={allSession}
-            sx={{ width: 300 }}
+            sx={{ m: 1 }}
             renderInput={(params) => (
               <TextField {...params} label=" Session" />
             )}
           />
         </FormControl>
       </Box>
-
-
-
 
 
       <Box
@@ -366,7 +364,15 @@ function Exam() {
         gap={2}
       >
         <Typography variant="h2" sx={{ ml: 1, fontWeight: "bold" }}>
-          Exam List
+          Exam List{" "}
+          <LoadingButton
+            size="small"
+            loading={fetchDataLoading}
+            loadingIndicator="Loading.."
+            loadingPosition="end"
+          // variant="outlined"
+          >
+          </LoadingButton>
         </Typography>
         <Fab
           variant="extended"
@@ -479,7 +485,7 @@ function Exam() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {allExamData?.length > 0 && allExamData.map((row) => (
+              {allExamData?.length > 0 ? allExamData.map((row) => (
                 <TableRow
                   key={row.name}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
@@ -529,7 +535,19 @@ function Exam() {
                     </Fab>
                   </TableCell>
                 </TableRow>
-              ))}
+              )) :
+                <TableRow>
+                  <TableCell component="th" scope="row" colSpan={7} align="center">
+                    <LoadingButton
+                      size="large"
+                      loading={fetchDataLoading}
+                      loadingIndicator="Loading Data…"
+                    // variant="outlined"
+                    >
+                      <span>No Data Found</span>
+                    </LoadingButton>
+                  </TableCell>
+                </TableRow>}
             </TableBody>
           </Table>
         </TableContainer>
@@ -555,6 +573,7 @@ function Exam() {
           </Button>
 
           <FormControl fullWidth>
+            <InputLabel id="demo-simple-select-label">Subject</InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
@@ -569,9 +588,11 @@ function Exam() {
               name="subject"
             >
 
-              {subjectsOfCourse.map((elm, idx) => (
+              {subjectsOfCourse?.length > 0 ? subjectsOfCourse.map((elm, idx) => (
                 <MenuItem value={elm?.id}>{elm?.name}</MenuItem>
-              ))}
+              )) :
+                <MenuItem value="" disabled>No subject available</MenuItem>
+              }
             </Select>
           </FormControl>
 
