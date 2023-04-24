@@ -25,33 +25,36 @@ import Link from "next/link";
 import { BookmarkAdd, Save } from "@mui/icons-material";
 import { useSelector } from "react-redux";
 import Swal from "sweetalert2";
+import { useRouter } from "next/router";
 
-
-
-export default function giveMarks(props) {
-  const { data: examData, marksStudent, examId } = props;
-  console.log(marksStudent)
-
+export default function giveMarks() {
+  // const { data: examData, marksStudent, examId } = props;
+  // console.log(marksStudent)
+  const [examData, setexamData] = useState([]);
   const user = useSelector(
     (state) => state.user.userData.user_data?.hod_data[0]
   );
-
-  const [allStudentOfCourse, setallStudentOfCourse] = useState(marksStudent)
-  const [marksOfStudents, setmarksOfStudents] = useState(marksStudent)
-
-
+  const router = useRouter();
+  const [marksOfStudents, setmarksOfStudents] = useState([]);
+  const [examId, setexamId] = useState(router.query.id)
 
   const handleUpdate = async () => {
-
     const token = Cookies.get("access_key");
-    const temp = marksOfStudents.map((student) => {
+    const temp = marksOfStudents.length >0 && marksOfStudents.map((student) => {
       if (student.marks_details != null) {
-        if (student.marks_details?.marks === "" || student.marks_details?.marks == null ) {
+        if (
+          student.marks_details?.marks === "" ||
+          student.marks_details?.marks == null
+        ) {
           student.marks_details.marks = 0;
         }
       }
-      return ([student.student_id, student.marks_details.marks, student.marks_details?.remarks])
-    })
+      return [
+        student.student_id,
+        student.marks_details?.marks,
+        student.marks_details?.remarks,
+      ];
+    });
 
     const res = await axios.post(
       `${process.env.NEXT_PUBLIC_BASE_URL}update_student_exam_marks`,
@@ -61,66 +64,95 @@ export default function giveMarks(props) {
       }
     );
 
-    if(res.data.data.status == 1){
-      
-        Swal.fire({
-          icon: 'success',
-          title: 'You have successfully given marks',
-          showConfirmButton: true,
-          confirmButtonText: 'I understand..!'
-        })
-    }else{
+    if (res.data.data.status == 1) {
       Swal.fire({
-        icon: 'warning',
-        title: 'Something went wrong!',
+        icon: "success",
+        title: "You have successfully given marks",
         showConfirmButton: true,
-        confirmButtonText: 'I understand..!'
-      })
+        confirmButtonText: "I understand..!",
+      });
+    } else {
+      Swal.fire({
+        icon: "warning",
+        title: "Something went wrong!",
+        showConfirmButton: true,
+        confirmButtonText: "I understand..!",
+      });
     }
 
-    console.log(res.data)
-  }
-
+    console.log(res.data);
+  };
 
   function handleMarksChange(id, value, type) {
     if (type === "marks") {
-
-      if (value >= 0 && value <= examData[0].total_marks) {
-        const updatedMarks = marksOfStudents.map(student => {
+      if (value >= 0 && value <= examData.total_marks) {
+        const updatedMarks = marksOfStudents.length > 0 && marksOfStudents.map((student) => {
           if (student.student_id === id) {
             return {
               ...student,
-              marks_details: { ...student.marks_details, [type]: value } // Convert the input value to an integer, or 0 if it's not a valid number
+              marks_details: { ...student.marks_details, [type]: value }, // Convert the input value to an integer, or 0 if it's not a valid number
             };
           }
           return student;
         });
         setmarksOfStudents(updatedMarks);
-
       } else {
-        alert(`Please fills between in -1 to ${examData[0].total_marks} range`)
+        alert(`Please fills between in -1 to ${examData.total_marks} range`);
       }
-
     } else {
-      const updatedMarks = marksOfStudents.map(student => {
+      const updatedMarks = marksOfStudents.length>0&& marksOfStudents.map((student) => {
         if (student.student_id === id) {
-          console.log("ok")
+          console.log("ok");
           return {
             ...student,
-            marks_details: { ...student.marks_details, remarks: value } // Convert the input value to an integer, or 0 if it's not a valid number
+            marks_details: { ...student.marks_details, remarks: value }, // Convert the input value to an integer, or 0 if it's not a valid number
           };
         }
         return student;
       });
       setmarksOfStudents(updatedMarks);
     }
-
-
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
+    const path = window.location.pathname.split('/')
+    console.log(path[path.length-1])
+    setexamId(path[path.length-1])
+  
+    const id = path[path.length-1]
+    setexamId(id)
     const token = Cookies.get("access_key");
+    const fetchExamById = async () => {
+      try {
+        const res = await axios.post(
+          `${process.env.NEXT_PUBLIC_BASE_URL}get_exam_by_id`,
+          { exam_id: id },
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        console.log(res.data);
+        setexamData(res.data.data.exams[0]);
+      } catch (err) {
+        console.log(err);
+      }
+    };
 
+    fetchExamById();
+
+    const fetchStudentsWithExamMarks = async () => {
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_BASE_URL}get_students_with_exam_marks`,
+        { exam_id: id },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      setmarksOfStudents(res.data.data.students)
+    };
+
+    fetchStudentsWithExamMarks();
     const fetchAllApprovedStudents = async () => {
       try {
         const res = await axios.post(
@@ -130,26 +162,25 @@ export default function giveMarks(props) {
             headers: { Authorization: `Bearer ${token}` },
           }
         );
-        console.log(res.data)
+        console.log(res.data);
 
         const allStudents = res.data.data.students.map((elm) => ({
           ...elm,
           dob: new Date(elm.dob).toLocaleDateString(),
         }));
         console.log(allStudents);
-        setallStudentOfCourse(allStudents)
-
+        setallStudentOfCourse(allStudents);
       } catch (error) {
         console.log(error);
       }
     };
 
     fetchAllApprovedStudents();
-  }, [examData])
-
-
+  }, []);
 
   return (
+  
+ 
     <Box component={Paper}>
       <Box
         display="flex"
@@ -165,17 +196,17 @@ export default function giveMarks(props) {
         </Typography>
         <TextField
           id="session"
-          label="Session"
-          defaultValue={examData[0].session_name}
+         
+          value={examData.session_name}
           color="primary"
           disabled
           variant="standard"
         />
 
         <TextField
-          defaultValue={examData[0].subject_name}
+          value={examData.subject_name}
           id="subject"
-          label="Subject"
+         
           disabled
           color="primary"
           variant="standard"
@@ -183,7 +214,12 @@ export default function giveMarks(props) {
         {/* <Fab variant="extended" size='small' color="success" title='give marks'>
                     <Save sx={{ mr: 1 }} /> Save
                 </Fab> */}
-        <Button variant="contained" color="success" startIcon={<Save />} onClick={() => handleUpdate()}>
+        <Button
+          variant="contained"
+          color="success"
+          startIcon={<Save />}
+          onClick={() => handleUpdate()}
+        >
           Save
         </Button>
       </Box>
@@ -236,34 +272,56 @@ export default function giveMarks(props) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {marksOfStudents.length > 0 && marksOfStudents.map((student, idx) => (
-              <TableRow
-                key={idx}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-              >
-                <TableCell component="th" scope="row">
-                  {/* {student.first_name + " " + student.last_name} */}
-                  {student.student_name}
-                </TableCell>
-                <TableCell>
-                  <TextField
-                    name="marks"
-
-                    value={student.marks_details && student.marks_details?.marks != null ? student.marks_details?.marks : 0}
-                    variant="standard"
-                    type="number"
-                    size="small"
-                    onChange={(e) => handleMarksChange(student.student_id, e.target.value, "marks")}
-                    inputProps={{ min: "-1", max: examData.total_marks }}
-
-
-                  />
-                </TableCell>
-                <TableCell>
-                  <TextField onChange={(e) => handleMarksChange(student.student_id, e.target.value, "remarks")} value={student.marks_details != null ? student.marks_details.remarks : ""} />
-                </TableCell>
-              </TableRow>
-            ))}
+            {marksOfStudents.length > 0 &&
+              marksOfStudents.map((student, idx) => (
+                <TableRow
+                  key={idx}
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                >
+                  <TableCell component="th" scope="row">
+                    {/* {student.first_name + " " + student.last_name} */}
+                    {student.student_name}
+                  </TableCell>
+                  <TableCell>
+                    <TextField
+                      name="marks"
+                      value={
+                        student.marks_details &&
+                          student.marks_details?.marks != null
+                          ? student.marks_details?.marks
+                          : 0
+                      }
+                      variant="standard"
+                      type="number"
+                      size="small"
+                      onChange={(e) =>
+                        handleMarksChange(
+                          student.student_id,
+                          e.target.value,
+                          "marks"
+                        )
+                      }
+                      inputProps={{ min: "-1", max: examData.length >0 && examData.total_marks }}
+                    />
+                  </TableCell>
+                  <TableCell>
+                    <TextField
+                      onChange={(e) =>
+                        handleMarksChange(
+                          student.student_id,
+                          e.target.value,
+                          "remarks"
+                        )
+                      }
+                      value={
+                        student.marks_details != null
+                          ? student.marks_details.remarks
+                          : ""
+                      }
+                    />
+                  </TableCell>
+                </TableRow>
+              ))}
           </TableBody>
         </Table>
       </TableContainer>
@@ -271,37 +329,3 @@ export default function giveMarks(props) {
   );
 }
 
-
-export async function getServerSideProps(context) {
-  const { req } = context;
-  const token = req.cookies["access_key"]
-  const id = context.params.id
-  const res = await axios.post(
-    `${process.env.NEXT_PUBLIC_BASE_URL}get_exam_by_id`,
-    { exam_id: id },
-    {
-      headers: { Authorization: `Bearer ${token}` },
-    }
-  );
-  const res3 = await axios.post(
-    `${process.env.NEXT_PUBLIC_BASE_URL}get_students_with_exam_marks`,
-    { exam_id: id },
-    {
-      headers: { Authorization: `Bearer ${token}` },
-    }
-  );
-  const marksStudent = res3.data.data.students;
-  console.log(marksStudent)
-  const exam = res.data.data.exams;
-
-
-
-
-  return {
-    props: {
-      data: exam,
-      marksStudent,
-      examId: id
-    }, // will be passed to the page component as props
-  }
-}

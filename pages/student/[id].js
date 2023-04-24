@@ -35,8 +35,10 @@ import { TabContext, TabList, TabPanel } from "@mui/lab";
 import BasicDetails from "../../src/components/student/BasicDetails";
 import ContactDetails from "../../src/components/student/ContactDetails";
 
-function studentDetails({data}) {
+function studentDetails() {
   const [value, setValue] = React.useState('1');
+  const path = window.location.pathname.split('/')
+  const id = path[path.length-1]
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -50,7 +52,7 @@ function studentDetails({data}) {
       try {
         const res = await axios.post(
           `${process.env.NEXT_PUBLIC_BASE_URL}get_studentDetails_by_id`,
-          { student_id: data },
+          { student_id: id },
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -105,13 +107,13 @@ function studentDetails({data}) {
   )
 }
 export default studentDetails
-export async function getServerSideProps(context) {
-  const { req } = context;
-  const id = context.params.id
+// export async function getServerSideProps(context) {
+//   const { req } = context;
+//   const id = context.params.id
 
-  return {
-      props: {
-          data: id,
-      }, // will be passed to the page component as props
-  }
-}
+//   return {
+//       props: {
+//           data: id,
+//       }, // will be passed to the page component as props
+//   }
+// }
