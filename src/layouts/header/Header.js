@@ -15,7 +15,7 @@ const Header = ({ sx, customClass, toggleMobileSidebar, position }) => {
   return (
     <AppBar sx={sx} position={position} elevation={0} className={customClass}>
       <Toolbar>
-        {console.log(currentHr)}
+        {/* {console.log(currentHr)} */}
         <IconButton
           size="large"
           color="inherit"

@@ -344,7 +344,7 @@ function AllStudents() {
               {displayedData.map((student, idx) => (
                 <TableRow key={idx}>
                   <TableCell>
-                    <IconButton color="primary" size="small"><RemoveRedEye /></IconButton>
+                    <Link href={"/student/"+student.student_id}><IconButton color="primary" size="small"><RemoveRedEye /></IconButton></Link>
                   </TableCell>
 
                   {[
