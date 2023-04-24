@@ -174,7 +174,7 @@ function pendingStudent() {
           gap={2}
         >
           <Box sx={{ flexGrow: 1 }}>
-            <Fab variant="extended" size="small" color="success" sx={{ ml: 1 }}>Total Pending : 00</Fab>
+            <Fab variant="extended" size="small" color="success" sx={{ ml: 1 }}>Total Pending : {allPendingStudents.length}</Fab>
             <Fab variant="extended" size="small" color="danger" sx={{ ml: 1 }}>Total Rejected : 00</Fab>
           </Box>
           <Box>
@@ -305,7 +305,9 @@ function pendingStudent() {
               {displayedData.map((student, idx) => (
                   <TableRow key={idx}>
                     <TableCell>
-                      <Fab color="success" sx={{ bgcolor: 'green', color: '#fff' }} aria-label="approve" title="Accept" size="small">
+                      <Fab color="success" 
+                       sx={{ bgcolor: 'green', color: '#fff' }} aria-label="approve" title="Accept" size="small"
+                       >
                         <Check />
                       </Fab>{" "}
                       <Fab color="secondary" sx={{ bgcolor: 'red', color: '#fff' }} aria-label="decline" title="decline" size="small">

@@ -35,7 +35,7 @@ import { TabContext, TabList, TabPanel } from "@mui/lab";
 import BasicDetails from "../../src/components/student/BasicDetails";
 import ContactDetails from "../../src/components/student/ContactDetails";
 
-function data() {
+function studentDetails({data}) {
   const [value, setValue] = React.useState('1');
 
   const handleChange = (event, newValue) => {
@@ -45,13 +45,12 @@ function data() {
   const [studentDetails, setstudentDetails] = useState([]);
   const router = useRouter();
   useEffect(() => {
-    const id = router.query.id;
     const token = Cookies.get("access_key");
     const fetchStudentDetails = async () => {
       try {
         const res = await axios.post(
           `${process.env.NEXT_PUBLIC_BASE_URL}get_studentDetails_by_id`,
-          { student_id: 2010026 },
+          { student_id: data },
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -105,5 +104,14 @@ function data() {
     </>
   )
 }
+export default studentDetails
+export async function getServerSideProps(context) {
+  const { req } = context;
+  const id = context.params.id
 
-export default data
+  return {
+      props: {
+          data: id,
+      }, // will be passed to the page component as props
+  }
+}
