@@ -5,4 +5,5 @@ export const commonConstants = {
   BaseUrl:"https://test.diptodiagnostic.com/api/",
   userTypeTeacher:'teacher',
   userTypeAdmin:'admin',
+  userTypeStudent:'student',
 };

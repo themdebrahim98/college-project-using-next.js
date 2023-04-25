@@ -34,6 +34,6 @@ html,body{
   background: #009eb3; 
 } */
 
-/* .my-sweetalert2-container-class{
-  z-index: 10000;
-} */
+.swal2-container {
+  z-index: 1301 !important;
+}
