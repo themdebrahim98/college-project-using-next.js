@@ -27,7 +27,7 @@ import NextLink from "next/link";
 import { getOrdinals } from "../../src/Helper/functions";
 import { CleaningServices, RemoveRedEye } from "@mui/icons-material";
 import Link from "next/link";
-import { useRouter } from 'next/router'
+import { useRouter } from "next/router";
 
 function AllStudents() {
   const [allApprovedStudents, setallApprovedStudents] = useState([]);
@@ -265,7 +265,6 @@ function AllStudents() {
           >
             <TableRow>
               {toggleFilter ? (
-
                 <TableCell size="small">
                   <IconButton onClick={() => settoggleFilter(!toggleFilter)}>
                     <FilterListIcon />
@@ -274,9 +273,11 @@ function AllStudents() {
                     <CleaningServices />
                   </IconButton>
                 </TableCell>
-              ) : <IconButton onClick={() => settoggleFilter(!toggleFilter)}>
-                <FilterListIcon />
-              </IconButton>}
+              ) : (
+                <IconButton onClick={() => settoggleFilter(!toggleFilter)}>
+                  <FilterListIcon />
+                </IconButton>
+              )}
               {toggleFilter &&
                 [
                   "first_name",
@@ -344,7 +345,11 @@ function AllStudents() {
               {displayedData.map((student, idx) => (
                 <TableRow key={idx}>
                   <TableCell>
-                    <Link href={"/student/"+student.student_id}><IconButton color="primary" size="small"><RemoveRedEye /></IconButton></Link>
+                    <Link href={"/student/" + student.student_id}>
+                      <IconButton color="primary" size="small">
+                        <RemoveRedEye />
+                      </IconButton>
+                    </Link>
                   </TableCell>
 
                   {[

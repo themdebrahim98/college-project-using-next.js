@@ -30,15 +30,15 @@ import NextLink from "next/link";
 import { getOrdinals } from "../../src/Helper/functions";
 import { CleaningServices, RemoveRedEye } from "@mui/icons-material";
 import Link from "next/link";
-import { useRouter } from 'next/router'
+import { useRouter } from "next/router";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 import BasicDetails from "../../src/components/student/BasicDetails";
 import ContactDetails from "../../src/components/student/ContactDetails";
 
 function studentDetails() {
-  const [value, setValue] = React.useState('1');
-  const path = window.location.pathname.split('/')
-  const id = path[path.length-1]
+  const [value, setValue] = React.useState("1");
+  const path = window.location.pathname.split("/");
+  const id = path[path.length - 1];
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -81,39 +81,48 @@ function studentDetails() {
           p={1}
           gap={2}
         >
-          <Button variant={"contained"} color="primary" sx={{ ml: 2 }} onClick={()=>{router.back()}}>Back</Button>
-          <Button variant={"outlined"} color="success" sx={{ ml: 2 }}>Update Details</Button>
-          <Button variant={"outlined"} color="danger" sx={{ ml: 2 }}>Reset Password</Button>
-          <Button variant={"contained"} color="danger" sx={{ ml: 2 }}>Block</Button>
+          <Button
+            variant={"contained"}
+            color="primary"
+            sx={{ ml: 2 }}
+            onClick={() => {
+              router.back();
+            }}
+          >
+            Back
+          </Button>
+          <Button variant={"outlined"} color="success" sx={{ ml: 2 }}>
+            Update Details
+          </Button>
+          <Button variant={"outlined"} color="danger" sx={{ ml: 2 }}>
+            Reset Password
+          </Button>
+          <Button variant={"contained"} color="danger" sx={{ ml: 2 }}>
+            Block
+          </Button>
         </Box>
       </Box>
       <Box component={Paper}>
         <TabContext value={value}>
-          <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+          <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
             <TabList onChange={handleChange} aria-label="lab API tabs example">
               <Tab label="Basic Details" value="1" />
               <Tab label="Contact Details" value="2" />
             </TabList>
           </Box>
           <TabPanel value="1">
-              <BasicDetails data={studentDetails}/>
+            <BasicDetails data={studentDetails} />
           </TabPanel>
           <TabPanel value="2">
-              <ContactDetails data={studentDetails}/>
+            <ContactDetails data={studentDetails} />
           </TabPanel>
         </TabContext>
       </Box>
     </>
-  )
+  );
 }
-export default studentDetails
-// export async function getServerSideProps(context) {
-//   const { req } = context;
-//   const id = context.params.id
+export default studentDetails;
 
-//   return {
-//       props: {
-//           data: id,
-//       }, // will be passed to the page component as props
-//   }
-// }
+
+
+

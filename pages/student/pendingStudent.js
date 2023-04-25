@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import FilterListIcon from '@mui/icons-material/FilterList';
+import FilterListIcon from "@mui/icons-material/FilterList";
 import {
   Typography,
   Box,
@@ -36,7 +36,8 @@ import { bgcolor } from "@mui/system";
 function pendingStudent() {
   const [allPendingStudents, setallPendingStudents] = useState([]);
   const [open, setopen] = useState(false);
-  const [currStudentTobeDeleted, setcurrStudentTobeDeleted] = useState({});
+  const [open1, setopen1] = useState(false);
+  const [currStudentTobeAppOrReject, setcurrStudentTobeAppOrReject] = useState({});
   const [loading, setloading] = useState(false);
   const [filterText, setFilterText] = useState("");
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -51,8 +52,6 @@ function pendingStudent() {
     first_name: "",
   });
   const [filtered, setFiltered] = useState([]);
-
-
 
   const handleChangePage = (event, newPage) => {
     setCurrentPage(newPage);
@@ -88,12 +87,16 @@ function pendingStudent() {
     setfilters({});
   };
 
-
-  const selectCurrentStudentData = (student) => {
-    console.log(student);
-    setcurrStudentTobeDeleted(student);
-    setopen(true);
+  const selectCurrentStudentData = (student, type) => {
+    setcurrStudentTobeAppOrReject(student);
+    if(type === "decline"){
+      setopen1(true)
+    }else{
+      setopen(true);
+    }
+  
   };
+
   const handleApprove = async (student) => {
     setloading(true);
     const { student_id, first_name, last_name, email_address } = student;
@@ -121,9 +124,35 @@ function pendingStudent() {
     }
   };
 
+  // 'student_id', 'first_name', 'last_name', 'email_address
+  const handleDecline =async (student) => {
+    const token = Cookies.get("access_key");
+    const { student_id, first_name, last_name, email_address } = student;
+    try {
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_BASE_URL}decline_student`,
+        {
+          student_id,
+          first_name,
+          last_name,
+          email_address,
+        },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      const filterPendingStudent = allPendingStudents.filter((elm) => {
+        return elm.student_id !== student_id;
+      });
+      setallPendingStudents(filterPendingStudent);
+      console.log(res.data);
+      setloading(false);
+      alert("Decline succcessfully");
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   useEffect(() => {
     const token = Cookies.get("access_key");
-
     const fetchallPendingStudents = async () => {
       try {
         const res = await axios.post(
@@ -151,40 +180,32 @@ function pendingStudent() {
     alert("cancelleed succsessfully");
   };
 
+ 
   const handleConfirm = () => {
     // Handle the confirmation here
-    handleApprove(currStudentTobeDeleted);
+    handleApprove(currStudentTobeAppOrReject);
     setopen(false);
     console.log("Confirmed!");
   };
 
+  const handleClose1 = () => {
+    setopen1(false);
+    alert("cancelleed succsessfully");
+  };
+
+  const handleConfirm1 = () => {
+    // Handle the confirmation here
+    handleDecline(currStudentTobeAppOrReject)
+    setopen1(false);
+    console.log("rejected!");
+  };
+
   const handleToggleStudetList = (e) => {
     setToggleStudent(e.target.value);
-  }
+  };
 
   return (
     <>
-      <Box component={Paper} sx={{ mb: 1 }}>
-        <Box
-          display="flex"
-          alignItems="center"
-          flexDirection={{ md: "row", xs: "column" }}
-          justifyContent="start"
-          p={1}
-          gap={2}
-        >
-          <Box sx={{ flexGrow: 1 }}>
-            <Fab variant="extended" size="small" color="success" sx={{ ml: 1 }}>Total Pending : {allPendingStudents.length}</Fab>
-            <Fab variant="extended" size="small" color="danger" sx={{ ml: 1 }}>Total Rejected : 00</Fab>
-          </Box>
-          <Box>
-            <Button variant={toggleStudent == 0 ? "contained" : "outlined"} onClick={handleToggleStudetList} value="0" color="success" sx={{ ml: 2 }}>Pending</Button>
-            <Button variant={toggleStudent == 2 ? "contained" : "outlined"} onClick={handleToggleStudetList} value="2" color="danger" sx={{ ml: 2 }}>Rejected</Button>
-          </Box>
-
-        </Box>
-      </Box>
-
       <Box component={Paper}>
         <Box
           display="flex"
@@ -198,8 +219,6 @@ function pendingStudent() {
           <Typography variant="h2" sx={{ ml: 1, fontWeight: "bold" }}>
             Pending students
           </Typography>
-
-
         </Box>
         <TableContainer
           component={Paper}
@@ -217,6 +236,20 @@ function pendingStudent() {
             <DialogActions>
               <Button onClick={handleClose}>Cancel</Button>
               <Button onClick={handleConfirm} autoFocus>
+                Confirm
+              </Button>
+            </DialogActions>
+          </Dialog>
+          <Dialog open={open1} onClose={handleClose1}>
+            <DialogTitle>Confirmation</DialogTitle>
+            <DialogContent>
+              <DialogContentText>
+                Are you sure you want to perform this action?
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleClose1}>Cancel</Button>
+              <Button onClick={handleConfirm1} autoFocus>
                 Confirm
               </Button>
             </DialogActions>
@@ -303,59 +336,58 @@ function pendingStudent() {
             </TableHead>{" "}
             <TableBody>
               {displayedData.map((student, idx) => (
-                  <TableRow key={idx}>
-                    <TableCell>
-                      <Fab color="success" 
-                       sx={{ bgcolor: 'green', color: '#fff' }} aria-label="approve" title="Accept" size="small"
-                       >
-                        <Check />
-                      </Fab>{" "}
-                      <Fab color="secondary" sx={{ bgcolor: 'red', color: '#fff' }} aria-label="decline" title="decline" size="small">
-                        <Close />
-                      </Fab>
-                      {/* <Button
-                    disabled={loading}
-                    onClick={() => {
-                      selectCurrentStudentData(student);
-                    }}
-                    sx={
-                      student.is_approved
-                        ? { bgcolor: "green" }
-                        : { bgcolor: "crimson" }
-                    }
-                    variant="contained"
-                    size="small"
-                  >
-                    {loading &&
-                      currStudentTobeDeleted.student_id == student.student_id
-                      ? "Approving..."
-                      : "Approve"}
-                  </Button> */}
-                    </TableCell>
+                <TableRow key={idx}>
+                  <TableCell>
+                    <Fab
+                      color="success"
+                      sx={{ bgcolor: "green", color: "#fff" }}
+                      aria-label="approve"
+                      title="Accept"
+                      size="small"
+                      onClick={() => {
+                        selectCurrentStudentData(student, "approved");
+                      }}
+                    >
+                      <Check />
+                    </Fab>{" "}
+                    <Fab
+                      color="secondary"
+                      sx={{ bgcolor: "red", color: "#fff" }}
+                      aria-label="decline"
+                      title="decline"
+                      size="small"
+                      onClick={() => {
+                        selectCurrentStudentData(student, "decline");
+                      }}
+                    >
+                      <Close />
+                    </Fab>
+                    
+                  </TableCell>
 
-                    {[
-                      "first_name",
-                      "last_name",
-                      "student_id",
-                      "roll_number",
-                      "course_name",
-                      "department_name",
-                      "year",
-                      "semester",
-                      "dob",
-                      "gender",
-                      "email_address",
-                      "phone_number",
-                    ].map((elm) => {
-                      return (
-                        <TableCell>
-                          <Typography color="textSecondary" variant="h6">
-                            {student[elm]}
-                          </Typography>
-                        </TableCell>
-                      );
-                    })}
-                  </TableRow>                                    
+                  {[
+                    "first_name",
+                    "last_name",
+                    "student_id",
+                    "roll_number",
+                    "course_name",
+                    "department_name",
+                    "year",
+                    "semester",
+                    "dob",
+                    "gender",
+                    "email_address",
+                    "phone_number",
+                  ].map((elm) => {
+                    return (
+                      <TableCell>
+                        <Typography color="textSecondary" variant="h6">
+                          {student[elm]}
+                        </Typography>
+                      </TableCell>
+                    );
+                  })}
+                </TableRow>
               ))}
             </TableBody>
           </Table>
