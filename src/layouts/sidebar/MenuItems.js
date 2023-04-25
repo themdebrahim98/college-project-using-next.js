@@ -91,6 +91,11 @@ export const useMenu = (data) => {
       icon: "clipboard",
       href: "/notices",
     });
+    menuItem.push({
+      title: "career",
+      icon: "user-check",
+      href: "/student/career",
+    });
     // menuItem.push({
     //   title: "Syllabus",
     //   icon: "clipboard",
