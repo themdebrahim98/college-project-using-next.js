@@ -25,7 +25,6 @@ import {
 } from "@mui/material";
 import FeatherIcon from "feather-icons-react";
 
-import BaseCard from "../../src/components/baseCard/BaseCard";
 import Cookies from "js-cookie";
 import axios from "axios";
 import Fab from "@mui/material/Fab";
@@ -51,7 +50,7 @@ const style = {
   minHeight: "70%",
 };
 
-function Session() {
+function Sessions() {
   const [inputs, setinputs] = useState({
     teacher_id: null,
     first_name: null,
@@ -632,4 +631,4 @@ function Session() {
   );
 }
 
-export default Session;
+export default Sessions;

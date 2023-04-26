@@ -26,7 +26,7 @@ function notices({ token }) {
   const data = useSelector((store) => store.user);
   const [noticeData, setnoticeData] = useState([]);
   const btnData = (
-    <Link style={{ color: "inherit", textDecoration: 'none' }} href="/notices/addNotice">
+    <Link style={{ color: "inherit", textDecoration: 'none' }} href="/hod/addNotice">
       <Button variant="contained" size="small" startIcon={<AddCircle />} sx={{ ml: "auto", fontWeight: "bold" }}>
         Add Notice
       </Button>

@@ -12,8 +12,8 @@ import {
   Grid,
 } from "@mui/material";
 import NextLink from "next/link";
-import Notices from "../Notices";
-import DataCount from "../DataCount";
+import Notices from "../../Notices";
+import DataCount from "../../DataCount";
 
 function teacherDashboard() {
   return (

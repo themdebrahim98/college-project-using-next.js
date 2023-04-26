@@ -25,12 +25,9 @@ import {
   IconButton,
 } from "@mui/material";
 import FeatherIcon from "feather-icons-react";
-
-import BaseCard from "../../src/components/baseCard/BaseCard";
 import Cookies from "js-cookie";
 import axios from "axios";
 import Fab from "@mui/material/Fab";
-import NavigationIcon from "@mui/icons-material/Navigation";
 import Swal from "sweetalert2";
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
