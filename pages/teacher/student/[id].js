@@ -27,13 +27,13 @@ import Cookies from "js-cookie";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import NextLink from "next/link";
-import { getOrdinals } from "../../src/Helper/functions";
+import { getOrdinals } from "../../../src/Helper/functions";
 import { CleaningServices, RemoveRedEye } from "@mui/icons-material";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
-import BasicDetails from "../../src/components/student/BasicDetails";
-import ContactDetails from "../../src/components/student/ContactDetails";
+import BasicDetails from "../../../src/components/student/BasicDetails";
+import ContactDetails from "../../../src/components/student/ContactDetails";
 
 function studentDetails() {
   const [value, setValue] = React.useState("1");

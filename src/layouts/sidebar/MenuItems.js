@@ -9,24 +9,17 @@ export const useMenu = (data) => {
     menuItem.push({
       title: "Teacher",
       icon: "user",
-      href: "/teacher",
+      href: "/admin/teacher",
     });
     menuItem.push({
       title: "Subjects",
       icon: "clipboard",
-      href: "/subject",
+      href: "/admin/subject",
     });
-
-    menuItem.push({
-      title: "Session",
-      icon: "clipboard",
-      href: "/session",
-    });
-
     menuItem.push({
       title: "Master",
       icon: "settings",
-      href: "/master",
+      href: "/admin/master",
     });
 
 
@@ -44,7 +37,7 @@ export const useMenu = (data) => {
     menuItem.push({
       title: "Students",
       icon: 'users',
-      href: "/student",
+      href: "/teacher/student",
     });
     menuItem.push({
       title: "Syllabus",
@@ -63,11 +56,11 @@ export const useMenu = (data) => {
       href: "/teacher/exam",
     });
     if (data?.is_hod == 1) {
-      menuItem.push({
-        title: "Pending Students",
-        icon: "clock",
-        href: "/student/pendingStudent",
-      });
+      // menuItem.push({
+      //   title: "Pending Students",
+      //   icon: "clock",
+      //   href: "/hod/pendingStudent",
+      // });
       menuItem.push({
         title: "Notices",
         icon: "clipboard",
@@ -81,11 +74,11 @@ export const useMenu = (data) => {
       icon: "home",
       href: "/",
     });
-    menuItem.push({
-      title: "Classes",
-      icon: "clipboard",
-      href: "/user/student/studentClass",
-    });
+    // menuItem.push({
+    //   title: "Classes",
+    //   icon: "clipboard",
+    //   href: "/user/student/studentClass",
+    // });
     menuItem.push({
       title: "Notices",
       icon: "clipboard",

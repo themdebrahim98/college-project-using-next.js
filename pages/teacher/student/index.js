@@ -24,8 +24,8 @@ import Cookies from "js-cookie";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import NextLink from "next/link";
-import { getOrdinals } from "../../src/Helper/functions";
-import { CleaningServices, RemoveRedEye } from "@mui/icons-material";
+import { getOrdinals } from "../../../src/Helper/functions";
+import { BookmarkAdd, CleaningServices, QueuePlayNext, RemoveRedEye, Restore } from "@mui/icons-material";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
@@ -50,6 +50,9 @@ function AllStudents() {
   };
   const data = useSelector(
     (state) => state.user.userData.user_data?.hod_data[0]
+  );
+  const isHod = useSelector(
+    (state) => state.user?.userData?.user_data?.is_hod
   );
   const handleChangePage = (event, newPage) => {
     setCurrentPage(newPage);
@@ -125,7 +128,7 @@ function AllStudents() {
   }, []);
   return (
     <>
-      {data != undefined && (
+      {data != undefined && isHod == 1 ? (
         <Box component={Paper}>
           <Box
             display="flex"
@@ -135,6 +138,12 @@ function AllStudents() {
             gap={1}
             sx={{ mb: 2, flexWrap: "wrap" }}
           >
+            <NextLink
+              style={{ color: "inherit", textDecoration: "none", p: 1 }}
+              href="/hod/pendingStudent"
+            >
+              <Button sx={{ m: 1 }} color="secondary" variant="contained" startIcon={<Restore/>}>Pending Students</Button>
+            </NextLink>
             <Button
               variant="contained"
               color="warning"
@@ -144,6 +153,7 @@ function AllStudents() {
               aria-expanded={open ? "true" : undefined}
               onClick={handleClick}
               sx={{ m: 1 }}
+              startIcon={<QueuePlayNext/>}
             >
               Session Registration
             </Button>
@@ -187,13 +197,13 @@ function AllStudents() {
             >
               <NextLink
                 style={{ color: "inherit", textDecoration: "none", p: 1 }}
-                href="/session/studentsessionassign"
+                href="/hod/studentsessionassign"
               >
                 <MenuItem onClick={handleClose}>New Session Assign</MenuItem>
               </NextLink>
               <NextLink
                 style={{ color: "inherit", textDecoration: "none", p: 1 }}
-                href="/session/updatesessionstudents"
+                href="/hod/updatesessionstudents"
               >
                 <MenuItem onClick={handleClose}>Update Session</MenuItem>
               </NextLink>
@@ -209,15 +219,15 @@ function AllStudents() {
                 textDecoration: "none",
                 padding: "10px",
               }}
-              href="/subject/studentSubjectRegistration"
+              href="/hod/studentSubjectRegistration"
             >
-              <Button variant="contained" color="success">
+              <Button variant="contained" color="success" startIcon={<BookmarkAdd/>}>
                 Subject Registration
               </Button>
             </NextLink>
           </Box>
         </Box>
-      )}
+      ) : ""}
       <Box component={Paper}>
         <Box
           display="flex"
@@ -345,7 +355,7 @@ function AllStudents() {
               {displayedData.map((student, idx) => (
                 <TableRow key={idx}>
                   <TableCell>
-                    <Link href={"/student/" + student.student_id}>
+                    <Link href={"/teacher/student/" + student.student_id}>
                       <IconButton color="primary" size="small">
                         <RemoveRedEye />
                       </IconButton>

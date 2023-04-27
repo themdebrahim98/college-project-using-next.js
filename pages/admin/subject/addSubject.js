@@ -14,11 +14,9 @@ import {
   Alert,
   Snackbar,
 } from "@mui/material";
-import styles from "../../styles/alert.module.css";
+
 import Swal from "sweetalert2";
 import React, { useState, useEffect } from "react";
-import BaseCard from "../../src/components/baseCard/BaseCard";
-import Link from "next/link";
 import Cookies from "js-cookie";
 import axios from "axios";
 import { useSelector } from "react-redux";
@@ -121,9 +119,6 @@ function addSubject() {
         title: `${res.data.data.message}`,
         showConfirmButton: false,
         timer: 1500,
-        customClass: {
-          container: `${styles["my-sweetalert2-container-class"]}`,
-        },
       });
       router.back();
       
@@ -134,9 +129,6 @@ function addSubject() {
         title: `${res.data.data.message}`,
         showConfirmButton: false,
         timer: 1500,
-        customClass: {
-          container: `${styles["my-sweetalert2-container-class"]}`,
-        },
       });
     }
   
