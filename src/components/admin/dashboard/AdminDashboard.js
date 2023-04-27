@@ -22,7 +22,7 @@ function adminDashboard() {
 
   return (
     <Grid container spacing={0}>
-      <Grid item xs={12} lg={4} >
+      {/* <Grid item xs={12} lg={4} >
         <DataCount title="Total Teachers" data="0" color="#e040fb" />
       </Grid>
       <Grid item xs={12} lg={4}>
@@ -31,7 +31,7 @@ function adminDashboard() {
       <Grid item xs={12} lg={4}>
         <DataCount title="Pending Present" data="0" color="#66bb6a" />
       </Grid>
-      
+       */}
       <Grid item xs={12} lg={12}>
         <Notices />
       </Grid>
