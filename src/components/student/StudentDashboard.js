@@ -10,28 +10,42 @@ import {
   Chip,
   Button,
   Grid,
+  Paper,
 } from "@mui/material";
 import NextLink from "next/link";
 import Notices from "../Notices";
 import DataCount from "../DataCount";
+import { Add, Download } from "@mui/icons-material";
 
-function StudentDashboard() {
+function StudentDashboard(props) {
   return (
     <Grid container spacing={0}>
-      <Grid item xs={12} lg={3}>
-        <DataCount title = "Total Present" data="70" color="#26c6da"/>
-      </Grid>
-      <Grid item xs={12} lg={3}>
-        <DataCount title = "Total Classes" data="70" color="#ffee58"/>
-      </Grid>
-      <Grid item xs={12} lg={3}>
-        <DataCount title = "Total Points" data="70" color="#66bb6a"/>
-      </Grid>
-      <Grid item xs={12} lg={3}>
-        <DataCount title = "Total Absent" data="20" color="#ef5350"/>
+      <Grid item xs={12} lg={12} >
+        <Box
+          display="flex"
+          alignItems="center"
+          flexDirection={{ md: "row", xs: "column" }}
+          justifyContent={{ md: "space-between", xs: "center" }}
+          gap={1}
+          px={1}
+          py={1}
+          sx={{ flexWrap: "wrap" }}
+          component={Paper}
+        >
+          <Box>
+            <Button  size="small" color="success" sx={{fontWeight:'bold',fontSize:{md:'16px',xs:'16px'}}}>
+            Current Session: {props?.userData?.course_name +' ('+props?.userData?.session_name+')'}
+          </Button>
+            </Box>
+          <Box>
+            <Button variant='contained' size="small" color='warning' startIcon={<Download />}>
+              Routine
+            </Button>
+          </Box>
+        </Box>
       </Grid>
       <Grid item xs={12} lg={12}>
-        <Notices/>
+        <Notices />
       </Grid>
     </Grid>
   );
