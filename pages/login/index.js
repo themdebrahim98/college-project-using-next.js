@@ -179,7 +179,7 @@ function index() {
               mb={2}
             >
               <Typography>Are you a student?</Typography>
-              <Link href="/student/studentSignup" style={{ color: "inherit", textDecoration: 'none' }}>
+              <Link href="/studentSignup" style={{ color: "inherit", textDecoration: 'none' }}>
                 <Button variant="contained" color="warning" size="small">
                   Register here
                 </Button>

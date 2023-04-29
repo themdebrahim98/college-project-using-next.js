@@ -15,7 +15,7 @@ export default function middleware(req) {
     const path = req.nextUrl.pathname;
     const arr = ["/student", "/notices", "/teacher","/subject", "/student/studentSignup" ]
  
-    if((path == '/' || path.startsWith('/student') || path.startsWith('/notices') || path.startsWith('/teacher') ||path.startsWith('/subject') )&& path!='/student/studentSignup' && token === undefined){
+    if((path == '/' || path.startsWith('/student') || path.startsWith('/notices') || path.startsWith('/teacher') ||path.startsWith('/subject') )&& path!='/studentSignup' && token === undefined){
        return NextResponse.redirect(new URL('/login', req.url))
     }
     if(token != undefined && path == '/login'){
