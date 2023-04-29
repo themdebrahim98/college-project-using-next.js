@@ -17,7 +17,7 @@ import MuiAlert from "@mui/material/Alert";
 import axios from "axios";
 import router from "next/router";
 import Swal from 'sweetalert2';
-import { getOrdinals, getSemesterByYear } from "../../src/Helper/functions";
+import { getOrdinals, getSemesterByYear } from "../src/Helper/functions";
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
