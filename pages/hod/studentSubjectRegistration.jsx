@@ -348,6 +348,7 @@ function studentSubjectAssign() {
               Session
             </InputLabel>
             <Select
+            name="session"
               labelId="demo-simple-select-label"
               label="session"
               value={currSessionID}
@@ -367,6 +368,7 @@ function studentSubjectAssign() {
             <Select
               disabled={inputData.course == "" || inputData.department == ""}
               id="demo-simple-select"
+              name="subject"
               value={currSubjectId}
               label="subject"
               onChange={(e) => {
@@ -380,7 +382,7 @@ function studentSubjectAssign() {
                 sub.course_name.toLowerCase().includes(inputData.course.toLowerCase()) &&
                 sub.department_name.toLowerCase().includes(inputData.department.toLowerCase())
 
-              ).map((elm, idx) => <MenuItem key={idx} value={elm.value}>{elm.name}</MenuItem>)
+              ).map((elm, idx) => <MenuItem key={idx} value={elm.id}>{elm.name}</MenuItem>)
 
               }
             </Select>
