@@ -31,6 +31,7 @@ import { useRouter } from "next/router";
 
 function AllStudents() {
   const [allApprovedStudents, setallApprovedStudents] = useState([]);
+  const [selectedStatus, setSelectedStatus] = useState(1);
   const [filterText, setFilterText] = useState("");
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [currentPage, setCurrentPage] = React.useState(0);
@@ -142,7 +143,7 @@ function AllStudents() {
               style={{ color: "inherit", textDecoration: "none", p: 1 }}
               href="/hod/pendingStudent"
             >
-              <Button sx={{ m: 1 }} color="secondary" variant="contained" startIcon={<Restore/>}>Pending Students</Button>
+              <Button sx={{ m: 1 }} color="secondary" variant="contained" startIcon={<Restore />}>Pending Students</Button>
             </NextLink>
             <Button
               variant="contained"
@@ -153,7 +154,7 @@ function AllStudents() {
               aria-expanded={open ? "true" : undefined}
               onClick={handleClick}
               sx={{ m: 1 }}
-              startIcon={<QueuePlayNext/>}
+              startIcon={<QueuePlayNext />}
             >
               Session Registration
             </Button>
@@ -221,7 +222,7 @@ function AllStudents() {
               }}
               href="/hod/studentSubjectRegistration"
             >
-              <Button variant="contained" color="success" startIcon={<BookmarkAdd/>}>
+              <Button variant="contained" color="success" startIcon={<BookmarkAdd />}>
                 Subject Registration
               </Button>
             </NextLink>
@@ -242,22 +243,11 @@ function AllStudents() {
             Student List
           </Typography>
 
-          <TextField
-            size="small"
-            sx={{ p: 1, float: "right" }}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <IconButton>
-                    <FeatherIcon icon="filter" />
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
-            label="Filter table"
-            value={filterText}
-            onChange={handleFilterTextChange}
-          />
+          <Box>
+            <Button variant={selectedStatus == 1 ? 'contained' : 'outlined'} sx={{ ml: 1 }} color='success' value={1} onClick={(e) => { setSelectedStatus(e.target.value) }}>Active</Button>
+            <Button variant={selectedStatus == 0 ? 'contained' : 'outlined'} sx={{ ml: 1 }} color='danger' value={0} onClick={(e) => { setSelectedStatus(e.target.value) }}>Deactive</Button>
+            <Button variant={selectedStatus == 2 ? 'contained' : 'outlined'} sx={{ ml: 1 }} color='warning' value={2} onClick={(e) => { setSelectedStatus(e.target.value) }}>Passout</Button>
+          </Box>
         </Box>
         <TableContainer
           component={Paper}
@@ -353,38 +343,39 @@ function AllStudents() {
 
             <TableBody>
               {displayedData.map((student, idx) => (
-                <TableRow key={idx}>
-                  <TableCell>
-                    <Link href={"/teacher/student/" + student.student_id}>
-                      <IconButton color="primary" size="small">
-                        <RemoveRedEye />
-                      </IconButton>
-                    </Link>
-                  </TableCell>
+                student.status == selectedStatus ?
+                  <TableRow key={idx}>
+                    <TableCell>
+                      <Link href={"/teacher/student/" + student.student_id}>
+                        <IconButton color="primary" size="small">
+                          <RemoveRedEye />
+                        </IconButton>
+                      </Link>
+                    </TableCell>
 
-                  {[
-                    "first_name",
-                    "last_name",
-                    "student_id",
-                    "roll_number",
-                    "course_name",
-                    "department_name",
-                    "year",
-                    "semester",
-                    "dob",
-                    "gender",
-                    "email_address",
-                    "phone_number",
-                  ].map((elm) => {
-                    return (
-                      <TableCell>
-                        <Typography color="textSecondary" variant="h6">
-                          {student[elm]}
-                        </Typography>
-                      </TableCell>
-                    );
-                  })}
-                </TableRow>
+                    {[
+                      "first_name",
+                      "last_name",
+                      "student_id",
+                      "roll_number",
+                      "course_name",
+                      "department_name",
+                      "year",
+                      "semester",
+                      "dob",
+                      "gender",
+                      "email_address",
+                      "phone_number",
+                    ].map((elm) => {
+                      return (
+                        <TableCell>
+                          <Typography color="textSecondary" variant="h6">
+                            {student[elm]}
+                          </Typography>
+                        </TableCell>
+                      );
+                    })}
+                  </TableRow> : ""
               ))}
             </TableBody>
           </Table>

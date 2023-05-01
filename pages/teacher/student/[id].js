@@ -28,12 +28,13 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import NextLink from "next/link";
 import { getOrdinals } from "../../../src/Helper/functions";
-import { CleaningServices, RemoveRedEye } from "@mui/icons-material";
+import { ArrowBack, Block, CleaningServices, RemoveRedEye } from "@mui/icons-material";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 import BasicDetails from "../../../src/components/student/BasicDetails";
 import ContactDetails from "../../../src/components/student/ContactDetails";
+import JobDetails from "../../../src/components/student/JobDetails";
 
 function studentDetails() {
   const [value, setValue] = React.useState("1");
@@ -77,7 +78,7 @@ function studentDetails() {
           display="flex"
           alignItems="center"
           flexDirection={{ md: "row", xs: "column" }}
-          justifyContent="start"
+          justifyContent={{ md: "space-between", xs: "center" }}
           p={1}
           gap={2}
         >
@@ -88,18 +89,21 @@ function studentDetails() {
             onClick={() => {
               router.back();
             }}
+            startIcon={<ArrowBack />}
           >
             Back
           </Button>
-          <Button variant={"outlined"} color="success" sx={{ ml: 2 }}>
+          {/* <Button variant={"outlined"} color="success" sx={{ ml: 2 }}>
             Update Details
-          </Button>
-          <Button variant={"outlined"} color="danger" sx={{ ml: 2 }}>
-            Reset Password
-          </Button>
-          <Button variant={"contained"} color="danger" sx={{ ml: 2 }}>
-            Block
-          </Button>
+          </Button> */}
+          <Box>
+            <Button variant={"outlined"} color="danger" sx={{ ml: 2 }}>
+              Reset Password
+            </Button>
+            <Button variant={"contained"} color="danger" sx={{ ml: 2, color: '#fff' }} startIcon={<Block />}>
+              Block
+            </Button>
+          </Box>
         </Box>
       </Box>
       <Box component={Paper}>
@@ -108,6 +112,7 @@ function studentDetails() {
             <TabList onChange={handleChange} aria-label="lab API tabs example">
               <Tab label="Basic Details" value="1" />
               <Tab label="Contact Details" value="2" />
+              <Tab label="Job Details" value="3" />
             </TabList>
           </Box>
           <TabPanel value="1">
@@ -115,6 +120,9 @@ function studentDetails() {
           </TabPanel>
           <TabPanel value="2">
             <ContactDetails data={studentDetails} />
+          </TabPanel>
+          <TabPanel value="3">
+            <JobDetails student_id={id} />
           </TabPanel>
         </TabContext>
       </Box>
