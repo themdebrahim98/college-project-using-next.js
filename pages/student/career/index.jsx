@@ -17,12 +17,15 @@ import {
   TextField,
   Typography,
   Modal,
+  IconButton,
+  Link,
 } from "@mui/material";
-import { Add, ExpandMore, Save } from "@mui/icons-material";
+import { Add, ArrowCircleUp, ControlPoint, Download, Edit, ExpandMore, Save, UpdateOutlined, UploadFile } from "@mui/icons-material";
 import axios from "axios";
 import data from "../../../public/data.json";
 import Cookies from "js-cookie";
 import { useSelector } from "react-redux";
+import { Toast } from "../../../src/Helper/functions";
 const style = {
   position: 'absolute',
   top: '50%',
@@ -72,12 +75,10 @@ export
   }, []);
 
   const handleCountry = (e) => {
-    console.log(e.target.value);
     // e.preventDefault()
     const filterCountry = allData.filter(
       (country) => country.id === e.target.value
     );
-    console.log(filterCountry);
     setcountry(filterCountry);
     setstate([])
     setcity([])
@@ -86,7 +87,6 @@ export
     const filterState = country[0]?.states.filter(
       (state) => state.id === e.target.value
     );
-    console.log(filterState);
     setstate(filterState);
     setcity([])
   };
@@ -94,7 +94,6 @@ export
     const filterCity = state[0]?.cities.filter(
       (city) => city.id === e.target.value
     );
-    console.log(filterCity);
     setcity(filterCity);
   };
 
@@ -110,9 +109,13 @@ export
       },
       { headers: { Authorization: `Bearer ${Cookies.get("access_key")}` } }
     );
-    console.log(res.data);
+
     if (res.data.data.status == 1) {
-      alert("Successfully Added Job Data");
+      Toast.fire({
+        icon: 'success',
+        title: 'Successfully Added Job Data',
+        timerProgressBar:false
+      })
       fetchAllJobData();
       setcompanyName("");
       setsource("")
@@ -121,7 +124,11 @@ export
       setstate([])
       setdesignation("")
     } else {
-      alert("Something Went Wrong!");
+      Toast.fire({
+        icon: 'error',
+        title: 'Something Went Wrong!',
+        timerProgressBar:false
+      })
     }
   };
 
@@ -158,19 +165,31 @@ export
         display="flex"
         alignItems="center"
         flexDirection="row"
-        justifyContent={{ md: "end", xs: "center" }}
+        justifyContent={{ md: "space-between", xs: "center" }}
         gap={1}
         px={1}
         py={1}
         sx={{ mb: 2, flexWrap: "wrap" }}
       >
+        <Box>
+          <Typography variant="h3" component="span" fontWeight={'bold'}>
+            Status : Employeed
+            <IconButton
+              color="warning"
+              title="Update status"
+            >
+              <ArrowCircleUp />
+            </IconButton>
+          </Typography>
+
+        </Box>
         <Button
           onClick={handleButtonClick}
           variant="contained"
           color="warning"
-          startIcon={<Add />}
+          startIcon={<ControlPoint />}
         >
-          <Typography variant="h6" component="span">
+          <Typography variant="h6" component="span" >
             Add Job
           </Typography>
         </Button>
@@ -203,14 +222,31 @@ export
               setdesignation(e.target.value);
             }}
           />
-          <TextField
+          {/* <TextField
             label="through/source"
             name="source"
             value={source}
             onChange={(e) => {
               setsource(e.target.value);
             }}
-          />
+          /> */}
+          <FormControl>
+            <InputLabel id="source-label">Source</InputLabel>
+            <Select
+              sx={{ width: 150 }}
+              labelId="source-label"
+              id="source"
+              label="Source"
+              name="source"
+              value={source}
+              onChange={(e) => {
+                setsource(e.target.value);
+              }}
+            >
+              <MenuItem value='OffCampus'>OffCampus</MenuItem>
+              <MenuItem value='OnCampus'>OnCampus</MenuItem>
+            </Select>
+          </FormControl>
 
           <FormControl>
             <InputLabel id="demo-simple-select-label">Country</InputLabel>
@@ -323,7 +359,7 @@ export
                     fontWeight: "bold",
                   }}
                 >
-                  Source/which through(offCampus/oncampus)
+                  Source(OffCampus/OnCampus)
                 </Typography>
               </TableCell>
 
@@ -399,25 +435,24 @@ export
                   </TableCell>
                   <TableCell>
                     <Typography>
-                      {elm.offer_letter == null ? "N/A" : elm.offer_letter}
+                      {elm.offer_letter == null ? <IconButton color="warning"><UploadFile /></IconButton> : <Link href={elm.offer_letter_url}><IconButton color="success"><Download /></IconButton></Link>}
                     </Typography>
                   </TableCell>
                   <TableCell>
                     <Typography>
-                      {elm.joining_letter == null ? "N/A" : elm.joining_letter}
+                      {elm.joining_letter == null ? <IconButton color="warning"><UploadFile /></IconButton> : <Link href={elm.joining_letter_url}><IconButton color="success"><Download /></IconButton></Link>}
                     </Typography>
                   </TableCell>
                   <TableCell>
                     <Typography>
-                      <Button
+                      {/* <Button
                         color="secondary"
                         onClick={handleOpen}
                         variant="contained"
-
+                        startIcon={<UploadFile/>}
                       >
-                        {" "}
-                        Upload Data
-                      </Button>
+                      </Button> */}
+                      <IconButton color="primary"><Edit /></IconButton>
                     </Typography>
                   </TableCell>
                 </TableRow>

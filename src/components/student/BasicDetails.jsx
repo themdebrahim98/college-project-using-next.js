@@ -34,7 +34,7 @@ function BasicDetails(props) {
                         <Item ><b>Semester: </b>{getOrdinals(elm.semester)}</Item>
                         <Item ><b>Current session: </b>{elm.current_session_name}</Item>
                         <Item sx={{ bgcolor: elm.status == 1 ? 'green' : 'red', color: '#fff' }}><b>Status: </b>{elm.status == 1 ? 'Active' : 'Deactive'}</Item>
-                        {/* <Item sx={{bgcolor:'green',color:'#fff'}}><b>Job status: </b>Employeed</Item> */}
+                        <Item sx={{ bgcolor: elm.status == 1 ? 'green' : 'red', color: '#fff' }}><b>Job status: </b>{elm.job_status == 0 ? 'Unemployeed' :elm.job_status == 1?'Employeed':elm.job_status == 2?'Higher study':''}</Item>
                     </>);
             })}
         </Box>

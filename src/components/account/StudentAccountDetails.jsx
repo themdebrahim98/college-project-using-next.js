@@ -51,6 +51,7 @@ function StudentAccountDetails(props) {
         justifyContent={{ md: "end", xs: "center" }}
         container spacing={2} component={Paper} sx={{ mb: 4 }}
       >
+        <Button variant='contained' color='warning' sx={{ m: 1 }}>Update Job Status</Button>
         <Button variant='contained' color='success' sx={{ m: 1 }} onClick={handleChangeBtnClick}>{chaneBtn?"Update Details":"Save"}</Button>
       </Grid>
       <Grid container spacing={2} component={Paper} px={2} py={2}>
