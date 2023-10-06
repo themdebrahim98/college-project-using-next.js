@@ -11,12 +11,17 @@ The primary goal of the portal is to provide easy and convenient access to all r
 Typically, the software allows students to view and update their personal information, access their notice register for courses, check grades and academic progress, request transcripts, and access important campus announcements and news. Faculty and staff can also use the portal to view and manage their own information, such as teaching schedules, class rosters, grading, and advising.
 
 Overall, the College Student Information Portal software aims to streamline administrative processes, improve communication between students, faculty, and staff, and enhance the overall learning experience for everyone involved.
+
+
+## Credentials
+Role | Username | Password
+| :--- | ---: | :---:
+Teacher  | TECHR_1 | 1234
+ Student | STUDNT_444 | 1pe!w_4a
+ Admin  | ADMN_makaut | 1234
 ## Authors
-
-- [Debanjan Baidya](https://github.com/i-am-Debanjan)
 - [Md Ebrahim](https://github.com/mdebrahim98)
-
-
+- [Debanjan Baidya](https://github.com/i-am-Debanjan)
 
 ## Demo
 
